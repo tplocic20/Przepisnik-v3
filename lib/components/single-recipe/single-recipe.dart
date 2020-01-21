@@ -17,6 +17,18 @@ class SingleRecipe extends StatefulWidget {
 class _SingleRecipeState extends State<SingleRecipe> {
   @override
   Widget build(BuildContext context) {
+    Widget _buildPortionModal() {
+      return Column(
+        children: <Widget>[
+
+        ],
+      );
+    }
+
+    Widget _buildCookModeModal() {
+      return Text('Bążur monsieur');
+    }
+
     return Backdrop(
       scope: Routes.recipes,
       title: widget.recipe.name,
@@ -33,13 +45,21 @@ class _SingleRecipeState extends State<SingleRecipe> {
         IconButton(
           icon: Icon(Icons.room_service),
           onPressed: () {
-            print('szef');
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return _buildCookModeModal();
+                });
           },
         ),
         IconButton(
           icon: Icon(Icons.pie_chart),
           onPressed: () {
-            print('dzielenie');
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return _buildPortionModal();
+                });
           },
         )
       ],

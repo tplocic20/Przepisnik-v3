@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes/recipes-list.dart';
+import 'package:przepisnik_v3/components/shared/BottomModalWrapper.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
 import 'package:przepisnik_v3/models/routes.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
@@ -56,66 +57,51 @@ class _RecipesState extends State<RecipesPage> {
         ));
       });
 
-      return Container(
-        color: Color(0xFF737373),
-        child: Container(
-          decoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10), topLeft: Radius.circular(10))),
+      return BottomModalWrapper(
           child: ListView(
             children: listElements,
-          ),
-        ),
-      );
+      ));
     }
 
     Widget _buildSearchModal() {
       Timer _debounce;
-      return Container(
-        color: Color(0xFF737373),
-        child: Container(
-          decoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(10), topLeft: Radius.circular(10))),
-          child: Padding(
-            padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom + 10,
-                left: 10,
-                right: 10,
-                top: 10),
-            child: TextFormField(
-              controller: _searchController,
-              autofocus: true,
-              onChanged: (txt) {
-                if (_debounce?.isActive ?? false) _debounce.cancel();
-                _debounce = Timer(const Duration(milliseconds: 500), () {
-                  setState(() {
-                    _searchString = txt;
-                  });
-                });
-              },
-              onFieldSubmitted: (txt) {
-                Navigator.pop(context);
+      return BottomModalWrapper(
+        child: Padding(
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+              left: 10,
+              right: 10,
+              top: 10),
+          child: TextFormField(
+            controller: _searchController,
+            autofocus: true,
+            onChanged: (txt) {
+              if (_debounce?.isActive ?? false) _debounce.cancel();
+              _debounce = Timer(const Duration(milliseconds: 500), () {
                 setState(() {
-                  _searchString = _searchController.text;
+                  _searchString = txt;
                 });
-              },
-              decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(5),
-                    borderSide: BorderSide(
-                        color: Theme.of(context).primaryColor,
-                        style: BorderStyle.solid,
-                        width: 1),
-                  )),
-              keyboardType: TextInputType.text,
-              style: new TextStyle(
-                fontFamily: "Poppins",
-              ),
+              });
+            },
+            onFieldSubmitted: (txt) {
+              Navigator.pop(context);
+              setState(() {
+                _searchString = _searchController.text;
+              });
+            },
+            decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(
+                      color: Theme.of(context).primaryColor,
+                      style: BorderStyle.solid,
+                      width: 1),
+                )),
+            keyboardType: TextInputType.text,
+            style: new TextStyle(
+              fontFamily: "Poppins",
             ),
           ),
         ),

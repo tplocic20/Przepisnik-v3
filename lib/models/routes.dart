@@ -2,5 +2,6 @@ enum Routes {
   favourites,
   recipes,
   notes,
-  settings
+  settings,
+  logout
 }
