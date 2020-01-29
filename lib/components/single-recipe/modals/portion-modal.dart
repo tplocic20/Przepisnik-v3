@@ -24,7 +24,7 @@ class _PortionModalState extends State<PortionModal> {
   @override
   Widget build(BuildContext context) {
     return BottomModalWrapper(
-        child: Column(
+        child: ListView(
           children: <Widget>[
             RadioListTile(
               value: 0.25,
