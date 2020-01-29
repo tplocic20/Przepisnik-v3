@@ -4,8 +4,8 @@ import 'package:przepisnik_v3/models/recipe.dart';
 
 class RecipeInfo extends StatefulWidget {
   final Recipe recipe;
-
-  RecipeInfo(this.recipe);
+  final double portion;
+  RecipeInfo({this.recipe, this.portion});
 
   @override
   _RecipeInfoState createState() => _RecipeInfoState();
@@ -43,7 +43,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         );      }
     }
 
-    print(widget.recipe.temperature);
+//    print(widget.recipe.temperature);
     return ListView(
       children: <Widget>[
         _getTemperature(),
@@ -81,7 +81,16 @@ class _RecipeInfoState extends State<RecipeInfo> {
 
   _buildIngredientsList(index) {
     List<Padding> widgets = [];
-    widget.recipe.ingredients[index].positions.asMap().forEach((index, value) {
+    widget.recipe.ingredients[index].positions.asMap().forEach((index, Ingredient value) {
+      String parsedValue = "";
+      if (value.qty != null) {
+        if (value.qty is String) {
+          parsedValue = (double.parse(value.qty) * widget.portion).toString();
+        } else if (value.qty is int) {
+          parsedValue = (value.qty * widget.portion).toString();
+        }
+        print(parsedValue);
+      }
       widgets.add(Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Container(
@@ -89,7 +98,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
                 BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
             child: ListTile(
               title: Text(value.name),
-              subtitle: Text('${value.qty != null ? value.qty : ''} ${value.unit != null ? value.unit : ''}'),
+              subtitle: Text('${value.qty != null ? parsedValue : ''} ${value.unit != null ? value.unit : ''}'),
             ),
           )));
     });

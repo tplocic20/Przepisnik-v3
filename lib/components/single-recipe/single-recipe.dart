@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:przepisnik_v3/components/shared/BottomModalWrapper.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
+import 'package:przepisnik_v3/components/single-recipe/modals/portion-modal.dart';
 import 'package:przepisnik_v3/components/single-recipe/single-recipe-container.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:przepisnik_v3/models/routes.dart';
@@ -15,13 +17,18 @@ class SingleRecipe extends StatefulWidget {
 }
 
 class _SingleRecipeState extends State<SingleRecipe> {
+  double _portion = 1;
+
   @override
   Widget build(BuildContext context) {
     Widget _buildPortionModal() {
-      return Column(
-        children: <Widget>[
-
-        ],
+      return PortionModal(
+        portion: this._portion,
+        callback: (value) {
+          setState(() {
+            _portion = value;
+          });
+        },
       );
     }
 
@@ -40,7 +47,10 @@ class _SingleRecipeState extends State<SingleRecipe> {
         elevation: 1,
         backgroundColor: Theme.of(context).accentColor,
       ),
-      frontLayer: SingleRecipeContainer(widget.recipe),
+      frontLayer: SingleRecipeContainer(
+        recipe: widget.recipe,
+        portion: this._portion,
+      ),
       customActions: <Widget>[
         IconButton(
           icon: Icon(Icons.room_service),

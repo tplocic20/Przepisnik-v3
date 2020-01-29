@@ -77,7 +77,7 @@ class _RecipesState extends State<RecipesPage> {
             autofocus: true,
             onChanged: (txt) {
               if (_debounce?.isActive ?? false) _debounce.cancel();
-              _debounce = Timer(const Duration(milliseconds: 500), () {
+              _debounce = Timer(const Duration(milliseconds: 350), () {
                 setState(() {
                   _searchString = txt;
                 });
@@ -112,9 +112,7 @@ class _RecipesState extends State<RecipesPage> {
         value: RecipesService().recipeList,
         child: Backdrop(
           scope: Routes.recipes,
-          title: _selectedCategoryName != null
-              ? _selectedCategoryName
-              : 'Wszystkie',
+          title: _selectedCategoryName ?? 'Wszystkie',
           frontLayer: RecipesList(_selectedCategory, _searchString),
           bottomNavigation: BottomAppBar(
             elevation: 10,
