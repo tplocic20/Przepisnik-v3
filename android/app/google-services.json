@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "529215752695",
+    "firebase_url": "https://przepisnik-v2.firebaseio.com",
+    "project_id": "przepisnik-v2",
+    "storage_bucket": "przepisnik-v2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529215752695:android:c1975d44c4b454144306f2",
+        "android_client_info": {
+          "package_name": "pl.przepisnik.przepisnik_v3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "529215752695-baqg9hgk0vkvplr8450ln6h4ovuff02m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAev5Vztdlu4purK3ILLaV7fgVArIU4hz4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "529215752695-baqg9hgk0vkvplr8450ln6h4ovuff02m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
