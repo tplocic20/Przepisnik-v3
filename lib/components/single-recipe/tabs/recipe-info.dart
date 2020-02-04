@@ -89,7 +89,6 @@ class _RecipeInfoState extends State<RecipeInfo> {
         } else if (value.qty is int) {
           parsedValue = (value.qty * widget.portion).toString();
         }
-        print(parsedValue);
       }
       widgets.add(Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
