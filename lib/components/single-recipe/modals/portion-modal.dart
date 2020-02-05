@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:przepisnik_v3/components/shared/BottomModalWrapper.dart';
+import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
+import 'package:przepisnik_v3/components/shared/portion-slider.dart';
 
 class PortionModal extends StatefulWidget {
   final callback;
@@ -14,25 +15,10 @@ class PortionModal extends StatefulWidget {
 
 class _PortionModalState extends State<PortionModal> {
   double _portion;
-  double _min;
-  double _max;
-  int _step;
-
-  _PortionModalState(this._portion) {
-    if (this._portion < 1) {
-      _min = 0.1;
-      _max = 1.1;
-      _step = 10;
-    } else if (this._portion == 1) {
-      _min = 0.25;
-      _max = 2;
-      _step = 7;
-    } else {
-      _min = 1;
-      _max = 4;
-      _step = 6;
-    }
-  }
+  double  _min = 0.1;
+  double _max = 1.1;
+  int _step = 10;
+  _PortionModalState(this._portion);
 
   updatePortion(value) {
     setState(() {
@@ -114,11 +100,9 @@ class _PortionModalState extends State<PortionModal> {
                 onChanged: (value) {
                   this.updatePortion(value);
                 },
-                onChangeEnd: (value) {
-                  this.updateSlider(value);
-                },
               )),
         ),
+        PortionSlider(),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes/recipes-list.dart';
-import 'package:przepisnik_v3/components/shared/BottomModalWrapper.dart';
+import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
 import 'package:przepisnik_v3/models/routes.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
