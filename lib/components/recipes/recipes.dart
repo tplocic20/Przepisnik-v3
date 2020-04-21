@@ -24,7 +24,7 @@ class _RecipesState extends State<RecipesPage> {
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-    final _searchController = TextEditingController();
+    final _searchController = TextEditingController(text: this._searchString != null ? this._searchString : '');
 
     Widget _buildCategoriesModal() {
       void _updateCategory(value, name) {
