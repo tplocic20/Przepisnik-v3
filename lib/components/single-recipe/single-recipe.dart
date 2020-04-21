@@ -33,7 +33,9 @@ class _SingleRecipeState extends State<SingleRecipe> {
     }
 
     Widget _buildCookModeModal() {
-      return Text('Bążur monsieur');
+      return BottomModalWrapper(
+        child: Text('test')
+      );
     }
 
     return Backdrop(
