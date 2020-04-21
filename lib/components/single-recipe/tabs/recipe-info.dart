@@ -48,13 +48,16 @@ class _RecipeInfoState extends State<RecipeInfo> {
       children: <Widget>[
         _getTemperature(),
         _getTime(),
-        ExpansionPanelList(
-          expansionCallback: (int index, bool isExpanded) {
-            setState(() {
-              groupExpanded[index] = !isExpanded;
-            });
-          },
-          children: _buildIngredientsGroupList(),
+        Padding(
+          padding: EdgeInsets.only(bottom: 35.0),
+          child: ExpansionPanelList(
+            expansionCallback: (int index, bool isExpanded) {
+              setState(() {
+                groupExpanded[index] = !isExpanded;
+              });
+            },
+            children: _buildIngredientsGroupList(),
+          ),
         ),
       ],
     );
@@ -79,22 +82,27 @@ class _RecipeInfoState extends State<RecipeInfo> {
     return widgets;
   }
 
-  _buildIngredientsList(index) {
+  _buildIngredientsList(groupIdx) {
     List<Padding> widgets = [];
-    widget.recipe.ingredients[index].positions.asMap().forEach((index, Ingredient value) {
+    widget.recipe.ingredients[groupIdx].positions.asMap().forEach((index, Ingredient value) {
       String parsedValue = "";
       if (value.qty != null) {
         if (value.qty is String) {
-          parsedValue = (double.parse(value.qty) * widget.portion).toString();
+          parsedValue = (double.parse(value.qty) * widget.portion)
+              .toStringAsFixed(2);
         } else if (value.qty is int) {
-          parsedValue = (value.qty * widget.portion).toString();
+          parsedValue = (value.qty * widget.portion).toStringAsFixed(2);
         }
+      }
+      if (widget.recipe.ingredients[groupIdx].positions.length == index + 1) {
+        print('last');
       }
       widgets.add(Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Container(
-            decoration:
-                BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey))),
+            decoration: widget.recipe.ingredients[groupIdx].positions.length > index + 1 ?
+                BoxDecoration(border: Border(bottom: BorderSide(width: 1, color: Colors.grey)))
+            : null,
             child: ListTile(
               title: Text(value.name),
               subtitle: Text('${value.qty != null ? parsedValue : ''} ${value.unit != null ? value.unit : ''}'),
