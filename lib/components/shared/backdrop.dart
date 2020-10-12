@@ -125,7 +125,7 @@ class _BackdropState extends State<Backdrop>
       IconButton(
         icon: AnimatedIcon(
           progress: _myAnimation,
-          icon: AnimatedIcons.add_event,
+          icon: AnimatedIcons.menu_close,
         ),
         onPressed: _toggleBackdropLayerVisibility,
       )
