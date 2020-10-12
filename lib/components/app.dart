@@ -10,7 +10,7 @@ class EntrySwitchApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _userState = Provider.of<FirebaseUser>(context);
+    final _userState = Provider.of<User>(context);
     final _recipesService = RecipesService();
 
     if (_userState == null) {

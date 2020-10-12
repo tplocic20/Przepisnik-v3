@@ -1,11 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/app.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
 
-void main() => runApp(PrzepisnikApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(PrzepisnikApp());
+}
 
 class PrzepisnikApp extends StatelessWidget {
 
@@ -13,7 +18,7 @@ class PrzepisnikApp extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    return StreamProvider<FirebaseUser>.value(
+    return StreamProvider<User>.value(
       value: AuthService().userScope,
       child: MaterialApp(
           title: 'Przepisnik',

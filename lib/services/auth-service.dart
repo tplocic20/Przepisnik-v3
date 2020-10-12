@@ -4,16 +4,16 @@ import 'package:przepisnik_v3/globals/globals.dart' as globals;
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Stream<FirebaseUser> get userScope {
-    return _auth.onAuthStateChanged;
+  Stream<User> get userScope {
+    return _auth.authStateChanges();
   }
 
   Future signInCredentials(email, password) async {
     try {
-      AuthResult result = await _auth.signInWithEmailAndPassword(
+      UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email,
           password: password);
-      FirebaseUser user = result.user;
+      User user = result.user;
       globals.userState = user.uid;
       return user;
     } catch (e) {

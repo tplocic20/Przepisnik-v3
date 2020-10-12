@@ -115,9 +115,12 @@ class _RecipesState extends State<RecipesPage> {
           title: _selectedCategoryName ?? 'Wszystkie',
           frontLayer: RecipesList(_selectedCategory, _searchString),
           bottomNavigation: BottomAppBar(
-            elevation: 10,
-            notchMargin: 3,
-            shape: CircularNotchedRectangle(),
+            // elevation: 10,
+            notchMargin: 5,
+            shape: AutomaticNotchedShape(
+                RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
+                StadiumBorder(side: BorderSide.none)
+            ),
             clipBehavior: Clip.antiAlias,
             child: Container(
                 height: 50.0,
@@ -149,9 +152,10 @@ class _RecipesState extends State<RecipesPage> {
                   ],
                 )),
           ),
-          bottomMainBtn: FloatingActionButton(
+          bottomMainBtn: FloatingActionButton.extended(
             onPressed: () {},
-            child: Icon(Icons.add),
+            icon: Icon(Icons.add),
+            label: Text('Dodaj'),
             elevation: 1,
             backgroundColor: Theme.of(context).accentColor,
           ),

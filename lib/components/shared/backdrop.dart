@@ -32,9 +32,14 @@ class Backdrop extends StatefulWidget {
 }
 
 class _BackdropState extends State<Backdrop>
-    with SingleTickerProviderStateMixin {
+    with TickerProviderStateMixin {
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   AnimationController _animationController;
+
+  bool _flag = true;
+
+  Animation<double> _myAnimation;
+  AnimationController _controller;
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
     const double layerTitleHeight = 48.0;
@@ -75,6 +80,13 @@ class _BackdropState extends State<Backdrop>
   void _toggleBackdropLayerVisibility() {
     _animationController.fling(
         velocity: _frontLayerVisible ? -_kFlingVelocity : _kFlingVelocity);
+    if (_flag) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+
+    _flag = !_flag;
   }
   void _goBackNavigation() {
     Navigator.pop(context);
@@ -87,6 +99,16 @@ class _BackdropState extends State<Backdrop>
       duration: Duration(milliseconds: 300),
       value: 1.0,
       vsync: this,
+    );
+
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 200),
+    );
+
+    _myAnimation = CurvedAnimation(
+        curve: Curves.linear,
+        parent: _controller
     );
   }
 
@@ -101,8 +123,9 @@ class _BackdropState extends State<Backdrop>
     List<Widget> barActions = [
       ...widget.customActions,
       IconButton(
-        icon: Icon(
-          Icons.menu,
+        icon: AnimatedIcon(
+          progress: _myAnimation,
+          icon: AnimatedIcons.add_event,
         ),
         onPressed: _toggleBackdropLayerVisibility,
       )
