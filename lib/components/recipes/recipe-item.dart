@@ -29,7 +29,7 @@ class RecipeItem extends StatelessWidget {
               ),
             ),
             Container(
-              width: MediaQuery.of(context).size.width * 0.85,
+              width: MediaQuery.of(context).size.width * 0.9,
               height: 1.0,
               color: Theme.of(context).primaryColor,
             )
