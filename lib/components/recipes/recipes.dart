@@ -112,7 +112,7 @@ class _RecipesState extends State<RecipesPage> {
         value: RecipesService().recipeList,
         child: Backdrop(
           scope: Routes.recipes,
-          title: _selectedCategoryName ?? 'Wszystkie',
+          title: Text(_selectedCategoryName ?? 'Wszystkie'),
           frontLayer: RecipesList(_selectedCategory, _searchString),
           bottomNavigation: BottomAppBar(
             // elevation: 10,

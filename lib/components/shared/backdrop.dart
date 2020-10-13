@@ -11,7 +11,7 @@ class Backdrop extends StatefulWidget {
   final Widget bottomMainBtn;
   final List<Widget> customActions;
   final Routes scope;
-  final String title;
+  final Widget title;
   final bool backButtonOverride;
   final FloatingActionButtonLocation actionButtonLocation;
 
@@ -140,7 +140,7 @@ class _BackdropState extends State<Backdrop>
       ) : null,
       title: GestureDetector(
         child: Padding(
-          child:  Text(widget.title != null ? widget.title : 'Przepisy'),
+          child:  widget.title,
           padding: EdgeInsets.only(left: widget.backButtonOverride ? 0 : 15),
         ),
       ),

@@ -40,7 +40,17 @@ class _SingleRecipeState extends State<SingleRecipe> {
 
     return Backdrop(
       scope: Routes.recipes,
-      title: widget.recipe.name,
+      title: Hero(
+        tag: widget.recipe.key,
+        child: Text(
+            widget.recipe.name,
+            style: Theme.of(context).textTheme.bodyText1.copyWith(
+                fontSize: 20,
+                fontWeight: FontWeight.w500,
+              color: Colors.white
+            )
+        ),
+      ),
       actionButtonLocation: FloatingActionButtonLocation.endFloat,
       backButtonOverride: true,
       bottomMainBtn: FloatingActionButton(

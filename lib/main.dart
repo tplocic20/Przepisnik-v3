@@ -39,7 +39,7 @@ ThemeData _appTheme() {
     primaryColorDark: Colors.indigo[700],
     accentColor: Colors.lightGreen,
     primaryTextTheme: TextTheme(
-      body1: TextStyle(color: Colors.white)
+      bodyText1: TextStyle(color: Colors.white)
     ),
 
     // Define the default font family.
@@ -48,8 +48,8 @@ ThemeData _appTheme() {
     // Define the default TextTheme. Use this to specify the default
     // text styling for headlines, titles, bodies of text, and more.
     textTheme: TextTheme(
-      headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-      title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+      headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+      bodyText2: TextStyle(fontSize: 18.0, letterSpacing: 1.0, fontWeight: FontWeight.w300),
     ),
   );
 }

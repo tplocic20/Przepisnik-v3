@@ -24,7 +24,10 @@ class RecipeItem extends StatelessWidget {
                         builder: (context) => SingleRecipe(recipe)),
                   );
                 },
-                title: Text(recipe.name),
+                title: Hero(
+                  tag: recipe.key,
+                  child: Text(recipe.name, style: Theme.of(context).textTheme.bodyText2),
+                ),
                 trailing: Icon(Icons.more_vert),
               ),
             ),
