@@ -34,10 +34,10 @@ ThemeData _appTheme() {
   return ThemeData(
     // Define the default brightness and colors.
     brightness: Brightness.light,
-    primaryColor: Colors.indigo,
-    primaryColorLight: Colors.indigo[100],
-    primaryColorDark: Colors.indigo[700],
-    accentColor: Colors.lightGreen,
+    primaryColor: Color(0xFF41681f),
+    primaryColorLight: Color(0xFF6f964a),
+    primaryColorDark: Color(0xFF153d00),
+    accentColor: Color(0xFFd87f33),
     primaryTextTheme: TextTheme(
       bodyText1: TextStyle(color: Colors.white)
     ),
@@ -49,7 +49,7 @@ ThemeData _appTheme() {
     // text styling for headlines, titles, bodies of text, and more.
     textTheme: TextTheme(
       headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-      bodyText2: TextStyle(fontSize: 18.0, letterSpacing: 1.0, fontWeight: FontWeight.w300),
+      bodyText2: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
     ),
   );
 }
