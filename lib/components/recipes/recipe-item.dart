@@ -26,7 +26,9 @@ class RecipeItem extends StatelessWidget {
                 },
                 title: Hero(
                   tag: recipe.key,
-                  child: Text(recipe.name, style: Theme.of(context).textTheme.bodyText2),
+                  child: Text(recipe.name, style: Theme.of(context).textTheme.bodyText2.copyWith(
+                    fontSize: 20
+                  )),
                 ),
                 trailing: Icon(Icons.more_vert),
               ),
