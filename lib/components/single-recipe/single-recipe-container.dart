@@ -25,8 +25,9 @@ class _SingleRecipeContainerState extends State<SingleRecipeContainer> {
           new Container(
             constraints: BoxConstraints(maxHeight: 150.0),
             child: new TabBar(
-              unselectedLabelColor: Theme.of(context).primaryColor,
-              labelColor: Theme.of(context).accentColor,
+              unselectedLabelColor: Theme.of(context).primaryColorLight,
+              labelColor: Theme.of(context).primaryColorDark,
+              indicatorColor: Theme.of(context).primaryColorDark,
               tabs: [
                 new Tab(text: 'Informacje'),
                 new Tab(text: 'Przepis'),

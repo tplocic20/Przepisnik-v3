@@ -85,13 +85,14 @@ class _RecipeInfoState extends State<RecipeInfo> {
   _buildIngredientsList(groupIdx) {
     List<Padding> widgets = [];
     widget.recipe.ingredients[groupIdx].positions.asMap().forEach((index, Ingredient value) {
-      String parsedValue = "";
+      num parsedValue = 0;
       if (value.qty != null) {
         if (value.qty is String) {
-          parsedValue = (double.parse(value.qty) * widget.portion)
-              .toStringAsFixed(2);
+          double number = double.tryParse(value.qty.replaceAll(new RegExp(r','), '.'));
+          parsedValue = num.parse((number != null ? number : 0 * widget.portion)
+              .toStringAsFixed(2));
         } else if (value.qty is int) {
-          parsedValue = (value.qty * widget.portion).toStringAsFixed(2);
+          parsedValue = num.parse((value.qty * widget.portion).toStringAsFixed(2));
         }
       }
       if (widget.recipe.ingredients[groupIdx].positions.length == index + 1) {
