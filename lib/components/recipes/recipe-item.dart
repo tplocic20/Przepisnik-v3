@@ -16,19 +16,19 @@ class _RecipeItemState extends State<RecipeItem>
 
   bool _actionsOpened = false;
   Animation<double> _actionsAnimation;
-  AnimationController _controller;
+  AnimationController _actionsAnimationController;
 
   void initState() {
 
     super.initState();
-    _controller = AnimationController(
+    _actionsAnimationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
     );
 
     _actionsAnimation = CurvedAnimation(
         curve: Curves.linear,
-        parent: _controller
+        parent: _actionsAnimationController
     );
   }
 
@@ -71,7 +71,7 @@ class _RecipeItemState extends State<RecipeItem>
               width: MediaQuery
                   .of(context)
                   .size
-                  .width * 0.9,
+                  .width * 0.85,
               height: 1.0,
               color: Theme
                   .of(context)
@@ -83,12 +83,11 @@ class _RecipeItemState extends State<RecipeItem>
   }
 
   void _toggleActions() {
-    if (_actionsOpened) {
-      _controller.forward();
+    if (_actionsOpened = !_actionsOpened) {
+      _actionsAnimationController.reverse();
     } else {
-      _controller.reverse();
+      _actionsAnimationController.forward();
     }
-    _actionsOpened = !_actionsOpened;
   }
 
 }

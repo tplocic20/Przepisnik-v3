@@ -33,13 +33,13 @@ class Backdrop extends StatefulWidget {
 
 class _BackdropState extends State<Backdrop>
     with TickerProviderStateMixin {
+
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
-  AnimationController _animationController;
-
-  bool _flag = true;
-
+  
+  AnimationController _backdropAnimationController;
+  bool _mainMenuFlag = true;
   Animation<double> _mainMenuAnimation;
-  AnimationController _controller;
+  AnimationController _mainMenuAnimationController;
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
     const double layerTitleHeight = 48.0;
@@ -48,9 +48,9 @@ class _BackdropState extends State<Backdrop>
 
     Animation<RelativeRect> layerAnimation = RelativeRectTween(
       begin: RelativeRect.fromLTRB(
-          0.0, layerTitleHeight * 5, 0.0, layerTop - layerSize.height),
+          0.0, layerTitleHeight * 6, 0.0, layerTop - layerSize.height),
       end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
-    ).animate(_animationController.view);
+    ).animate(_backdropAnimationController.view);
 
     return Stack(
       key: _backdropKey,
@@ -72,21 +72,23 @@ class _BackdropState extends State<Backdrop>
   }
 
   bool get _frontLayerVisible {
-    final AnimationStatus status = _animationController.status;
+    final AnimationStatus status = _backdropAnimationController.status;
     return status == AnimationStatus.completed ||
         status == AnimationStatus.forward;
   }
 
   void _toggleBackdropLayerVisibility() {
-    _animationController.fling(
+    _backdropAnimationController.fling(
         velocity: _frontLayerVisible ? -_kFlingVelocity : _kFlingVelocity);
-    if (_flag) {
-      _controller.forward();
-    } else {
-      _controller.reverse();
-    }
+    toggleMainMenuIcon();
+  }
 
-    _flag = !_flag;
+  void toggleMainMenuIcon() {
+    if (_mainMenuFlag = !_mainMenuFlag) {
+      _mainMenuAnimationController.reverse();
+    } else {
+      _mainMenuAnimationController.forward();
+    }
   }
   
   void _goBackNavigation() {
@@ -96,27 +98,27 @@ class _BackdropState extends State<Backdrop>
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
+    _backdropAnimationController = AnimationController(
       duration: Duration(milliseconds: 300),
       value: 1.0,
       vsync: this,
     );
 
-    _controller = AnimationController(
+    _mainMenuAnimationController = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 200),
     );
 
     _mainMenuAnimation = CurvedAnimation(
         curve: Curves.linear,
-        parent: _controller
+        parent: _mainMenuAnimationController
     );
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
-    _controller.dispose();
+    _backdropAnimationController.dispose();
+    _mainMenuAnimationController.dispose();
     super.dispose();
   }
 
