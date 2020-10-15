@@ -38,7 +38,7 @@ class _BackdropState extends State<Backdrop>
 
   bool _flag = true;
 
-  Animation<double> _myAnimation;
+  Animation<double> _mainMenuAnimation;
   AnimationController _controller;
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
@@ -88,6 +88,7 @@ class _BackdropState extends State<Backdrop>
 
     _flag = !_flag;
   }
+  
   void _goBackNavigation() {
     Navigator.pop(context);
   }
@@ -106,7 +107,7 @@ class _BackdropState extends State<Backdrop>
       duration: Duration(milliseconds: 200),
     );
 
-    _myAnimation = CurvedAnimation(
+    _mainMenuAnimation = CurvedAnimation(
         curve: Curves.linear,
         parent: _controller
     );
@@ -115,6 +116,7 @@ class _BackdropState extends State<Backdrop>
   @override
   void dispose() {
     _animationController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -124,7 +126,7 @@ class _BackdropState extends State<Backdrop>
       ...widget.customActions,
       IconButton(
         icon: AnimatedIcon(
-          progress: _myAnimation,
+          progress: _mainMenuAnimation,
           icon: AnimatedIcons.menu_close,
         ),
         onPressed: _toggleBackdropLayerVisibility,
