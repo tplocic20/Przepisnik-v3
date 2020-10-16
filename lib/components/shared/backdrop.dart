@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/shared/navigation-menu.dart';
 import 'package:przepisnik_v3/models/routes.dart';
 
-const double _kFlingVelocity = 2.0;
+const double _backdropVelocity = 2.0;
+const double _layerTitleHeight = 48.0;
+const double _backDropMaxHeight = _layerTitleHeight * 6;
+
 
 class Backdrop extends StatefulWidget {
   final Widget frontLayer;
@@ -21,7 +24,7 @@ class Backdrop extends StatefulWidget {
       this.bottomNavigation,
       this.bottomMainBtn,
       this.title,
-      this.actionButtonLocation,
+      this.actionButtonLocation = FloatingActionButtonLocation.centerDocked,
       this.customActions = const <Widget>[],
       this.backButtonOverride = false})
       : assert(frontLayer != null),
@@ -37,18 +40,17 @@ class _BackdropState extends State<Backdrop>
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
   
   AnimationController _backdropAnimationController;
-  bool _mainMenuFlag = true;
-  Animation<double> _mainMenuAnimation;
-  AnimationController _mainMenuAnimationController;
+  double _lastDragPos = 0.0;
+  bool _dragDirection;
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
-    const double layerTitleHeight = 48.0;
     final Size layerSize = constraints.biggest;
-    final double layerTop = layerSize.height - layerTitleHeight;
+    final double layerTop = layerSize.height - _layerTitleHeight;
+
 
     Animation<RelativeRect> layerAnimation = RelativeRectTween(
       begin: RelativeRect.fromLTRB(
-          0.0, layerTitleHeight * 6, 0.0, layerTop - layerSize.height),
+          0.0, _backDropMaxHeight, 0.0, layerTop - layerSize.height),
       end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
     ).animate(_backdropAnimationController.view);
 
@@ -79,16 +81,8 @@ class _BackdropState extends State<Backdrop>
 
   void _toggleBackdropLayerVisibility() {
     _backdropAnimationController.fling(
-        velocity: _frontLayerVisible ? -_kFlingVelocity : _kFlingVelocity);
-    toggleMainMenuIcon();
-  }
-
-  void toggleMainMenuIcon() {
-    if (_mainMenuFlag = !_mainMenuFlag) {
-      _mainMenuAnimationController.reverse();
-    } else {
-      _mainMenuAnimationController.forward();
-    }
+        velocity: _frontLayerVisible ? -_backdropVelocity : _backdropVelocity
+    );
   }
   
   void _goBackNavigation() {
@@ -103,22 +97,11 @@ class _BackdropState extends State<Backdrop>
       value: 1.0,
       vsync: this,
     );
-
-    _mainMenuAnimationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 200),
-    );
-
-    _mainMenuAnimation = CurvedAnimation(
-        curve: Curves.linear,
-        parent: _mainMenuAnimationController
-    );
   }
 
   @override
   void dispose() {
     _backdropAnimationController.dispose();
-    _mainMenuAnimationController.dispose();
     super.dispose();
   }
 
@@ -128,8 +111,8 @@ class _BackdropState extends State<Backdrop>
       ...widget.customActions,
       IconButton(
         icon: AnimatedIcon(
-          progress: _mainMenuAnimation,
-          icon: AnimatedIcons.menu_close,
+          progress: _backdropAnimationController.view,
+          icon: AnimatedIcons.close_menu,
         ),
         onPressed: _toggleBackdropLayerVisibility,
       )
@@ -143,10 +126,23 @@ class _BackdropState extends State<Backdrop>
         onPressed:_goBackNavigation,
       ) : null,
       title: GestureDetector(
-        child: Padding(
-          child:  widget.title,
-          padding: EdgeInsets.only(left: widget.backButtonOverride ? 0 : 15),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+            child: Padding(
+              child:  widget.title,
+              padding: EdgeInsets.only(left: widget.backButtonOverride ? 0 : 15),
+            )
         ),
+        onVerticalDragUpdate: (DragUpdateDetails details) {
+          _dragDirection = details.localPosition.dy > _lastDragPos;
+          _lastDragPos = details.localPosition.dy;
+          _backdropAnimationController.value = (_backDropMaxHeight - details.localPosition.dy) / _backDropMaxHeight;
+        },
+        onVerticalDragEnd: (DragEndDetails details) {
+          _backdropAnimationController.fling(
+              velocity: _dragDirection && _backdropAnimationController.value < 0.75 ? -_backdropVelocity : _backdropVelocity
+          );
+        },
       ),
       actions: barActions,
     );
@@ -154,9 +150,7 @@ class _BackdropState extends State<Backdrop>
         extendBody: true,
         appBar: appBar,
         body: LayoutBuilder(builder: _buildStack),
-        floatingActionButtonLocation: widget.actionButtonLocation != null
-            ? widget.actionButtonLocation
-            : FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: widget.actionButtonLocation,
         floatingActionButton: widget.bottomMainBtn,
         bottomNavigationBar: widget.bottomNavigation);
   }
