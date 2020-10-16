@@ -7,7 +7,6 @@ const double _backdropVelocity = 2.0;
 const double _layerTitleHeight = 48.0;
 const double _backDropMaxHeight = _layerTitleHeight * 6;
 
-
 class Backdrop extends StatefulWidget {
   final Widget frontLayer;
   final Widget bottomNavigation;
@@ -34,11 +33,9 @@ class Backdrop extends StatefulWidget {
   _BackdropState createState() => _BackdropState();
 }
 
-class _BackdropState extends State<Backdrop>
-    with TickerProviderStateMixin {
-
+class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
-  
+
   AnimationController _backdropAnimationController;
   double _lastDragPos = 0.0;
   bool _dragDirection;
@@ -47,12 +44,30 @@ class _BackdropState extends State<Backdrop>
     final Size layerSize = constraints.biggest;
     final double layerTop = layerSize.height - _layerTitleHeight;
 
-
     Animation<RelativeRect> layerAnimation = RelativeRectTween(
       begin: RelativeRect.fromLTRB(
           0.0, _backDropMaxHeight, 0.0, layerTop - layerSize.height),
       end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
     ).animate(_backdropAnimationController.view);
+
+    void closeBackdrop() {
+      _backdropAnimationController.fling(velocity: _backdropVelocity);
+    }
+
+    void backdropGrab(position) {
+      if (!_frontLayerVisible) {
+        _backdropAnimationController.value =
+            1 - (_backDropMaxHeight + position) /
+                _backDropMaxHeight;
+      }
+    }
+
+    void backdropGrabEnd() {
+      _backdropAnimationController.fling(
+          velocity: _backdropAnimationController.value < 0.25
+              ? -_backdropVelocity
+              : _backdropVelocity);
+    }
 
     return Stack(
       key: _backdropKey,
@@ -60,6 +75,9 @@ class _BackdropState extends State<Backdrop>
         ExcludeSemantics(
           child: NavigationMenu(
             routeScope: widget.scope,
+            closeBackdrop: closeBackdrop,
+            backDropGrab: backdropGrab,
+            backDropGrabEnd: backdropGrabEnd,
           ),
           excluding: _frontLayerVisible,
         ),
@@ -81,10 +99,9 @@ class _BackdropState extends State<Backdrop>
 
   void _toggleBackdropLayerVisibility() {
     _backdropAnimationController.fling(
-        velocity: _frontLayerVisible ? -_backdropVelocity : _backdropVelocity
-    );
+        velocity: _frontLayerVisible ? -_backdropVelocity : _backdropVelocity);
   }
-  
+
   void _goBackNavigation() {
     Navigator.pop(context);
   }
@@ -121,27 +138,36 @@ class _BackdropState extends State<Backdrop>
       brightness: Brightness.light,
       elevation: 0.0,
       titleSpacing: 0.0,
-      leading: widget.backButtonOverride ? IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed:_goBackNavigation,
-      ) : null,
+      leading: widget.backButtonOverride
+          ? IconButton(
+              icon: Icon(Icons.arrow_back),
+              onPressed: _goBackNavigation,
+            )
+          : null,
       title: GestureDetector(
         child: Container(
-          width: MediaQuery.of(context).size.width,
+            width: MediaQuery.of(context).size.width,
             child: Padding(
-              child:  widget.title,
-              padding: EdgeInsets.only(left: widget.backButtonOverride ? 0 : 15),
-            )
-        ),
+              child: widget.title,
+              padding:
+                  EdgeInsets.only(left: widget.backButtonOverride ? 0 : 15),
+            )),
         onVerticalDragUpdate: (DragUpdateDetails details) {
-          _dragDirection = details.localPosition.dy > _lastDragPos;
-          _lastDragPos = details.localPosition.dy;
-          _backdropAnimationController.value = (_backDropMaxHeight - details.localPosition.dy) / _backDropMaxHeight;
+          if (_frontLayerVisible) {
+            _dragDirection = details.localPosition.dy > _lastDragPos;
+            _lastDragPos = details.localPosition.dy;
+            _backdropAnimationController.value =
+                (_backDropMaxHeight - details.localPosition.dy + 30) /
+                    _backDropMaxHeight;
+          }
         },
         onVerticalDragEnd: (DragEndDetails details) {
           _backdropAnimationController.fling(
-              velocity: _dragDirection && _backdropAnimationController.value < 0.75 ? -_backdropVelocity : _backdropVelocity
-          );
+              velocity: _dragDirection != null &&
+                      _dragDirection &&
+                      _backdropAnimationController.value < 0.75
+                  ? -_backdropVelocity
+                  : _backdropVelocity);
         },
       ),
       actions: barActions,
