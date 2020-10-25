@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/app.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,22 +15,34 @@ void main() async {
 }
 
 class PrzepisnikApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
+    fetchModes();
     return StreamProvider<User>.value(
       value: AuthService().userScope,
       child: MaterialApp(
-          title: 'Przepisnik',
-          theme: _appTheme(),
-          home: EntrySwitchApp()
-      ),
+          title: 'Przepisnik', theme: _appTheme(), home: EntrySwitchApp()),
     );
   }
 }
 
+Future<void> fetchModes() async {
+  try {
+    List<DisplayMode> modes = await FlutterDisplayMode.supported;
+
+    DisplayMode current = await FlutterDisplayMode.current;
+    DisplayMode selected = modes.firstWhere(
+        (DisplayMode m) =>
+            m.width == current.width &&
+            m.height == current.height &&
+            m.refreshRate > 60,
+        orElse: () => null);
+    if (selected != null) {
+      FlutterDisplayMode.setMode(selected);
+    }
+  } on PlatformException catch (e) {}
+}
 
 ThemeData _appTheme() {
   return ThemeData(
@@ -38,9 +52,7 @@ ThemeData _appTheme() {
     primaryColorLight: Color(0xFF6f964a),
     primaryColorDark: Color(0xFF153d00),
     accentColor: Color(0xFFd87f33),
-    primaryTextTheme: TextTheme(
-      bodyText1: TextStyle(color: Colors.white)
-    ),
+    primaryTextTheme: TextTheme(bodyText1: TextStyle(color: Colors.white)),
 
     // Define the default font family.
     fontFamily: 'Poppins',

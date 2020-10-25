@@ -69,9 +69,10 @@ class _LoginState extends State<LoginPage> {
                   onPressed: () async {
                     await _authService.signInCredentials(_userName.text, _userPassword.text).then((val) {
                       if (val != null) {
-                        Navigator.pushReplacement(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(builder: (context) => RecipesPage()),
+                                (Route<dynamic> route) => false
                         );
                       }
                     });

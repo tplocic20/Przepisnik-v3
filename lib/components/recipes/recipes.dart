@@ -1,9 +1,11 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
+import 'package:przepisnik_v3/components/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes/recipes-list.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
@@ -24,7 +26,8 @@ class _RecipesState extends State<RecipesPage> {
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
-    final _searchController = TextEditingController(text: this._searchString != null ? this._searchString : '');
+    final _searchController = TextEditingController(
+        text: this._searchString != null ? this._searchString : '');
 
     Widget _buildCategoriesModal() {
       void _updateCategory(value, name) {
@@ -60,7 +63,7 @@ class _RecipesState extends State<RecipesPage> {
       return BottomModalWrapper(
           child: ListView(
             children: listElements,
-      ));
+          ));
     }
 
     Widget _buildSearchModal() {
@@ -68,7 +71,10 @@ class _RecipesState extends State<RecipesPage> {
       return BottomModalWrapper(
         child: Padding(
           padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+              bottom: MediaQuery
+                  .of(context)
+                  .viewInsets
+                  .bottom + 10,
               left: 10,
               right: 10,
               top: 10),
@@ -95,7 +101,9 @@ class _RecipesState extends State<RecipesPage> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                   borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor,
+                      color: Theme
+                          .of(context)
+                          .primaryColor,
                       style: BorderStyle.solid,
                       width: 1),
                 )),
@@ -109,56 +117,73 @@ class _RecipesState extends State<RecipesPage> {
     }
 
     return StreamProvider.value(
-        value: RecipesService().recipeList,
-        child: Backdrop(
-          scope: Routes.recipes,
-          title: Text(_selectedCategoryName ?? 'Wszystkie'),
-          frontLayer: RecipesList(_selectedCategory, _searchString),
-          bottomNavigation: BottomAppBar(
-            // elevation: 10,
+      value: RecipesService().recipeList,
+      child: Backdrop(
+        backButtonOverride: false,
+        scope: Routes.recipes,
+        title: Text(_selectedCategoryName ?? 'Wszystkie'),
+        frontLayer: RecipesList(_selectedCategory, _searchString),
+        bottomNavigation: BottomAppBar(
+            elevation: 0,
             notchMargin: 5,
+            color: Theme
+                .of(context)
+                .primaryColorLight,
             shape: AutomaticNotchedShape(
-                RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10))),
-                StadiumBorder(side: BorderSide.none)
+                RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(15),
+                        topRight: Radius.circular(15)
+                    )
+                ),
+                StadiumBorder()
             ),
             clipBehavior: Clip.antiAlias,
             child: Container(
-                height: 50.0,
-                color: Theme.of(context).primaryColorLight,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return _buildCategoriesModal();
-                            });
-                      },
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.search),
-                      onPressed: () {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return _buildSearchModal();
-                            });
-                      },
-                    )
-                  ],
-                )),
-          ),
-          bottomMainBtn: FloatingActionButton.extended(
-            onPressed: () {},
-            icon: Icon(Icons.add),
-            label: Text('Dodaj'),
-            elevation: 1,
-            backgroundColor: Theme.of(context).accentColor,
-          ),
-        ));
+              height: 50.0,
+              // color: Colors.transparent,
+              child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return _buildCategoriesModal();
+                        });
+                  },
+                ),
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return _buildSearchModal();
+                        });
+                  },
+                )
+              ],
+            )
+        ),
+      ),
+      bottomMainBtn: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => EditRecipe())
+          );
+        },
+        icon: Icon(Icons.add),
+        label: Text('Dodaj'),
+        elevation: 1,
+        backgroundColor: Theme
+            .of(context)
+            .accentColor,
+      )
+    ));
   }
 }
