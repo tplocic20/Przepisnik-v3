@@ -194,6 +194,7 @@ class _FrontLayer extends StatelessWidget {
     return Material(
       elevation: 16.0,
       color: Color(0xFFf2f5f7),
+      // color: Color(0xFFfffaf5),
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(15), topRight: Radius.circular(15)),
       child: Column(

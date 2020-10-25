@@ -28,7 +28,8 @@ class _RecipeInfoState extends State<RecipeInfo> {
             trailing: Text('${widget.recipe.temperature} stC'),
             leading: Icon(Icons.wb_incandescent),
           ),
-        );      }
+        );
+      }
     }
     Widget _getTime() {
       if(widget.recipe.time == null || widget.recipe.time == '-') {
