@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:przepisnik_v3/components/shared/RoundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 
 class RecipeInfo extends StatefulWidget {
@@ -49,8 +50,8 @@ class _RecipeInfoState extends State<RecipeInfo> {
         _getTemperature(),
         _getTime(),
         Padding(
-          padding: EdgeInsets.only(bottom: 35.0),
-          child: ExpansionPanelList(
+          padding: EdgeInsets.only(bottom: 35.0, left: 10, right: 10, top: 10),
+          child: RoundedExpansionPanelList(
             expansionCallback: (int index, bool isExpanded) {
               setState(() {
                 groupExpanded[index] = !isExpanded;
@@ -68,6 +69,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
     widget.recipe.ingredients.asMap().forEach((index, value) {
       groupExpanded.add(true);
       widgets.add(ExpansionPanel(
+        canTapOnHeader: true,
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
               title: Text(value.name),
@@ -77,7 +79,8 @@ class _RecipeInfoState extends State<RecipeInfo> {
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: _buildIngredientsList(index),
-          )));
+          ))
+      );
     });
     return widgets;
   }
@@ -96,7 +99,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         }
       }
       if (widget.recipe.ingredients[groupIdx].positions.length == index + 1) {
-        print('last');
+        // print('last');
       }
       widgets.add(Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
