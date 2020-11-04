@@ -1,69 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login/flutter_login.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:przepisnik_v3/components/start/login.dart';
+import 'package:przepisnik_v3/components/recipes/recipes.dart';
+import 'package:przepisnik_v3/services/auth-service.dart';
 
-class HomePage extends StatelessWidget {
+const authErrors = const {
+  'user_': 'Użytkownik nie istnieje',
+  'bad_pass': 'Błędne hasło',
+};
+
+class HomePage extends StatefulWidget {
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<HomePage> {
+  Duration get loginTime => Duration(milliseconds: 2250);
+
+  final _authService = AuthService();
+
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    return Scaffold(
-      body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(32),
-          child: Column(
-            children: <Widget>[
-              _helloMsg(),
-              _getStarted(context),
-              _orDivider(),
-              _doLogin(context)
-            ],
-          ),
-        ),
-      ),
-    );
+    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    return Container(
+      color: Theme.of(context).primaryColor,
+      padding: EdgeInsets.only(top: 30),
+        child: FlutterLogin(
+            title: 'Przepiśnik',
+            logo: 'assets/ico.png',
+            onLogin: authenticate,
+            onSignup: (_) => Future(null),
+            onSubmitAnimationCompleted: () {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecipesPage()),
+                  (Route<dynamic> route) => false);
+            },
+            onRecoverPassword: (_) => Future(null),
+            theme: LoginTheme(
+                cardTheme: CardTheme(
+              // color: Colors.yellow.shade50,
+              elevation: 5,
+              margin: EdgeInsets.only(top: 15),
+              shape: ContinuousRectangleBorder(
+                  borderRadius: BorderRadius.circular(100.0)),
+            )),
+            messages: LoginMessages(
+              forgotPasswordButton: 'Zapomniało się?',
+              loginButton: 'ZALOGUJ',
+              signupButton: 'Zacznij gotować',
+              recoverPasswordButton: 'Odzyskaj haslo',
+              usernameHint: 'Email',
+              goBackButton: 'Wstecz',
+              recoverPasswordDescription: 'recoverPasswordDescription',
+              recoverPasswordIntro: 'recoverPasswordIntro',
+              recoverPasswordSuccess: 'recoverPasswordSuccess',
+              confirmPasswordError: 'confirmPasswordError',
+              confirmPasswordHint: 'Powtórz hasło',
+              passwordHint: 'Hasło',
+            )));
   }
 
-  Widget _helloMsg() {
-    return Container(
-      alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 25),
-      child: Text(
-        'Witaj w przepiśniku',
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-      ),
-    );
-  }
-
-  Widget _orDivider() {
-    return Container(
-      padding: EdgeInsets.only(top: 10),
-      child: Text('lub'),
-    );
-  }
-
-  Widget _getStarted(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(top: 25),
-      child: RaisedButton(
-          onPressed: () {},
-          color: Theme.of(context).primaryColor,
-          textColor: Colors.white,
-          child: Text('Zacznij gotowanie', style: TextStyle(fontSize: 15))),
-    );
-  }
-
-  Widget _doLogin(BuildContext context) {
-    return Container(
-      child: FlatButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => LoginPage()),
-          );
-        },
-        textColor: Theme.of(context).accentColor,
-        child: Text('Zaloguj się'),
-      ),
-    );
+  Future<String> authenticate(LoginData loginData) {
+    return _authService
+        .signInCredentials(loginData.name, loginData.password)
+        .then((val) => val);
   }
 }

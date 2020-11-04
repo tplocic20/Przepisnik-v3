@@ -63,5 +63,17 @@ ThemeData _appTheme() {
       headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
       bodyText2: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
     ),
+    inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: Colors.white,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+          borderSide: BorderSide(
+              color: Color(0xFF41681f),
+              style: BorderStyle.solid,
+              width: 1
+          ),
+        )
+    )
   );
 }

@@ -1,12 +1,11 @@
-class Recipe {
-  String key;
+import 'package:przepisnik_v3/models/baseElement.dart';
+
+class Recipe extends BaseElement {
   String categories;
   List<IngredientGroup> ingredients;
-  String name;
   String recipe;
   var temperature;
   var time;
-  bool favourite;
 
   Recipe(k, v) {
     key = k;

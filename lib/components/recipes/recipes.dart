@@ -62,8 +62,8 @@ class _RecipesState extends State<RecipesPage> {
 
       return BottomModalWrapper(
           child: ListView(
-            children: listElements,
-          ));
+        children: listElements,
+      ));
     }
 
     Widget _buildSearchModal() {
@@ -71,10 +71,7 @@ class _RecipesState extends State<RecipesPage> {
       return BottomModalWrapper(
         child: Padding(
           padding: EdgeInsets.only(
-              bottom: MediaQuery
-                  .of(context)
-                  .viewInsets
-                  .bottom + 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
               left: 10,
               right: 10,
               top: 10),
@@ -101,9 +98,7 @@ class _RecipesState extends State<RecipesPage> {
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(5),
                   borderSide: BorderSide(
-                      color: Theme
-                          .of(context)
-                          .primaryColor,
+                      color: Theme.of(context).primaryColor,
                       style: BorderStyle.solid,
                       width: 1),
                 )),
@@ -117,73 +112,62 @@ class _RecipesState extends State<RecipesPage> {
     }
 
     return StreamProvider.value(
-      value: RecipesService().recipeList,
-      child: Backdrop(
-        backButtonOverride: false,
-        scope: Routes.recipes,
-        title: Text(_selectedCategoryName ?? 'Wszystkie'),
-        frontLayer: RecipesList(_selectedCategory, _searchString),
-        bottomNavigation: BottomAppBar(
-            elevation: 0,
-            notchMargin: 5,
-            color: Theme
-                .of(context)
-                .primaryColorLight,
-            shape: AutomaticNotchedShape(
-                RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15)
-                    )
-                ),
-                StadiumBorder()
+        value: RecipesService().recipeList,
+        child: Backdrop(
+            backButtonOverride: false,
+            scope: Routes.recipes,
+            title: Text(_selectedCategoryName ?? 'Wszystkie'),
+            frontLayer: RecipesList(_selectedCategory, _searchString),
+            bottomNavigation: BottomAppBar(
+              elevation: 0,
+              notchMargin: 5,
+              color: Theme.of(context).primaryColorLight,
+              shape: AutomaticNotchedShape(
+                  RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(15),
+                          topRight: Radius.circular(15))),
+                  StadiumBorder()),
+              clipBehavior: Clip.antiAlias,
+              child: Container(
+                  height: 50.0,
+                  // color: Colors.transparent,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(Icons.menu),
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return _buildCategoriesModal();
+                              });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          showModalBottomSheet(
+                              context: context,
+                              builder: (context) {
+                                return _buildSearchModal();
+                              });
+                        },
+                      )
+                    ],
+                  )),
             ),
-            clipBehavior: Clip.antiAlias,
-            child: Container(
-              height: 50.0,
-              // color: Colors.transparent,
-              child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return _buildCategoriesModal();
-                        });
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return _buildSearchModal();
-                        });
-                  },
-                )
-              ],
-            )
-        ),
-      ),
-      bottomMainBtn: FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => EditRecipe())
-          );
-        },
-        icon: Icon(Icons.add),
-        label: Text('Dodaj'),
-        elevation: 1,
-        backgroundColor: Theme
-            .of(context)
-            .accentColor,
-      )
-    ));
+            bottomMainBtn: FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EditRecipe()));
+              },
+              icon: Icon(Icons.add),
+              label: Text('Dodaj'),
+              elevation: 1,
+              backgroundColor: Theme.of(context).accentColor,
+            )));
   }
 }
