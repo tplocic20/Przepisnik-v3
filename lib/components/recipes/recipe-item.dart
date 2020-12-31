@@ -1,31 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:przepisnik_v3/components/single-recipe/single-recipe.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 
 class RecipeItem extends StatefulWidget {
   final Recipe recipe;
+  final SlidableController slidableController;
 
-  RecipeItem({this.recipe});
+  RecipeItem({this.recipe, this.slidableController});
 
   _RecipeItemState createState() => _RecipeItemState();
 }
 
 class _RecipeItemState extends State<RecipeItem>
     with SingleTickerProviderStateMixin {
-  bool _actionsOpened = false;
-  Animation<double> _actionsAnimation;
-  AnimationController _actionsAnimationController;
 
   void initState() {
     super.initState();
-    _actionsAnimationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 200),
-    );
-
-    _actionsAnimation = CurvedAnimation(
-        curve: Curves.linear, parent: _actionsAnimationController);
   }
 
   @override
@@ -36,43 +28,63 @@ class _RecipeItemState extends State<RecipeItem>
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(15))
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              child: ListTile(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SingleRecipe(widget.recipe)),
-                  );
-                },
-                title: Hero(
-                  tag: widget.recipe.key,
-                  child: Text(widget.recipe.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          .copyWith(fontSize: 20)),
-                ),
-                trailing: IconButton(
-                    icon: AnimatedIcon(
-                      progress: _actionsAnimation,
-                      icon: AnimatedIcons.menu_close,
-                    ),
-                    onPressed: _toggleActions),
+        clipBehavior: Clip.hardEdge,
+        child: Slidable(
+          key: Key(widget.recipe.key),
+          controller: widget.slidableController,
+          child: Container(
+            color: Colors.white,
+            child: ListTile(
+              onTap: () {
+                widget.slidableController.activeState = null;
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SingleRecipe(widget.recipe)),
+                );
+              },
+              title: Hero(
+                tag: widget.recipe.key,
+                child: Text(widget.recipe.name,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText2
+                        .copyWith(fontSize: 20)),
               ),
+              subtitle: Text(widget.recipe.recipe, overflow: TextOverflow.ellipsis),
+            ),
+          ),
+          actionPane: SlidableBehindActionPane(),
+          actionExtentRatio: 0.25,
+          actions: [
+            IconSlideAction(
+              caption: 'Edytuj',
+              color: Colors.blue,
+              icon: Icons.edit_rounded,
+              onTap: () => {},
+            ),
+            IconSlideAction(
+              caption: 'Usuń',
+              color: Colors.red,
+              icon: Icons.delete_forever_rounded,
+              onTap: () => {},
+            )
+          ],
+          secondaryActions: [
+            IconSlideAction(
+              caption: 'Ulubione',
+              color: Colors.amber,
+              icon: widget.recipe.favourite == true ? Icons.star_rounded : Icons.star_border_rounded,
+              onTap: () => {},
+            ),
+            IconSlideAction(
+              caption: 'Udostępnij',
+              color: Colors.green,
+              icon: Icons.share_rounded,
+              onTap: () => {},
             ),
           ],
-        ));
-  }
-
-  void _toggleActions() {
-    if (_actionsOpened = !_actionsOpened) {
-      _actionsAnimationController.reverse();
-    } else {
-      _actionsAnimationController.forward();
-    }
+        )
+    );
   }
 }
