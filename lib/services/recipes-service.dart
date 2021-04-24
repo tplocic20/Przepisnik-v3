@@ -22,11 +22,11 @@ class RecipesService {
     });
   }
 
-  Stream<List<Recipe>> get recipeList {
+  Stream<Event> get recipeList {
     return _db
         .child('Recipes')
         .child(globals.userState)
-        .onValue
+        .onValue;
   }
 
   parseRecipes(element) {
