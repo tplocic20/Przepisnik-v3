@@ -20,7 +20,9 @@ class Recipe extends BaseElement {
 
   parseIngredients(items) {
     List<IngredientGroup> parsedList = [];
-    items.forEach((v) => parsedList.add(IngredientGroup(v)));
+    for( var i = 0 ; i < items.length; i++ ) {
+      parsedList.add(IngredientGroup(items[i]));
+    }
     return parsedList;
   }
 }
@@ -37,7 +39,11 @@ class IngredientGroup {
   }
   parsePositions(items) {
     List<Ingredient> parsedList = [];
-    items.forEach((v) => parsedList.add(Ingredient(v)));
+    if (items != null) {
+      for( var i = 0 ; i < items.length; i++ ) {
+        parsedList.add(Ingredient(items[i]));
+      }
+    }
     return parsedList;
   }
 }

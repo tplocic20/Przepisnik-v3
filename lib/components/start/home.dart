@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:przepisnik_v3/components/recipes/recipes.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
 
@@ -20,7 +19,6 @@ class _HomeState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
     return Container(
       color: Theme.of(context).primaryColor,
       padding: EdgeInsets.only(top: 30),

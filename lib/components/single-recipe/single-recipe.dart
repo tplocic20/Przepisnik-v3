@@ -10,7 +10,9 @@ import 'package:przepisnik_v3/models/routes.dart';
 class SingleRecipe extends StatefulWidget {
   final Recipe recipe;
 
-  SingleRecipe(this.recipe);
+  SingleRecipe(this.recipe) {
+    print(this.recipe.ingredients);
+  }
 
   @override
   _SingleRecipeState createState() => _SingleRecipeState();

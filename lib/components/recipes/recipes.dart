@@ -3,15 +3,14 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes/recipes-list.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
 import 'package:przepisnik_v3/models/routes.dart';
-import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
+import 'package:przepisnik_v3/services/recipes-service.dart';
 
 class RecipesPage extends StatefulWidget {
   @override
@@ -25,7 +24,6 @@ class _RecipesState extends State<RecipesPage> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
     final _searchController = TextEditingController(
         text: this._searchString != null ? this._searchString : '');
 
@@ -71,7 +69,7 @@ class _RecipesState extends State<RecipesPage> {
       return BottomModalWrapper(
         child: Padding(
           padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom + 10,
+              bottom: 10,
               left: 10,
               right: 10,
               top: 10),
