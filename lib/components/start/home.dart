@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:przepisnik_v3/components/recipes/recipes.dart';
+import 'package:przepisnik_v3/components/recipes-module/recipes/recipes.dart';
+import 'package:przepisnik_v3/components/start/UserNavigation.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
 
 const authErrors = const {
@@ -30,7 +31,7 @@ class _HomeState extends State<HomePage> {
             onSubmitAnimationCompleted: () {
               Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => RecipesPage()),
+                  MaterialPageRoute(builder: (context) => UserNavigation()),
                   (Route<dynamic> route) => false);
             },
             onRecoverPassword: (_) => Future(null),

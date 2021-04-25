@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe-container.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
-import 'package:przepisnik_v3/components/single-recipe/modals/portion-modal.dart';
-import 'package:przepisnik_v3/components/single-recipe/single-recipe-container.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:przepisnik_v3/models/routes.dart';
+
+import 'modals/portion-modal.dart';
 
 class SingleRecipe extends StatefulWidget {
   final Recipe recipe;

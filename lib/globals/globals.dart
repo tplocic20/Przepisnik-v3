@@ -6,3 +6,4 @@ String userState;
 List<Category> categories;
 String selectedCategory;
 GlobalKey backDropKey;
+Function globalNavHandler;

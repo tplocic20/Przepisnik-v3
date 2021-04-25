@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/models/routes.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
+import 'package:przepisnik_v3/services/navigation-service.dart';
 
 class NavigationMenu extends StatelessWidget {
   final Routes routeScope;
@@ -127,13 +128,14 @@ class NavigationMenu extends StatelessWidget {
         break;
       default:
         this.goBack(context);
+        NavigationService().handleNavigation(route);
     }
   }
 
   goBack(BuildContext context) {
     if (Navigator.canPop(context)) {
       Navigator.pop(context);
-      this.closeBackdrop();
     }
+    this.closeBackdrop();
   }
 }
