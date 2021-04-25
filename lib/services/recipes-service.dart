@@ -31,13 +31,16 @@ class RecipesService {
 
   parseRecipes(element) {
     List<Recipe> parsedList = [];
-    if (element != null) {
-      element.forEach((k, v) => parsedList.add(Recipe(k, v)));
-    }
+    DataSnapshot dataValues = element.snapshot;
+    Map<dynamic, dynamic> values = dataValues.value;
+    values.forEach((key, values) {
+      parsedList.add(Recipe(key, values));
+    });
     return parsedList;
   }
 
   parseCategories(element) {
+    print(element);
     List<Category> parsedList = [];
     if (element != null) {
       element.forEach((k, v) => parsedList.add(Category(k, v)));

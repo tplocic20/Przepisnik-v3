@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/models/routes.dart';
+import 'package:przepisnik_v3/services/auth-service.dart';
 
 class NavigationMenu extends StatelessWidget {
   final Routes routeScope;
@@ -54,6 +55,7 @@ class NavigationMenu extends StatelessWidget {
                 ),
                 onTap: () {
                   print(getRouteName(route));
+                  handleRoute(route, context);
                 },
               ),
             ),
@@ -112,6 +114,26 @@ class NavigationMenu extends StatelessWidget {
       case Routes.logout:
         return 'Wyloguj';
         break;
+    }
+  }
+
+  handleRoute(Routes route, BuildContext context) {
+    if (route == this.routeScope) {
+      return;
+    }
+    switch (route) {
+      case Routes.logout:
+        AuthService().signOut();
+        break;
+      default:
+        this.goBack(context);
+    }
+  }
+
+  goBack(BuildContext context) {
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+      this.closeBackdrop();
     }
   }
 }

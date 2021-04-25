@@ -52,13 +52,7 @@ class _RecipesListSate extends State<RecipesList> {
   Widget build(BuildContext context) {
     final _recipesEvent = Provider.of<Event>(context);
     if (_recipesEvent != null) {
-      List<Recipe> _recipes = [];
-      DataSnapshot dataValues = _recipesEvent.snapshot;
-      Map<dynamic, dynamic> values = dataValues.value;
-      values.forEach((key, values) {
-        _recipes.add(Recipe(key, values));
-      });
-      return getRecipesList(_recipes);
+      return getRecipesList(RecipesService().parseRecipes(_recipesEvent));
     } else {
       return getLoadingState();
     }

@@ -61,9 +61,12 @@ class _SingleRecipeState extends State<SingleRecipe> {
         elevation: 1,
         backgroundColor: Theme.of(context).accentColor,
       ),
-      frontLayer: SingleRecipeContainer(
-        recipe: widget.recipe,
-        portion: this._portion,
+      frontLayer: Padding(
+        padding: EdgeInsets.only(bottom: 30),
+        child: SingleRecipeContainer(
+          recipe: widget.recipe,
+          portion: this._portion,
+        ),
       ),
       customActions: <Widget>[
         IconButton(
