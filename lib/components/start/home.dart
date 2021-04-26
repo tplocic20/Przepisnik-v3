@@ -21,8 +21,8 @@ class _HomeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Theme.of(context).primaryColor,
-      padding: EdgeInsets.only(top: 30),
+        color: Theme.of(context).primaryColor,
+        padding: EdgeInsets.only(top: 30),
         child: FlutterLogin(
             title: 'Przepiśnik',
             logo: 'assets/ico.png',
@@ -37,7 +37,6 @@ class _HomeState extends State<HomePage> {
             onRecoverPassword: (_) => Future(null),
             theme: LoginTheme(
                 cardTheme: CardTheme(
-              // color: Colors.yellow.shade50,
               elevation: 5,
               margin: EdgeInsets.only(top: 15),
               shape: ContinuousRectangleBorder(

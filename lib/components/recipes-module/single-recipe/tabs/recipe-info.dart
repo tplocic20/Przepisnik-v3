@@ -45,7 +45,6 @@ class _RecipeInfoState extends State<RecipeInfo> {
         );      }
     }
 
-//    print(widget.recipe.temperature);
     return ListView(
       children: <Widget>[
         _getTemperature(),

@@ -65,14 +65,9 @@ ThemeData _appTheme() {
     ),
     inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(15),
-          borderSide: BorderSide(
-              color: Color(0xFF41681f),
-              style: BorderStyle.solid,
-              width: 1
-          ),
+          borderRadius: BorderRadius.circular(50),
+          borderSide: BorderSide(),
         )
     )
   );

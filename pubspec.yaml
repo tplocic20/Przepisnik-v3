@@ -36,6 +36,8 @@ dependencies:
   dotted_border: ^1.0.7
   flutter_sequence_animation: ^3.0.1
   flutter_slidable: ^0.5.7
+  rect_getter: ^1.0.0
+  flutter_staggered_animations: ^1.0.0
 
 dev_dependencies:
   flutter_test:
