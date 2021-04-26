@@ -15,7 +15,6 @@ class RecipeItem extends StatefulWidget {
 
 class _RecipeItemState extends State<RecipeItem>
     with SingleTickerProviderStateMixin {
-
   void initState() {
     super.initState();
   }
@@ -26,32 +25,42 @@ class _RecipeItemState extends State<RecipeItem>
         margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
         borderOnForeground: false,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15))
-        ),
+            borderRadius: BorderRadius.all(Radius.circular(15))),
         clipBehavior: Clip.hardEdge,
         child: Slidable(
           key: Key(widget.recipe.key),
           controller: widget.slidableController,
           child: Container(
             color: Colors.white,
-            child: ListTile(
-              onTap: () {
-                widget.slidableController.activeState = null;
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => SingleRecipe(widget.recipe)),
-                );
-              },
-              title: Hero(
-                tag: widget.recipe.key,
-                child: Text(widget.recipe.name,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyText2
-                        .copyWith(fontSize: 20)),
-              ),
-              subtitle: Text(widget.recipe.recipe, overflow: TextOverflow.ellipsis),
+            child: Stack(
+              children: [
+                ListTile(
+                  title: Hero(
+                    tag: widget.recipe.key,
+                    child: Text(widget.recipe.name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            .copyWith(fontSize: 20)),
+                  ),
+                  subtitle: Text(widget.recipe.recipe,
+                      overflow: TextOverflow.ellipsis),
+                ),
+                new Positioned.fill(
+                    child: new Material(
+                        color: Colors.transparent,
+                        child: new InkWell(
+                          onTap: () {
+                            widget.slidableController.activeState = null;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      SingleRecipe(widget.recipe)),
+                            );
+                          },
+                        )))
+              ],
             ),
           ),
           actionPane: SlidableBehindActionPane(),
@@ -74,7 +83,9 @@ class _RecipeItemState extends State<RecipeItem>
             IconSlideAction(
               caption: 'Ulubione',
               color: Colors.amber,
-              icon: widget.recipe.favourite == true ? Icons.star_rounded : Icons.star_border_rounded,
+              icon: widget.recipe.favourite == true
+                  ? Icons.star_rounded
+                  : Icons.star_border_rounded,
               onTap: () => {},
             ),
             IconSlideAction(
@@ -84,7 +95,6 @@ class _RecipeItemState extends State<RecipeItem>
               onTap: () => {},
             ),
           ],
-        )
-    );
+        ));
   }
 }
