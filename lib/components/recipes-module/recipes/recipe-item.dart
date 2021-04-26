@@ -21,12 +21,13 @@ class _RecipeItemState extends State<RecipeItem>
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-        borderOnForeground: false,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        clipBehavior: Clip.hardEdge,
+    return Container(
+      color: Colors.white,
+        // margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+        // borderOnForeground: false,
+        // shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.all(Radius.circular(15))),
+        // clipBehavior: Clip.hardEdge,
         child: Slidable(
           key: Key(widget.recipe.key),
           controller: widget.slidableController,
