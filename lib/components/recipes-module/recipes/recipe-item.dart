@@ -44,7 +44,7 @@ class _RecipeItemState extends State<RecipeItem>
                             .bodyText2
                             .copyWith(fontSize: 20)),
                   ),
-                  subtitle: Text(widget.recipe.recipe,
+                  subtitle: Text(widget.recipe.recipe ?? '',
                       overflow: TextOverflow.ellipsis),
                 ),
                 new Positioned.fill(
