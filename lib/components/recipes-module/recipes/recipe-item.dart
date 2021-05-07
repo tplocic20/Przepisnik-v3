@@ -23,45 +23,26 @@ class _RecipeItemState extends State<RecipeItem>
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-        // margin: EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-        // borderOnForeground: false,
-        // shape: RoundedRectangleBorder(
-        //     borderRadius: BorderRadius.all(Radius.circular(15))),
-        // clipBehavior: Clip.hardEdge,
         child: Slidable(
           key: Key(widget.recipe.key),
           controller: widget.slidableController,
           child: Container(
             color: Colors.white,
-            child: Stack(
-              children: [
-                ListTile(
-                  title: Hero(
-                    tag: widget.recipe.key,
-                    child: Text(widget.recipe.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2
-                            .copyWith(fontSize: 20)),
-                  ),
-                  subtitle: Text(widget.recipe.recipe ?? '',
-                      overflow: TextOverflow.ellipsis),
+              child: ListTile(
+                onTap: () {
+                  widget.slidableController.activeState = null;
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SingleRecipe(widget.recipe)));
+                },
+                title: Hero(
+                  tag: widget.recipe.key,
+                  child: Text(widget.recipe.name,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          .copyWith(fontSize: 20)),
                 ),
-                new Positioned.fill(
-                    child: new Material(
-                        color: Colors.transparent,
-                        child: new InkWell(
-                          onTap: () {
-                            widget.slidableController.activeState = null;
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      SingleRecipe(widget.recipe)),
-                            );
-                          },
-                        )))
-              ],
+                subtitle: Text(widget.recipe.recipe ?? '',
+                    overflow: TextOverflow.ellipsis),
             ),
           ),
           actionPane: SlidableBehindActionPane(),

@@ -201,7 +201,11 @@ class _FrontLayer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
-            child: child,
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(15)),
+              clipBehavior: Clip.antiAlias,
+              child: child
+            )
           ),
         ],
       ),

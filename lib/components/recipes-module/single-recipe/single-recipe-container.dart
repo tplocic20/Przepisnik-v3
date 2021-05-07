@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_villains/villains/villains.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/tabs/recipe-gallery.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/tabs/recipe-info.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/tabs/recipe-text.dart';
@@ -8,6 +9,7 @@ import 'package:przepisnik_v3/models/recipe.dart';
 class SingleRecipeContainer extends StatefulWidget {
   final Recipe recipe;
   final double portion;
+
   SingleRecipeContainer({this.recipe, this.portion});
 
   @override
@@ -19,27 +21,30 @@ class _SingleRecipeContainerState extends State<SingleRecipeContainer> {
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: new Column(
+      child: Column(
         children: <Widget>[
-          new Container(
-            constraints: BoxConstraints(maxHeight: 150.0),
-            child: new TabBar(
-              unselectedLabelColor: Theme.of(context).primaryColorLight,
-              labelColor: Theme.of(context).primaryColorDark,
-              indicatorColor: Theme.of(context).primaryColorDark,
-              tabs: [
-                new Tab(text: 'Informacje'),
-                new Tab(text: 'Przepis'),
-                new Tab(text: 'Galeria'),
-              ],
+          Villain(
+            villainAnimation: VillainAnimation.fade(),
+            child: Container(
+              constraints: BoxConstraints(maxHeight: 150.0),
+              child: TabBar(
+                unselectedLabelColor: Theme.of(context).primaryColorLight,
+                labelColor: Theme.of(context).primaryColorDark,
+                indicatorColor: Theme.of(context).primaryColorDark,
+                tabs: [
+                  Tab(text: 'Informacje'),
+                  Tab(text: 'Przepis'),
+                  Tab(text: 'Galeria'),
+                ],
+              ),
             ),
           ),
-          new Expanded(
-            child: new TabBarView(
+          Expanded(
+            child: TabBarView(
               children: [
-                new RecipeInfo(recipe: widget.recipe, portion: widget.portion),
-                new RecipeText(widget.recipe),
-                new RecipeGallery(widget.recipe),
+                RecipeInfo(recipe: widget.recipe, portion: widget.portion),
+                RecipeText(widget.recipe),
+                RecipeGallery(widget.recipe),
               ],
             ),
           ),
@@ -47,5 +52,4 @@ class _SingleRecipeContainerState extends State<SingleRecipeContainer> {
       ),
     );
   }
-
 }
