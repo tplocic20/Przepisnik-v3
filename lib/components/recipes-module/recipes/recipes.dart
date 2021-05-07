@@ -80,7 +80,7 @@ class _RecipesState extends State<RecipesPage> {
 
     Widget _buildSearchModal() {
       Timer _debounce;
-      return BottomModalWrapper(
+      return BottomModalSearchWrapper(
         child: Padding(
           padding: EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
           child: TextFormField(
@@ -104,7 +104,7 @@ class _RecipesState extends State<RecipesPage> {
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
+                  borderRadius: BorderRadius.circular(15),
                   borderSide: BorderSide(
                       color: Theme.of(context).primaryColor,
                       style: BorderStyle.solid,
