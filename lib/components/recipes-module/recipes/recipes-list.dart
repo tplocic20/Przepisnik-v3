@@ -30,35 +30,38 @@ class _RecipesListSate extends State<RecipesList> {
           r.name.toLowerCase().contains(widget._searchString.toLowerCase());
       return isCategory && isSearchResult;
     }).toList();
-    return AnimationLimiter(
-      child: ListView.builder(
-        itemCount: filteredRecipes.length,
-        itemBuilder: (BuildContext context, int index) {
-          return AnimationConfiguration.staggeredList(
-            position: index,
-            duration: const Duration(milliseconds: 250),
-            child: SlideAnimation(
-              verticalOffset: 50.0,
-              child: SlideAnimation(
-                horizontalOffset: 200,
-                verticalOffset: 10,
-                child: FadeInAnimation(
-                    child: RecipeItem(
-                  recipe: filteredRecipes[index],
-                  slidableController: slidableController,
-                )),
-              ),
+    return filteredRecipes.length > 0
+        ? AnimationLimiter(
+            child: ListView.builder(
+              itemCount: filteredRecipes.length,
+              itemBuilder: (BuildContext context, int index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  duration: const Duration(milliseconds: 250),
+                  child: SlideAnimation(
+                    verticalOffset: 50.0,
+                    child: SlideAnimation(
+                      horizontalOffset: 200,
+                      verticalOffset: 10,
+                      child: FadeInAnimation(
+                          child: RecipeItem(
+                        recipe: filteredRecipes[index],
+                        slidableController: slidableController,
+                      )),
+                    ),
+                  ),
+                );
+              },
+            ),
+          )
+        : Center(
+            child: Text(
+              '¯\\_(ツ)_/¯\n ${widget._searchString.length > 0 ? 'Nic nie znaleziono' : 'Brak przepisów w bazie\nPora jakiś dodać'}',
+              style: TextStyle(fontSize: 25),
+              textAlign: TextAlign.center,
             ),
           );
-        },
-      ),
-    );
   }
-
-  // RecipeItem(
-  // recipe: r,
-  // slidableController: slidableController,
-  // )
 
   Widget getLoadingState() {
     return Container(
