@@ -40,6 +40,8 @@ dependencies:
   flutter_villains: ^1.2.1
   lottie: ^1.0.1
   animated_text_kit: ^4.2.1
+  another_transformer_page_view: ^1.0.0
+  another_flushbar: ^1.10.17
 
 dev_dependencies:
   flutter_test:

@@ -142,7 +142,7 @@ class NavigationMenu extends StatelessWidget {
             );
           },
         );
-        Future.delayed(Duration(milliseconds: 500), () {
+        Future.delayed(Duration(milliseconds: 2500), () {
           AuthService().signOut();
           Navigator.pushAndRemoveUntil(
               context,

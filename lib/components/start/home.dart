@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipes.dart';
 import 'package:przepisnik_v3/components/shared/Loader.dart';
 import 'package:przepisnik_v3/components/start/UserNavigation.dart';
+import 'package:przepisnik_v3/external/flutter_login/flutter_login.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
 
 const authErrors = const {
@@ -24,7 +24,8 @@ class _HomeState extends State<HomePage> {
     return Container(
         color: Theme.of(context).primaryColor,
         child: FlutterLogin(
-            title: 'Przepiśnik',
+            logo: 'https://assets9.lottiefiles.com/private_files/lf30_fqBsFC.json',
+            logoTag: 'loadingKey',
             onLogin: authenticate,
             onSignup: (_) => Future(null),
             onSubmitAnimationCompleted: () {

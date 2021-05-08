@@ -9,12 +9,19 @@ packages:
     source: hosted
     version: "4.2.1"
   another_flushbar:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: another_flushbar
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.10.17"
+  another_transformer_page_view:
+    dependency: "direct main"
+    description:
+      name: another_transformer_page_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   archive:
     dependency: transitive
     description:
