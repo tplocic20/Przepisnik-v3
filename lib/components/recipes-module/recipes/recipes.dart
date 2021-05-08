@@ -186,8 +186,7 @@ class _RecipesState extends State<RecipesPage> {
       widget.setTitle('Wszystkie');
     }
 
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => initBackdropControls());
+    WidgetsBinding.instance.addPostFrameCallback((_) => initBackdropControls());
 
     return StreamProvider.value(
         value: RecipesService().recipeList,

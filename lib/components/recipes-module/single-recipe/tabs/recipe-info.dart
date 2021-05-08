@@ -115,9 +115,6 @@ class _RecipeInfoState extends State<RecipeInfo> {
               num.parse((value.qty * widget.portion).toStringAsFixed(2));
         }
       }
-      if (widget.recipe.ingredients[groupIdx].positions.length == index + 1) {
-        // print('last');
-      }
       widgets.add(Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Container(

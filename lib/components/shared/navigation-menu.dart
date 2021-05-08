@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:przepisnik_v3/components/app.dart';
+import 'package:przepisnik_v3/components/shared/Loader.dart';
 import 'package:przepisnik_v3/models/routes.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
 import 'package:przepisnik_v3/services/navigation-service.dart';
@@ -55,7 +57,6 @@ class NavigationMenu extends StatelessWidget {
                   textAlign: TextAlign.end,
                 ),
                 onTap: () {
-                  print(getRouteName(route));
                   handleRoute(route, context);
                 },
               ),
@@ -124,7 +125,30 @@ class NavigationMenu extends StatelessWidget {
     }
     switch (route) {
       case Routes.logout:
-        AuthService().signOut();
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Dialog(
+              child: Container(
+                padding: EdgeInsets.all(30),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Loader(),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+        Future.delayed(Duration(milliseconds: 500), () {
+          AuthService().signOut();
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => EntrySwitchApp()),
+                  (Route<dynamic> route) => false);
+        });
         break;
       default:
         this.goBack(context);

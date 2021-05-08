@@ -20,13 +20,11 @@ class PrzepisnikApp extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     fetchModes();
-    return StreamProvider<User>.value(
-      value: AuthService().userScope,
-      child: MaterialApp(
+    return MaterialApp(
           navigatorObservers: [new VillainTransitionObserver()],
           title: 'Przepisnik',
           theme: _appTheme(),
-          home: EntrySwitchApp()),
+          home: EntrySwitchApp(),
     );
   }
 }
@@ -66,6 +64,12 @@ ThemeData _appTheme() {
       textTheme: TextTheme(
         headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
         bodyText2: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
+      ),
+      snackBarTheme: SnackBarThemeData(
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
       ),
       inputDecorationTheme: InputDecorationTheme(
           filled: true,

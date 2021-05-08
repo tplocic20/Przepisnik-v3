@@ -8,6 +8,10 @@ class AuthService {
     return _auth.authStateChanges();
   }
 
+  getUserScope() {
+    return _auth.currentUser;
+  }
+
   Future signInCredentials(email, password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(

@@ -39,7 +39,7 @@ class _RecipeItemState extends State<RecipeItem>
                       style: Theme.of(context)
                           .textTheme
                           .bodyText2
-                          .copyWith(fontSize: 20)),
+                          ?.copyWith(fontSize: 20)),
                 ),
                 subtitle: Text(widget.recipe.recipe ?? '',
                     overflow: TextOverflow.ellipsis),

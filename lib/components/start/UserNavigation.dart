@@ -12,8 +12,8 @@ class UserNavigation extends StatefulWidget {
 
 class _UserNavigationState extends State<UserNavigation> {
   Widget currentView = Container();
-  Widget currentBottomNav = Container();
-  Widget currentBottomButton = Container();
+  Widget currentBottomNav;
+  Widget currentBottomButton;
   String currentTitle = '';
   Routes scope = Routes.recipes;
 
@@ -81,11 +81,6 @@ class _UserNavigationState extends State<UserNavigation> {
           reverseDuration: Duration(milliseconds: 200),
         ),
         bottomNavigation: this.currentBottomNav,
-        bottomMainBtn: AnimatedSwitcher(
-          child: this.currentBottomButton,
-          transitionBuilder: (Widget child, Animation<double> animation) => ScaleTransition(scale: animation, child: child),
-          duration: Duration(milliseconds: 200),
-          reverseDuration: Duration(milliseconds: 200),
-        ));
+        bottomMainBtn: this.currentBottomButton);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipes.dart';
+import 'package:przepisnik_v3/components/shared/Loader.dart';
 import 'package:przepisnik_v3/components/start/UserNavigation.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
 
@@ -22,10 +23,8 @@ class _HomeState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Container(
         color: Theme.of(context).primaryColor,
-        padding: EdgeInsets.only(top: 30),
         child: FlutterLogin(
             title: 'Przepiśnik',
-            logo: 'assets/ico.png',
             onLogin: authenticate,
             onSignup: (_) => Future(null),
             onSubmitAnimationCompleted: () {
@@ -38,7 +37,7 @@ class _HomeState extends State<HomePage> {
             theme: LoginTheme(
                 cardTheme: CardTheme(
               elevation: 5,
-              margin: EdgeInsets.only(top: 15),
+              margin: EdgeInsets.all(0),
               shape: ContinuousRectangleBorder(
                   borderRadius: BorderRadius.circular(100.0)),
             )),

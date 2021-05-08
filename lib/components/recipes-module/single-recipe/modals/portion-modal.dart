@@ -18,7 +18,6 @@ class _PortionModalState extends State<PortionModal> {
   _PortionModalState(this._portion);
 
   updatePortion(value) {
-    print(value);
     setState(() {
       _portion = double.parse(value.toStringAsFixed(2));
     });
@@ -83,13 +82,11 @@ class _PortionModalState extends State<PortionModal> {
                   this.updatePortion(value);
                 },
                 onChangeStart: (value) {
-                  print('start');
                   setState(() {
                     this._showButtons = false;
                   });
                 },
                 onChangeEnd: (value) {
-                  print('end');
                   setState(() {
                     this._showButtons = true;
                   });

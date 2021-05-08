@@ -122,6 +122,21 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  Widget _defaultBottomBtn() {
+    return Container();
+
+  }
+
+  Widget _defaultBottomNavBar() {
+    return BottomAppBar(
+      elevation: 0,
+      notchMargin: 5,
+      color: Theme.of(context).primaryColorLight,
+      child: Container(height: 1,),
+    );
+
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> barActions = [
@@ -177,8 +192,14 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         appBar: appBar,
         body: LayoutBuilder(builder: _buildStack),
         floatingActionButtonLocation: widget.actionButtonLocation,
-        floatingActionButton: widget.bottomMainBtn,
-        bottomNavigationBar: widget.bottomNavigation);
+        floatingActionButton: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          child: widget.bottomMainBtn != null ? widget.bottomMainBtn : _defaultBottomBtn(),
+        ),
+        bottomNavigationBar: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          child: widget.bottomNavigation != null ? widget.bottomNavigation : _defaultBottomNavBar(),
+        ));
   }
 }
 
