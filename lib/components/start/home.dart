@@ -24,8 +24,7 @@ class _HomeState extends State<HomePage> {
     return Container(
         color: Theme.of(context).primaryColor,
         child: FlutterLogin(
-            logo: 'https://assets9.lottiefiles.com/private_files/lf30_fqBsFC.json',
-            logoTag: 'loadingKey',
+            logo: 'assets/loader.json',
             onLogin: authenticate,
             onSignup: (_) => Future(null),
             onSubmitAnimationCompleted: () {

@@ -10,10 +10,7 @@ class Loader extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Hero(
-              tag: 'loadingKey',
-              child: LoaderAnimation(),
-            )
+            LoaderAnimation()
           ],
         ),
         Positioned(
@@ -35,8 +32,8 @@ class LoaderAnimation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Lottie.network(
-        'https://assets9.lottiefiles.com/private_files/lf30_fqBsFC.json',
+    return Lottie.asset(
+        'assets/loader.json',
         height: 200,
         fit: BoxFit.fitHeight);
   }

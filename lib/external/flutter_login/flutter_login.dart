@@ -156,7 +156,7 @@ class __HeaderState extends State<_Header> {
     final displayLogo = widget.logoPath != null && logoHeight >= kMinLogoHeight;
 
     var logo = displayLogo
-        ? Lottie.network(
+        ? Lottie.asset(
             widget.logoPath,
             alignment: Alignment.center,
             fit: BoxFit.fitHeight,
