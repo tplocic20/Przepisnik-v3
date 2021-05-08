@@ -22,7 +22,7 @@ class _RecipeTextState extends State<RecipeText> {
       child: Villain(
         villainAnimation: VillainAnimation.scale(),
         child: Card(
-          margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 35),
+          margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 100),
           borderOnForeground: false,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))

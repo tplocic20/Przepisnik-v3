@@ -45,6 +45,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
         tag: widget.recipe.key,
         child: Text(
             widget.recipe.name,
+            overflow: TextOverflow.fade,
             style: Theme.of(context).textTheme.bodyText1.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -60,12 +61,9 @@ class _SingleRecipeState extends State<SingleRecipe> {
         elevation: 1,
         backgroundColor: Theme.of(context).accentColor,
       ),
-      frontLayer: Padding(
-        padding: EdgeInsets.only(bottom: 30),
-        child: SingleRecipeContainer(
-          recipe: widget.recipe,
-          portion: this._portion,
-        ),
+      frontLayer: SingleRecipeContainer(
+        recipe: widget.recipe,
+        portion: this._portion,
       ),
       customActions: <Widget>[
         IconButton(

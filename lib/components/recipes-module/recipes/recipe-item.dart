@@ -6,9 +6,10 @@ import 'package:przepisnik_v3/models/recipe.dart';
 
 class RecipeItem extends StatefulWidget {
   final Recipe recipe;
+  final bool isLast;
   final SlidableController slidableController;
 
-  RecipeItem({this.recipe, this.slidableController});
+  RecipeItem({this.recipe, this.slidableController, this.isLast});
 
   _RecipeItemState createState() => _RecipeItemState();
 }
@@ -22,27 +23,39 @@ class _RecipeItemState extends State<RecipeItem>
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.white,
+        color: Colors.white,
         child: Slidable(
           key: Key(widget.recipe.key),
           controller: widget.slidableController,
           child: Container(
             color: Colors.white,
-              child: ListTile(
-                onTap: () {
-                  widget.slidableController.activeState = null;
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SingleRecipe(widget.recipe)));
-                },
-                title: Hero(
-                  tag: widget.recipe.key,
-                  child: Text(widget.recipe.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          ?.copyWith(fontSize: 20)),
+            child: Padding(
+              padding: EdgeInsets.only(left: 5, right: 5),
+              child: Container(
+                decoration:
+                widget.isLast
+                    ? BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(width: 1, color: Colors.grey)))
+                    : null,
+                child: ListTile(
+                  onTap: () {
+                    widget.slidableController.activeState = null;
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SingleRecipe(widget.recipe)));
+                  },
+                  title: Hero(
+                    tag: widget.recipe.key,
+                    child: Text(widget.recipe.name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            ?.copyWith(fontSize: 20)),
+                  ),
+                  subtitle: Text(widget.recipe.recipe ?? '',
+                      overflow: TextOverflow.ellipsis),
                 ),
-                subtitle: Text(widget.recipe.recipe ?? '',
-                    overflow: TextOverflow.ellipsis),
+              ),
             ),
           ),
           actionPane: SlidableBehindActionPane(),

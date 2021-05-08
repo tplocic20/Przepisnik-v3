@@ -64,7 +64,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
             villainAnimation: VillainAnimation.fromBottom(),
             child: Padding(
               padding:
-                  EdgeInsets.only(bottom: 35.0, left: 10, right: 10, top: 10),
+                  EdgeInsets.only(bottom: 100.0, left: 10, right: 10, top: 10),
               child: RoundedExpansionPanelList(
                 expansionCallback: (int index, bool isExpanded) {
                   setState(() {

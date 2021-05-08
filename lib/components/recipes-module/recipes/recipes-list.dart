@@ -31,27 +31,31 @@ class _RecipesListSate extends State<RecipesList> {
       return isCategory && isSearchResult;
     }).toList();
     return filteredRecipes.length > 0
-        ? AnimationLimiter(
-            child: ListView.builder(
-              itemCount: filteredRecipes.length,
-              itemBuilder: (BuildContext context, int index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  duration: const Duration(milliseconds: 250),
-                  child: SlideAnimation(
-                    verticalOffset: 50.0,
+        ? Padding(
+            padding: EdgeInsets.only(bottom: 50),
+            child: AnimationLimiter(
+              child: ListView.builder(
+                itemCount: filteredRecipes.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 250),
                     child: SlideAnimation(
-                      horizontalOffset: 200,
-                      verticalOffset: 10,
-                      child: FadeInAnimation(
-                          child: RecipeItem(
-                        recipe: filteredRecipes[index],
-                        slidableController: slidableController,
-                      )),
+                      verticalOffset: 50.0,
+                      child: SlideAnimation(
+                        horizontalOffset: 200,
+                        verticalOffset: 10,
+                        child: FadeInAnimation(
+                            child: RecipeItem(
+                          recipe: filteredRecipes[index],
+                          slidableController: slidableController,
+                          isLast: filteredRecipes.length > index + 1,
+                        )),
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           )
         : Center(
