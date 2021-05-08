@@ -12,10 +12,11 @@ class NavigationMenu extends StatelessWidget {
   final Function backDropGrab;
   final Function backDropGrabEnd;
 
-  const NavigationMenu({@required this.routeScope,
-    this.closeBackdrop,
-    this.backDropGrab,
-    this.backDropGrabEnd})
+  const NavigationMenu(
+      {@required this.routeScope,
+      this.closeBackdrop,
+      this.backDropGrab,
+      this.backDropGrabEnd})
       : assert(routeScope != null);
 
   @override
@@ -64,7 +65,7 @@ class NavigationMenu extends StatelessWidget {
               width: 150.0,
               height: 2.0,
               color:
-              route == routeScope ? theme.accentColor : theme.primaryColor,
+                  route == routeScope ? theme.accentColor : theme.primaryColor,
             ),
           ],
         ),
@@ -73,7 +74,7 @@ class NavigationMenu extends StatelessWidget {
 
     List<Widget> getListChildren() {
       List<Widget> widgets =
-      Routes.values.map((Routes r) => _buildRoute(r)).toList();
+          Routes.values.map((Routes r) => _buildRoute(r)).toList();
       if (backDropGrab != null && this.backDropGrabEnd != null) {
         widgets.add(GestureDetector(
           onVerticalDragUpdate: (DragUpdateDetails details) {
@@ -83,10 +84,7 @@ class NavigationMenu extends StatelessWidget {
             backDropGrabEnd();
           },
           child: Container(
-            width: MediaQuery
-                .of(context)
-                .size
-                .width,
+            width: MediaQuery.of(context).size.width,
             child: Text(''),
           ),
         ));
@@ -96,9 +94,7 @@ class NavigationMenu extends StatelessWidget {
     }
 
     return Container(
-      color: Theme
-          .of(context)
-          .primaryColor,
+      color: Theme.of(context).primaryColor,
       child: ListView(children: getListChildren()),
     );
   }
@@ -134,6 +130,8 @@ class NavigationMenu extends StatelessWidget {
           barrierDismissible: false,
           builder: (BuildContext context) {
             return Dialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25))),
               child: Container(
                 padding: EdgeInsets.all(30),
                 child: Row(
@@ -148,11 +146,11 @@ class NavigationMenu extends StatelessWidget {
         );
         Future.delayed(Duration(milliseconds: 750), () {
           AuthService().signOut().then((_) => {
-            Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => EntrySwitchApp()),
-            (Route<dynamic> route) => false)
-          });
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => EntrySwitchApp()),
+                    (Route<dynamic> route) => false)
+              });
         });
         break;
       default:
