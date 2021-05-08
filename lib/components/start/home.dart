@@ -4,6 +4,7 @@ import 'package:przepisnik_v3/components/shared/Loader.dart';
 import 'package:przepisnik_v3/components/start/UserNavigation.dart';
 import 'package:przepisnik_v3/external/flutter_login/flutter_login.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
+import 'package:przepisnik_v3/services/recipes-service.dart';
 
 const authErrors = const {
   'user_': 'Użytkownik nie istnieje',
@@ -28,6 +29,7 @@ class _HomeState extends State<HomePage> {
             onLogin: authenticate,
             onSignup: (_) => Future(null),
             onSubmitAnimationCompleted: () {
+              RecipesService().init();
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => UserNavigation()),
