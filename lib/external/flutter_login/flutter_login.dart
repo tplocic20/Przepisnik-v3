@@ -576,7 +576,7 @@ class _FlutterLoginState extends State<FlutterLogin>
     final deviceSize = MediaQuery.of(context).size;
     const headerMargin = 15;
     const cardInitialHeight = 300;
-    final cardTopPosition = deviceSize.height / 2 - cardInitialHeight / 2;
+    final cardTopPosition = deviceSize.height / 2 - cardInitialHeight / 2 - MediaQuery.of(context).viewInsets.bottom / 3;
     final headerHeight = cardTopPosition - headerMargin;
     final emailValidator =
         widget.emailValidator ?? FlutterLogin.defaultEmailValidator;
@@ -613,6 +613,7 @@ class _FlutterLoginState extends State<FlutterLogin>
       ],
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false,
         body: Stack(
           children: <Widget>[
             GradientBox(
