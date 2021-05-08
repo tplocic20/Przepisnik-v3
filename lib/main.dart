@@ -68,7 +68,7 @@ ThemeData _appTheme() {
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
+          borderRadius: BorderRadius.circular(25.0),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(

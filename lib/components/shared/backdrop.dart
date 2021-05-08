@@ -217,13 +217,13 @@ class _FrontLayer extends StatelessWidget {
       color: Color(0xFFf2f5f7),
       // color: Color(0xFFfffaf5),
       borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+          topLeft: Radius.circular(25), topRight: Radius.circular(25)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
             child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(15)),
+              borderRadius: BorderRadius.all(Radius.circular(25)),
               clipBehavior: Clip.antiAlias,
               child: child
             )

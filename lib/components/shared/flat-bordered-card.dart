@@ -17,7 +17,7 @@ class FlatBorderedCard extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(
                 color: Theme.of(context).primaryColor, width: 1),
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(25),
             shape: BoxShape.rectangle,
           ),
           child: this._content,

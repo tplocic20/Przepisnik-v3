@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const double _kPanelHeaderCollapsedHeight = 48.0;
 const double _kPanelHeaderExpandedHeight = 64.0;
-const double _borderRadiusOpen = 15.0;
+const double _borderRadiusOpen = 25.0;
 const double _borderRadiusClosed = 0.0;
 
 class RoundedExpansionPanelList extends StatelessWidget {

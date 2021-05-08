@@ -15,7 +15,7 @@ class BottomModalWrapper extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
               color: Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.all(Radius.circular(15))),
+              borderRadius: BorderRadius.all(Radius.circular(25))),
           child: Padding(
             padding: EdgeInsets.only(top: 15, bottom: 15),
             child: child,
@@ -38,7 +38,7 @@ class BottomModalSearchWrapper extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
             color: Theme.of(context).canvasColor,
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15))),
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25))),
         child: child,
       ),
     );

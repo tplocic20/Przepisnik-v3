@@ -104,7 +104,7 @@ class _RecipesState extends State<RecipesPage> {
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(25),
                   borderSide: BorderSide(
                       color: Theme.of(context).primaryColor,
                       style: BorderStyle.solid,
@@ -127,18 +127,18 @@ class _RecipesState extends State<RecipesPage> {
         shape: AutomaticNotchedShape(
             RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(15),
-                    topRight: Radius.circular(15))),
+                    topLeft: Radius.circular(25),
+                    topRight: Radius.circular(25))),
             StadiumBorder()),
         clipBehavior: Clip.antiAlias,
         child: Container(
-            height: 50.0,
-            // color: Colors.transparent,
             child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                IconButton(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+                padding: EdgeInsets.all(5),
+                child: IconButton(
                   icon: Icon(Icons.menu),
                   onPressed: () {
                     showModalBottomSheet(
@@ -147,19 +147,22 @@ class _RecipesState extends State<RecipesPage> {
                           return _buildCategoriesModal();
                         });
                   },
-                ),
-                IconButton(
-                  icon: Icon(Icons.search),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return _buildSearchModal();
-                        });
-                  },
-                )
-              ],
-            )),
+                )),
+            Padding(
+              padding: EdgeInsets.all(5),
+              child: IconButton(
+                icon: Icon(Icons.search),
+                onPressed: () {
+                  showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return _buildSearchModal();
+                      });
+                },
+              ),
+            )
+          ],
+        )),
       );
     }
 

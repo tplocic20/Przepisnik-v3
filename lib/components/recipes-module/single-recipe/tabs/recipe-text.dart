@@ -25,7 +25,7 @@ class _RecipeTextState extends State<RecipeText> {
           margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 100),
           borderOnForeground: false,
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15))
+              borderRadius: BorderRadius.all(Radius.circular(25))
           ),
           child: Padding(
             padding: EdgeInsets.only(top: 20, left: 10, right: 10),
