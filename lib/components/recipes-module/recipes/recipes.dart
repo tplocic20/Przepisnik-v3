@@ -142,6 +142,7 @@ class _RecipesState extends State<RecipesPage> {
                   icon: Icon(Icons.menu),
                   onPressed: () {
                     showModalBottomSheet(
+                        backgroundColor: Colors.transparent,
                         context: context,
                         builder: (context) {
                           return _buildCategoriesModal();
@@ -154,6 +155,7 @@ class _RecipesState extends State<RecipesPage> {
                 icon: Icon(Icons.search),
                 onPressed: () {
                   showModalBottomSheet(
+                      backgroundColor: Colors.transparent,
                       context: context,
                       builder: (context) {
                         return _buildSearchModal();

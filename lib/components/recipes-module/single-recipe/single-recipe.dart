@@ -70,6 +70,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
           icon: Icon(Icons.room_service),
           onPressed: () {
             showModalBottomSheet(
+                backgroundColor: Colors.transparent,
                 context: context,
                 builder: (context) {
                   return _buildCookModeModal();
@@ -80,6 +81,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
           icon: Icon(Icons.pie_chart),
           onPressed: () {
             showModalBottomSheet(
+                backgroundColor: Colors.transparent,
                 context: context,
                 builder: (context) {
                   return _buildPortionModal();

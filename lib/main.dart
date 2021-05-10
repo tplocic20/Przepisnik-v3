@@ -57,7 +57,7 @@ ThemeData _appTheme() {
       primaryTextTheme: TextTheme(bodyText1: TextStyle(color: Colors.white)),
 
       // Define the default font family.
-      fontFamily: 'Poppins',
+      fontFamily: 'RaleWay',
 
       // Define the default TextTheme. Use this to specify the default
       // text styling for headlines, titles, bodies of text, and more.
@@ -73,6 +73,7 @@ ThemeData _appTheme() {
       ),
       inputDecorationTheme: InputDecorationTheme(
           filled: true,
+          isDense: true,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(50),
             borderSide: BorderSide(),

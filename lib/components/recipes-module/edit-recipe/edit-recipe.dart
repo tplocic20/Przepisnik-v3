@@ -51,10 +51,7 @@ class _EditRecipeState extends State<EditRecipe> {
                   Step(
                     title: new Text('Główne'),
                     content: Container(
-                      child: FlatBorderedCard(
-                        'Główne',
-                        MainRecipeForm()
-                      ),
+                      child: MainRecipeForm(),
                     ),
                     isActive: _currentStep >= 0,
                     state: _currentStep >= 0 ?

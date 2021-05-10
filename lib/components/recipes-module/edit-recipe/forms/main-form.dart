@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MainRecipeForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Stack(
       children: [
         TextFormField(
           decoration: InputDecoration(
