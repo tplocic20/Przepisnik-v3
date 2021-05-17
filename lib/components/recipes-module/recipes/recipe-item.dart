@@ -4,12 +4,15 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 
+import '_partials/RecipeCategoriesTags.dart';
+
 class RecipeItem extends StatefulWidget {
   final Recipe recipe;
   final bool isLast;
   final SlidableController slidableController;
+  final String selectedCategory;
 
-  RecipeItem({this.recipe, this.slidableController, this.isLast});
+  RecipeItem({this.recipe, this.slidableController, this.isLast, this.selectedCategory});
 
   _RecipeItemState createState() => _RecipeItemState();
 }
@@ -52,8 +55,15 @@ class _RecipeItemState extends State<RecipeItem>
                             .bodyText2
                             ?.copyWith(fontSize: 20)),
                   ),
-                  subtitle: Text(widget.recipe.recipe ?? '',
-                      overflow: TextOverflow.ellipsis),
+                  isThreeLine: true,
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(widget.recipe.recipe ?? '',
+                          overflow: TextOverflow.ellipsis),
+                      RecipeCategoriesTags(recipe: widget.recipe, selectedCategory: widget.selectedCategory,)
+                    ],
+                  ),
                 ),
               ),
             ),

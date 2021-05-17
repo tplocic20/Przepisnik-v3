@@ -50,6 +50,7 @@ class _RecipesListSate extends State<RecipesList> {
                           recipe: filteredRecipes[index],
                           slidableController: slidableController,
                           isLast: filteredRecipes.length > index + 1,
+                          selectedCategory: widget._currentCategory,
                         )),
                       ),
                     ),

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/models/category.dart';
@@ -45,5 +44,9 @@ class RecipesService {
       element.forEach((k, v) => parsedList.add(Category(k, v)));
     }
     return parsedList;
+  }
+
+  getCategoryByKey(key) {
+    return globals.categories.singleWhere((element) => element.key == key);
   }
 }
