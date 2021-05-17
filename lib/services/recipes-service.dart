@@ -47,6 +47,6 @@ class RecipesService {
   }
 
   getCategoryByKey(key) {
-    return globals.categories.singleWhere((element) => element.key == key);
+    return globals.categories?.singleWhere((element) => element.key == key);
   }
 }
