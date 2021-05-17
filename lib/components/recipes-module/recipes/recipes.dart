@@ -28,17 +28,17 @@ class _RecipesState extends State<RecipesPage> {
   String _selectedCategory;
   String _searchString;
   String _selectedCategoryName;
+  TextEditingController _searchController;
   bool _backdropInitialised = false;
 
   void initState() {
     super.initState();
+    this._searchController = TextEditingController(
+        text: this._searchString ?? '');
   }
 
   @override
   Widget build(BuildContext context) {
-    final _searchController = TextEditingController(
-        text: this._searchString != null ? this._searchString : '');
-
     Widget _buildCategoriesModal() {
       void _updateCategory(value, name) {
         Navigator.pop(context);
@@ -181,6 +181,37 @@ class _RecipesState extends State<RecipesPage> {
       );
     }
 
+    Widget _buildSearchText() {
+      return ListTile(
+        title: RichText(
+          text: TextSpan(
+            text: 'Wyniki dla ',
+            style: DefaultTextStyle.of(context).style,
+            children: <TextSpan>[
+              TextSpan(
+                  text: this._searchString,
+                  style: DefaultTextStyle.of(context).style.copyWith(
+                      color: Colors.white,
+                      backgroundColor:
+                      Theme.of(context).accentColor)),
+            ],
+          ),
+        ),
+        trailing: ElevatedButton(
+          child: Text('Wyczyść'),
+          style: ElevatedButton.styleFrom(
+            primary: Theme.of(context).accentColor
+          ),
+          onPressed: () {
+            setState(() {
+              this._searchController.clear();
+              this._searchString = null;
+            });
+          },
+        ),
+      );
+    }
+
     void initBackdropControls() {
       if (this._backdropInitialised == true) {
         return;
@@ -195,6 +226,13 @@ class _RecipesState extends State<RecipesPage> {
 
     return StreamProvider.value(
         value: RecipesService().recipeList,
-        child: RecipesList(_selectedCategory, _searchString));
+        child: Column(
+          children: [
+            this._searchString == null || this._searchString.isEmpty
+                ? Container()
+                : _buildSearchText(),
+            Expanded(child: RecipesList(_selectedCategory, _searchString))
+          ],
+        ));
   }
 }
