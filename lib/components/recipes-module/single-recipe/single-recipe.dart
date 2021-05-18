@@ -11,7 +11,7 @@ import 'modals/portion-modal.dart';
 class SingleRecipe extends StatefulWidget {
   final Recipe recipe;
 
-  SingleRecipe(this.recipe) {}
+  SingleRecipe(this.recipe);
 
   @override
   _SingleRecipeState createState() => _SingleRecipeState();
@@ -19,7 +19,6 @@ class SingleRecipe extends StatefulWidget {
 
 class _SingleRecipeState extends State<SingleRecipe> {
   double _portion = 1;
-
   @override
   Widget build(BuildContext context) {
     Widget _buildPortionModal() {

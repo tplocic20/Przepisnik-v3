@@ -12,7 +12,11 @@ class RecipeItem extends StatefulWidget {
   final SlidableController slidableController;
   final String selectedCategory;
 
-  RecipeItem({this.recipe, this.slidableController, this.isLast, this.selectedCategory});
+  RecipeItem(
+      {this.recipe,
+      this.slidableController,
+      this.isLast,
+      this.selectedCategory});
 
   _RecipeItemState createState() => _RecipeItemState();
 }
@@ -35,11 +39,10 @@ class _RecipeItemState extends State<RecipeItem>
             child: Padding(
               padding: EdgeInsets.only(left: 5, right: 5),
               child: Container(
-                decoration:
-                widget.isLast
+                decoration: widget.isLast
                     ? BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(width: 1, color: Colors.grey)))
+                        border: Border(
+                            bottom: BorderSide(width: 1, color: Colors.grey)))
                     : null,
                 child: ListTile(
                   onTap: () {
@@ -61,7 +64,10 @@ class _RecipeItemState extends State<RecipeItem>
                     children: [
                       Text(widget.recipe.recipe ?? '',
                           overflow: TextOverflow.ellipsis),
-                      RecipeCategoriesTags(recipe: widget.recipe, selectedCategory: widget.selectedCategory,)
+                      RecipeCategoriesTags(
+                        recipe: widget.recipe,
+                        selectedCategory: widget.selectedCategory,
+                      )
                     ],
                   ),
                 ),

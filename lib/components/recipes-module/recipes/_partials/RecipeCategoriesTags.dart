@@ -12,8 +12,9 @@ class RecipeCategoriesTags extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> categoriesArray = this.recipe.categories.split(',').where((element) => element.length > 0).toList();
+    List<String> categoriesArray = this.recipe.categories.replaceAll(';', ',').split(',').where((element) => element.length > 0).toList();
     return categoriesArray.isNotEmpty ? Tags(
+      runSpacing: 6,
       alignment: WrapAlignment.start,
       runAlignment: WrapAlignment.start,
       itemCount: categoriesArray.length,
@@ -22,11 +23,15 @@ class RecipeCategoriesTags extends StatelessWidget {
             RecipesService().getCategoryByKey(categoriesArray[index]);
         return ItemTags(
           index: index,
-          key: Key('${this.recipe.key}_${cat.key}'),
-          title: cat.name,
+          key: Key('${this.recipe.key}_${cat?.key ?? ''}'),
+          title: cat?.name ?? '',
           activeColor: Theme.of(context).accentColor,
-          active: cat.key == this.selectedCategory,
+          active: false,
           elevation: 0,
+          border: Border.all(
+            color: Theme.of(context).accentColor,
+            width: cat?.key == this.selectedCategory ? 1.5 : 0.5
+          ),
         );
       },
     ) : Container();
