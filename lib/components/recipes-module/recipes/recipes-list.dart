@@ -6,6 +6,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipe-item.dart';
+import 'package:przepisnik_v3/components/shared/Loader.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
 
@@ -71,7 +72,7 @@ class _RecipesListSate extends State<RecipesList> {
   Widget getLoadingState() {
     return Container(
         child: Center(
-      child: PlatformCircularProgressIndicator(),
+      child: Loader(),
     ));
   }
 

@@ -27,7 +27,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         return Padding(
           padding: EdgeInsets.only(right: 25, left: 25),
           child: ListTile(
-            title: Text('Temperatura'),
+            title: const Text('Temperatura'),
             trailing: Text('${widget.recipe.temperature} stC'),
             leading: Icon(Icons.wb_incandescent),
           ),
@@ -42,7 +42,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         return Padding(
           padding: EdgeInsets.only(right: 25, left: 25),
           child: ListTile(
-            title: Text('Czas'),
+            title: const Text('Czas'),
             trailing: Text('${widget.recipe.time}'),
             leading: Icon(Icons.timer),
           ),

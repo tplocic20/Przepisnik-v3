@@ -4,6 +4,8 @@ import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/forms/main-form.dart';
 import 'package:przepisnik_v3/components/shared/flat-bordered-card.dart';
 
+import 'forms/categories-form.dart';
+
 class EditRecipe extends StatefulWidget {
 
   @override
@@ -13,7 +15,7 @@ class EditRecipe extends StatefulWidget {
 
 class _EditRecipeState extends State<EditRecipe> {
   int _currentStep = 0;
-  StepperType stepperType = StepperType.horizontal;
+  StepperType stepperType = StepperType.vertical;
 
   tapped(int step){
     setState(() => _currentStep = step);
@@ -47,14 +49,42 @@ class _EditRecipeState extends State<EditRecipe> {
                 onStepTapped: (step) => tapped(step),
                 onStepContinue:  continued,
                 onStepCancel: cancel,
+                controlsBuilder: (BuildContext context,
+                    {VoidCallback onStepContinue, VoidCallback onStepCancel}) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      _currentStep > 0 ? TextButton(
+                        onPressed: onStepCancel,
+                        style: TextButton.styleFrom(
+                            primary: Theme.of(context).accentColor
+                        ),
+                        child: const Text('Wstecz'),
+                      ) : Container(),
+                      ElevatedButton(
+                        onPressed: onStepContinue,
+                        style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).primaryColor
+                        ),
+                        child: const Text('Dalej'),
+                      ),
+                    ],
+                  );
+                },
                 steps: <Step>[
                   Step(
-                    title: new Text('Główne'),
-                    content: Container(
-                      child: MainRecipeForm(),
-                    ),
+                    title: const Text('Główne'),
+                    content: MainRecipeForm(),
+                    subtitle: const Text('Elo'),
                     isActive: _currentStep >= 0,
                     state: _currentStep >= 0 ?
+                    StepState.complete : StepState.disabled,
+                  ),
+                  Step(
+                    title: const Text('Kategorie'),
+                    content: CategoriesForm(),
+                    isActive: _currentStep >= 0,
+                    state: _currentStep >= 1 ?
                     StepState.complete : StepState.disabled,
                   ),
                   Step(
@@ -70,11 +100,11 @@ class _EditRecipeState extends State<EditRecipe> {
                       ],
                     ),
                     isActive: _currentStep >= 0,
-                    state: _currentStep >= 1 ?
+                    state: _currentStep >= 2 ?
                     StepState.complete : StepState.disabled,
                   ),
                   Step(
-                    title: new Text('Przepis'),
+                    title: const Text('Przepis'),
                     content: Column(
                       children: <Widget>[
                         TextFormField(
@@ -83,7 +113,7 @@ class _EditRecipeState extends State<EditRecipe> {
                       ],
                     ),
                     isActive:_currentStep >= 0,
-                    state: _currentStep >= 2 ?
+                    state: _currentStep >= 3 ?
                     StepState.complete : StepState.disabled,
                   ),
                 ],
@@ -91,12 +121,6 @@ class _EditRecipeState extends State<EditRecipe> {
             ),
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.list),
-        onPressed: () {
-          print('elo');
-        },
       ),
     );
   }

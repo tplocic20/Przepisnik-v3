@@ -89,7 +89,8 @@ class RoundedExpansionPanelList extends StatelessWidget {
         new Container(
           key: new _SaltedKey<BuildContext, int>(context, index * 2),
           child: new Material(
-            elevation: 2.0,
+            shadowColor: Theme.of(context).primaryColorLight,
+            elevation: 0.5,
             borderRadius: childRadius,
             child: new Column(
               children: <Widget>[

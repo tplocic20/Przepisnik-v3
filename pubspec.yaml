@@ -44,6 +44,7 @@ dependencies:
   another_flushbar: ^1.10.17
   flutter_form_builder: ^6.0.0
   flutter_tags: ^0.4.9+1
+  google_fonts: ^2.1.0
 
 dev_dependencies:
   flutter_test:

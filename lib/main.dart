@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:flutter_villains/villain.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/app.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
@@ -19,7 +20,7 @@ class PrzepisnikApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-    fetchModes();
+    // fetchModes();
     return MaterialApp(
           navigatorObservers: [new VillainTransitionObserver()],
           title: 'Przepisnik',
@@ -56,15 +57,16 @@ ThemeData _appTheme() {
       accentColor: Color(0xFFd87f33),
       primaryTextTheme: TextTheme(bodyText1: TextStyle(color: Colors.white)),
 
-      // Define the default font family.
-      fontFamily: 'RaleWay',
-
       // Define the default TextTheme. Use this to specify the default
       // text styling for headlines, titles, bodies of text, and more.
-      textTheme: TextTheme(
+      textTheme: GoogleFonts.montserratSubrayadaTextTheme(TextTheme(
         headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
         bodyText2: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
-      ),
+      )),
+      // textTheme: TextTheme(
+      //   headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+      //   bodyText2: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
+      // ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -74,8 +76,28 @@ ThemeData _appTheme() {
       inputDecorationTheme: InputDecorationTheme(
           filled: true,
           isDense: true,
+          labelStyle: TextStyle(
+            fontSize: 15,
+            letterSpacing: 1
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25),
+            borderSide: BorderSide(color: Color(0xFF41681f)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25),
+            borderSide: BorderSide.none,
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25),
+            borderSide: BorderSide(color: Colors.redAccent),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(25),
+            borderSide: BorderSide(color: Colors.redAccent),
+          ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(50),
-            borderSide: BorderSide(),
+            borderRadius: BorderRadius.circular(25),
+            borderSide: BorderSide.none,
           )));
 }

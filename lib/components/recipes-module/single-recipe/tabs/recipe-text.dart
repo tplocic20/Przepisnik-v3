@@ -13,20 +13,22 @@ class RecipeText extends StatefulWidget {
 }
 
 class _RecipeTextState extends State<RecipeText> {
-  double fontSizeVM = 15;
-  double fontSize = 15;
+  double fontSizeVM = 17;
+  double fontSize = 17;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Villain(
         villainAnimation: VillainAnimation.scale(),
-        child: Card(
+        child: Container(
+          // elevation: 0.5,
+          // shadowColor: Theme.of(context).primaryColorLight,
           margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 100),
-          borderOnForeground: false,
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(25))
-          ),
+          // borderOnForeground: false,
+          // shape: RoundedRectangleBorder(
+          //     borderRadius: BorderRadius.all(Radius.circular(25))
+          // ),
           child: Padding(
             padding: EdgeInsets.only(top: 20, left: 10, right: 10),
             child: Text(widget.recipe.recipe,
