@@ -45,7 +45,10 @@ dependencies:
   flutter_form_builder: ^6.0.0
   flutter_tags: ^0.4.9+1
   google_fonts: ^2.1.0
-
+  zefyr: ^1.0.0-dev.2.0
+  flushbar: ^1.10.4
+  flutter_inner_drawer: ^1.0.0+1
+  favorite_button: ^0.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

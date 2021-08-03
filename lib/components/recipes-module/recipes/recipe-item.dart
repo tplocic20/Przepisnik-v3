@@ -30,7 +30,10 @@ class _RecipeItemState extends State<RecipeItem>
   @override
   Widget build(BuildContext context) {
     return Container(
-        color: Colors.white,
+      clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+            color: Colors.white,
+        ),
         child: Slidable(
           key: Key(widget.recipe.key),
           controller: widget.slidableController,
@@ -39,11 +42,9 @@ class _RecipeItemState extends State<RecipeItem>
             child: Padding(
               padding: EdgeInsets.only(left: 5, right: 5),
               child: Container(
-                decoration: widget.isLast
-                    ? BoxDecoration(
+                decoration: BoxDecoration(
                         border: Border(
-                            bottom: BorderSide(width: 1, color: Colors.grey)))
-                    : null,
+                            bottom: BorderSide(width: 1, color: widget.isLast ? Colors.transparent : Colors.grey))),
                 child: ListTile(
                   onTap: () {
                     widget.slidableController.activeState = null;

@@ -59,7 +59,7 @@ ThemeData _appTheme() {
 
       // Define the default TextTheme. Use this to specify the default
       // text styling for headlines, titles, bodies of text, and more.
-      textTheme: GoogleFonts.montserratSubrayadaTextTheme(TextTheme(
+      textTheme: GoogleFonts.montserratTextTheme(TextTheme(
         headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
         bodyText2: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
       )),
