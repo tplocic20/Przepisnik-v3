@@ -1,13 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:flutter_villains/villain.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/app.dart';
-import 'package:przepisnik_v3/services/auth-service.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 void main() async {
@@ -22,10 +19,10 @@ class PrzepisnikApp extends StatelessWidget {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     // fetchModes();
     return MaterialApp(
-          navigatorObservers: [new VillainTransitionObserver()],
-          title: 'Przepisnik',
-          theme: _appTheme(),
-          home: EntrySwitchApp(),
+      navigatorObservers: [new VillainTransitionObserver()],
+      title: 'Przepisnik',
+      theme: _appTheme(),
+      home: EntrySwitchApp(),
     );
   }
 }
@@ -34,16 +31,14 @@ Future<void> fetchModes() async {
   try {
     List<DisplayMode> modes = await FlutterDisplayMode.supported;
 
-    DisplayMode current = await FlutterDisplayMode.current;
+    DisplayMode current = await FlutterDisplayMode.active;
     DisplayMode selected = modes.firstWhere(
         (DisplayMode m) =>
             m.width == current.width &&
             m.height == current.height &&
             m.refreshRate > 60,
-        orElse: () => null);
-    if (selected != null) {
-      FlutterDisplayMode.setMode(selected);
-    }
+        orElse: () => current);
+    FlutterDisplayMode.setPreferredMode(selected);
   } on PlatformException catch (e) {}
 }
 
@@ -76,10 +71,7 @@ ThemeData _appTheme() {
       inputDecorationTheme: InputDecorationTheme(
           filled: true,
           isDense: true,
-          labelStyle: TextStyle(
-            fontSize: 15,
-            letterSpacing: 1
-          ),
+          labelStyle: TextStyle(fontSize: 15, letterSpacing: 1),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
             borderSide: BorderSide(color: Color(0xFF41681f)),
