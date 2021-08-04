@@ -7,6 +7,6 @@ class NavigationService {
   }
 
   handleNavigation(Routes route) {
-    globals.globalNavHandler(route);
+    globals.globalNavHandler!(route);
   }
 }
