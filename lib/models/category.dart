@@ -3,6 +3,6 @@ class Category {
     key = k;
     name = v['Name'];
   }
-  String key;
-  String name;
+  String key = '';
+  String name = '';
 }

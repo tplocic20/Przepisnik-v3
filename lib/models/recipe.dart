@@ -1,11 +1,11 @@
 import 'package:przepisnik_v3/models/baseElement.dart';
 
 class Recipe extends BaseElement {
-  String categories;
-  List<IngredientGroup> ingredients;
-  String recipe;
-  var temperature;
-  var time;
+  String categories = '';
+  List<IngredientGroup> ingredients = [];
+  String recipe = '';
+  var temperature = '';
+  var time = '';
 
   Recipe(k, v) {
     key = k;
@@ -28,9 +28,9 @@ class Recipe extends BaseElement {
 }
 
 class IngredientGroup {
-  String color;
-  String name;
-  List<Ingredient> positions;
+  String color = '';
+  String name = '';
+  List<Ingredient> positions = [];
 
   IngredientGroup(v) {
     color = v['Color'];
@@ -49,9 +49,10 @@ class IngredientGroup {
 }
 
 class Ingredient {
-  String name;
-  var qty;
-  String unit;
+  String name = '';
+  var qty = '';
+  String unit = '';
+
   Ingredient(v) {
     name = v['Name'];
     qty = v['Qty'];
