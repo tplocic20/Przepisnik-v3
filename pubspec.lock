@@ -85,13 +85,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
-  favorite_button:
-    dependency: "direct main"
-    description:
-      name: favorite_button
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4"
   ffi:
     dependency: transitive
     description:
@@ -167,32 +160,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.2"
-  flutter_form_builder:
-    dependency: "direct main"
-    description:
-      name: flutter_form_builder
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "6.0.1"
-  flutter_localizations:
-    dependency: transitive
-    description: flutter
-    source: sdk
-    version: "0.0.0"
-  flutter_platform_widgets:
-    dependency: "direct main"
-    description:
-      name: flutter_platform_widgets
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.9.5"
-  flutter_sequence_animation:
-    dependency: "direct main"
-    description:
-      name: flutter_sequence_animation
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.0.1"
   flutter_slidable:
     dependency: "direct main"
     description:
@@ -214,25 +181,11 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.0-nullsafety"
-  flutter_tags:
-    dependency: "direct main"
-    description:
-      name: flutter_tags
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.4.9+1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_villains:
-    dependency: "direct main"
-    description:
-      name: flutter_villains
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.2.1"
   flutter_web_plugins:
     dependency: transitive
     description: flutter
@@ -301,13 +254,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
-  notus:
-    dependency: transitive
-    description:
-      name: notus
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0-dev.4.0"
   path:
     dependency: transitive
     description:
@@ -378,13 +324,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.0"
-  platform_detect:
-    dependency: transitive
-    description:
-      name: platform_detect
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.4.0"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -406,27 +345,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.0"
-  pub_semver:
-    dependency: transitive
-    description:
-      name: pub_semver
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.4.4"
-  quill_delta:
-    dependency: transitive
-    description:
-      name: quill_delta
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
-  quiver_hashcode:
-    dependency: transitive
-    description:
-      name: quiver_hashcode
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -481,34 +399,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0"
-  url_launcher:
-    dependency: transitive
-    description:
-      name: url_launcher
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.4.0"
-  url_launcher_macos:
-    dependency: transitive
-    description:
-      name: url_launcher_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.1+9"
-  url_launcher_platform_interface:
-    dependency: transitive
-    description:
-      name: url_launcher_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
-  url_launcher_web:
-    dependency: transitive
-    description:
-      name: url_launcher_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.3"
   vector_math:
     dependency: transitive
     description:
@@ -530,13 +420,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.0"
-  zefyr:
-    dependency: "direct main"
-    description:
-      name: zefyr
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0-dev.2.0"
 sdks:
   dart: ">=2.13.0 <3.0.0"
   flutter: ">=2.0.0"

@@ -1,6 +1,6 @@
 name: przepisnik_v3
 description: Przepisnik 3-gen
-
+publish_to: 'none'
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
 # followed by an optional build number separated by a +.
@@ -30,18 +30,11 @@ dependencies:
   provider: ^5.0.0
   flutter_statusbarcolor_ns: ^0.3.0-nullsafety
   flutter_displaymode: 0.3.2
-  flutter_platform_widgets: ^1.9.5
   dotted_border: ^2.0.0
-  flutter_sequence_animation: ^3.0.0
   flutter_slidable: ^0.6.0
   flutter_staggered_animations: ^1.0.0
-  flutter_villains: ^1.2.1
   lottie: ^1.1.0
-  flutter_form_builder: ^6.0.0
-  flutter_tags: ^0.4.9+1
   google_fonts: ^2.1.0
-  zefyr: ^1.0.0-dev.2.0
-  favorite_button: ^0.0.4
 dev_dependencies:
   flutter_test:
     sdk: flutter

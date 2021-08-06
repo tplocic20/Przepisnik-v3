@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
-import 'package:flutter_villains/villain.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:przepisnik_v3/components/app.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
@@ -19,7 +18,6 @@ class PrzepisnikApp extends StatelessWidget {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     // fetchModes();
     return MaterialApp(
-      navigatorObservers: [new VillainTransitionObserver()],
       title: 'Przepisnik',
       theme: _appTheme(),
       home: EntrySwitchApp(),

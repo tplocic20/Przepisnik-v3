@@ -77,7 +77,7 @@ class _RecipesListSate extends State<RecipesList> {
 
   @override
   Widget build(BuildContext context) {
-    final _recipesEvent = Provider.of<Event>(context);
+    final _recipesEvent = Provider.of<Event?>(context);
     if (_recipesEvent != null) {
       return getRecipesList(RecipesService().parseRecipes(_recipesEvent));
     } else {

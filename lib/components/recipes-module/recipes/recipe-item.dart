@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
-import '_partials/RecipeCategoriesTags.dart';
 
 class RecipeItem extends StatefulWidget {
   final Recipe? recipe;
@@ -66,12 +65,7 @@ class _RecipeItemState extends State<RecipeItem>
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.recipe!.recipe ?? '',
-                          overflow: TextOverflow.ellipsis),
-                      RecipeCategoriesTags(
-                        recipe: widget.recipe!,
-                        selectedCategory: widget.selectedCategory!,
-                      )
+                      Text(widget.recipe!.recipe, overflow: TextOverflow.ellipsis)
                     ],
                   ),
                 ),

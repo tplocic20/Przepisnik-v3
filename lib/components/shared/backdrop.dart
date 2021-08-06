@@ -8,6 +8,7 @@ const double _backDropMaxHeight = _layerTitleHeight * 6;
 
 class Backdrop extends StatefulWidget {
   final Widget? frontLayer;
+  final Widget? backLayer;
   final Widget? bottomNavigation;
   final Widget? bottomMainBtn;
   final List<Widget> customActions;
@@ -17,6 +18,7 @@ class Backdrop extends StatefulWidget {
 
   const Backdrop(
       {@required this.frontLayer,
+      this.backLayer,
       this.bottomNavigation,
       this.bottomMainBtn,
       this.title = const Text(''),
@@ -69,7 +71,11 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       key: _backdropKey,
       children: <Widget>[
         ExcludeSemantics(
-          child: Container(),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor
+            ),
+          ),
           excluding: _frontLayerVisible,
         ),
         PositionedTransition(

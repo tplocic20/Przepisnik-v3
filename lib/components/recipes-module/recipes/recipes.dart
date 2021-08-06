@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:ui';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -199,8 +200,8 @@ class _RecipesState extends State<RecipesPage> {
       );
     }
 
-    return StreamProvider.value(
-        initialData: [],
+    return StreamProvider<Event?>.value(
+        initialData: null,
         value: RecipesService().recipeList,
         child: Backdrop(
           bottomNavigation: _buildBottomBar(),

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_villains/villains/villains.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 
 class RecipeText extends StatefulWidget {
@@ -19,9 +18,7 @@ class _RecipeTextState extends State<RecipeText> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Villain(
-        villainAnimation: VillainAnimation.scale(),
-        child: Container(
+      child: Container(
           // elevation: 0.5,
           // shadowColor: Theme.of(context).primaryColorLight,
           margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 100),
@@ -36,7 +33,6 @@ class _RecipeTextState extends State<RecipeText> {
                     fontSize: fontSize, textBaseline: TextBaseline.alphabetic)),
           ),
         ),
-      ),
     );
   }
 }

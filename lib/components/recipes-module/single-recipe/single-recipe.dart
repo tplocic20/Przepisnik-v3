@@ -4,7 +4,6 @@ import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-rec
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
-
 import 'modals/portion-modal.dart';
 
 class SingleRecipe extends StatefulWidget {

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_villains/villain.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 
@@ -52,17 +51,9 @@ class _RecipeInfoState extends State<RecipeInfo> {
 
     return ListView(
       children: <Widget>[
-        Villain(
-          villainAnimation: VillainAnimation.fromLeft(),
-          child: _getTemperature(),
-        ),
-        Villain(
-          villainAnimation: VillainAnimation.fromRight(),
-          child: _getTime(),
-        ),
-        Villain(
-            villainAnimation: VillainAnimation.fromBottom(),
-            child: Padding(
+        _getTemperature(),
+        _getTime(),
+        Padding(
               padding:
                   EdgeInsets.only(bottom: 100.0, left: 10, right: 10, top: 10),
               child: RoundedExpansionPanelList(
@@ -73,7 +64,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
                 },
                 children: _buildIngredientsGroupList(),
               ),
-            )),
+            ),
       ],
     );
   }
@@ -103,16 +94,9 @@ class _RecipeInfoState extends State<RecipeInfo> {
     widget.recipe!.ingredients[groupIdx].positions
         .asMap()
         .forEach((index, Ingredient value) {
-      num parsedValue = 0;
-      if (value.qty is String) {
-        double number =
-            double.tryParse(value.qty.replaceAll(new RegExp(r','), '.'))!;
-        parsedValue = num.parse(
-            (number * widget.portion!).toStringAsFixed(2));
-      } else if (value.qty is int) {
-        parsedValue =
-            num.parse(((value.qty as int) * widget.portion!.toInt()).toStringAsFixed(2));
-      }
+      num parsedValue =
+            num.parse((value.qty * widget.portion!.toInt()).toStringAsFixed(2));
+
       widgets.add(Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Container(
