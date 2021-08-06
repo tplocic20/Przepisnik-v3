@@ -5,8 +5,8 @@ import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 
 class RecipeInfo extends StatefulWidget {
-  final Recipe recipe;
-  final double portion;
+  final Recipe? recipe;
+  final double? portion;
 
   RecipeInfo({this.recipe, this.portion});
 
@@ -20,15 +20,15 @@ class _RecipeInfoState extends State<RecipeInfo> {
   @override
   Widget build(BuildContext context) {
     Widget _getTemperature() {
-      if (widget.recipe.temperature == null ||
-          widget.recipe.temperature == '-') {
+      if (widget.recipe!.temperature == null ||
+          widget.recipe!.temperature == '-') {
         return Container();
       } else {
         return Padding(
           padding: EdgeInsets.only(right: 25, left: 25),
           child: ListTile(
             title: const Text('Temperatura'),
-            trailing: Text('${widget.recipe.temperature} stC'),
+            trailing: Text('${widget.recipe!.temperature} stC'),
             leading: Icon(Icons.wb_incandescent),
           ),
         );
@@ -36,14 +36,14 @@ class _RecipeInfoState extends State<RecipeInfo> {
     }
 
     Widget _getTime() {
-      if (widget.recipe.time == null || widget.recipe.time == '-') {
+      if (widget.recipe!.time == null || widget.recipe!.time == '-') {
         return Container();
       } else {
         return Padding(
           padding: EdgeInsets.only(right: 25, left: 25),
           child: ListTile(
             title: const Text('Czas'),
-            trailing: Text('${widget.recipe.time}'),
+            trailing: Text('${widget.recipe!.time}'),
             leading: Icon(Icons.timer),
           ),
         );
@@ -80,7 +80,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
 
   _buildIngredientsGroupList() {
     List<ExpansionPanel> widgets = [];
-    widget.recipe.ingredients.asMap().forEach((index, value) {
+    widget.recipe!.ingredients.asMap().forEach((index, value) {
       groupExpanded.add(true);
       widgets.add(ExpansionPanel(
           canTapOnHeader: true,
@@ -100,30 +100,28 @@ class _RecipeInfoState extends State<RecipeInfo> {
 
   _buildIngredientsList(groupIdx) {
     List<Padding> widgets = [];
-    widget.recipe.ingredients[groupIdx].positions
+    widget.recipe!.ingredients[groupIdx].positions
         .asMap()
         .forEach((index, Ingredient value) {
       num parsedValue = 0;
-      if (value.qty != null) {
-        if (value.qty is String) {
-          double number =
-              double.tryParse(value.qty.replaceAll(new RegExp(r','), '.'));
-          parsedValue = num.parse((number != null ? number : 0 * widget.portion)
-              .toStringAsFixed(2));
-        } else if (value.qty is int) {
-          parsedValue =
-              num.parse((value.qty * widget.portion).toStringAsFixed(2));
-        }
+      if (value.qty is String) {
+        double number =
+            double.tryParse(value.qty.replaceAll(new RegExp(r','), '.'))!;
+        parsedValue = num.parse(
+            (number * widget.portion!).toStringAsFixed(2));
+      } else if (value.qty is int) {
+        parsedValue =
+            num.parse(((value.qty as int) * widget.portion!.toInt()).toStringAsFixed(2));
       }
       widgets.add(Padding(
           padding: EdgeInsets.only(left: 10, right: 10),
           child: Container(
-            decoration:
-                widget.recipe.ingredients[groupIdx].positions.length > index + 1
-                    ? BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(width: 1, color: Colors.grey)))
-                    : null,
+            decoration: widget.recipe!.ingredients[groupIdx].positions.length >
+                    index + 1
+                ? BoxDecoration(
+                    border: Border(
+                        bottom: BorderSide(width: 1, color: Colors.grey)))
+                : null,
             child: ListTile(
               title: Text(value.name),
               subtitle: Text(

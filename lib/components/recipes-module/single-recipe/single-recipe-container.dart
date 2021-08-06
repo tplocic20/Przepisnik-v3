@@ -7,8 +7,8 @@ import 'package:przepisnik_v3/components/recipes-module/single-recipe/tabs/recip
 import 'package:przepisnik_v3/models/recipe.dart';
 
 class SingleRecipeContainer extends StatefulWidget {
-  final Recipe recipe;
-  final double portion;
+  final Recipe? recipe;
+  final double? portion;
 
   SingleRecipeContainer({this.recipe, this.portion});
 
@@ -42,9 +42,9 @@ class _SingleRecipeContainerState extends State<SingleRecipeContainer> {
           Expanded(
             child: TabBarView(
               children: [
-                RecipeInfo(recipe: widget.recipe, portion: widget.portion),
-                RecipeText(widget.recipe),
-                RecipeGallery(widget.recipe),
+                RecipeInfo(recipe: widget.recipe!, portion: widget.portion!),
+                RecipeText(widget.recipe!),
+                RecipeGallery(widget.recipe!),
               ],
             ),
           ),

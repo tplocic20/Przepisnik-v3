@@ -3,14 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
-
 import '_partials/RecipeCategoriesTags.dart';
 
 class RecipeItem extends StatefulWidget {
-  final Recipe recipe;
-  final bool isLast;
-  final SlidableController slidableController;
-  final String selectedCategory;
+  final Recipe? recipe;
+  final bool? isLast;
+  final SlidableController? slidableController;
+  final String? selectedCategory;
 
   RecipeItem(
       {this.recipe,
@@ -30,12 +29,12 @@ class _RecipeItemState extends State<RecipeItem>
   @override
   Widget build(BuildContext context) {
     return Container(
-      clipBehavior: Clip.antiAlias,
+        clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-            color: Colors.white,
+          color: Colors.white,
         ),
         child: Slidable(
-          key: Key(widget.recipe.key),
+          key: Key(widget.recipe!.key),
           controller: widget.slidableController,
           child: Container(
             color: Colors.white,
@@ -43,17 +42,21 @@ class _RecipeItemState extends State<RecipeItem>
               padding: EdgeInsets.only(left: 5, right: 5),
               child: Container(
                 decoration: BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(width: 1, color: widget.isLast ? Colors.transparent : Colors.grey))),
+                    border: Border(
+                        bottom: BorderSide(
+                            width: 1,
+                            color: widget.isLast!
+                                ? Colors.transparent
+                                : Colors.grey))),
                 child: ListTile(
                   onTap: () {
-                    widget.slidableController.activeState = null;
+                    widget.slidableController!.activeState = null;
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SingleRecipe(widget.recipe)));
+                        builder: (context) => SingleRecipe(widget.recipe!)));
                   },
                   title: Hero(
-                    tag: widget.recipe.key,
-                    child: Text(widget.recipe.name,
+                    tag: widget.recipe!.key,
+                    child: Text(widget.recipe!.name,
                         style: Theme.of(context)
                             .textTheme
                             .bodyText2
@@ -63,11 +66,11 @@ class _RecipeItemState extends State<RecipeItem>
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(widget.recipe.recipe ?? '',
+                      Text(widget.recipe!.recipe ?? '',
                           overflow: TextOverflow.ellipsis),
                       RecipeCategoriesTags(
-                        recipe: widget.recipe,
-                        selectedCategory: widget.selectedCategory,
+                        recipe: widget.recipe!,
+                        selectedCategory: widget.selectedCategory!,
                       )
                     ],
                   ),
@@ -95,7 +98,7 @@ class _RecipeItemState extends State<RecipeItem>
             IconSlideAction(
               caption: 'Ulubione',
               color: Colors.amber,
-              icon: widget.recipe.favourite == true
+              icon: widget.recipe!.favourite == true
                   ? Icons.star_rounded
                   : Icons.star_border_rounded,
               onTap: () => {},
