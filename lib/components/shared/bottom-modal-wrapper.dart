@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BottomModalWrapper extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
 
   BottomModalWrapper({this.child});
 
@@ -24,7 +24,7 @@ class BottomModalWrapper extends StatelessWidget {
 }
 
 class BottomModalSearchWrapper extends StatelessWidget {
-  final Widget child;
+  final Widget? child;
 
   BottomModalSearchWrapper({this.child});
 

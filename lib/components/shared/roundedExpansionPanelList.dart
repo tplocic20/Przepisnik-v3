@@ -8,7 +8,7 @@ const double _borderRadiusClosed = 0.0;
 class RoundedExpansionPanelList extends StatelessWidget {
 
   const RoundedExpansionPanelList(
-      {Key key,
+      {Key? key,
         this.children: const <ExpansionPanel>[],
         this.expansionCallback,
         this.animationDuration: kThemeAnimationDuration})
@@ -18,7 +18,7 @@ class RoundedExpansionPanelList extends StatelessWidget {
 
   final List<ExpansionPanel> children;
 
-  final ExpansionPanelCallback expansionCallback;
+  final ExpansionPanelCallback? expansionCallback;
 
   final Duration animationDuration;
 
@@ -65,7 +65,7 @@ class RoundedExpansionPanelList extends StatelessWidget {
               padding: const EdgeInsets.all(16.0),
               onPressed: (bool isExpanded) {
                 if (expansionCallback != null)
-                  expansionCallback(index, isExpanded);
+                  expansionCallback!(index, isExpanded);
               },
             ),
           ),

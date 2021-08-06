@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:przepisnik_v3/components/shared/navigation-menu.dart';
 import 'package:przepisnik_v3/models/routes.dart';
 
 const double _backdropVelocity = 2.0;
@@ -8,26 +7,23 @@ const double _layerTitleHeight = 48.0;
 const double _backDropMaxHeight = _layerTitleHeight * 6;
 
 class Backdrop extends StatefulWidget {
-  final Widget frontLayer;
-  final Widget bottomNavigation;
-  final Widget bottomMainBtn;
+  final Widget? frontLayer;
+  final Widget? bottomNavigation;
+  final Widget? bottomMainBtn;
   final List<Widget> customActions;
-  final Routes scope;
   final Widget title;
   final bool backButtonOverride;
   final FloatingActionButtonLocation actionButtonLocation;
 
   const Backdrop(
-      {@required this.scope,
-      @required this.frontLayer,
+      {@required this.frontLayer,
       this.bottomNavigation,
       this.bottomMainBtn,
-      this.title,
+      this.title = const Text(''),
       this.actionButtonLocation = FloatingActionButtonLocation.centerDocked,
       this.customActions = const <Widget>[],
       this.backButtonOverride = false})
-      : assert(frontLayer != null),
-        assert(scope != null);
+      : assert(frontLayer != null);
 
   @override
   _BackdropState createState() => _BackdropState();
@@ -36,9 +32,9 @@ class Backdrop extends StatefulWidget {
 class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'Backdrop');
 
-  AnimationController _backdropAnimationController;
+  AnimationController? _backdropAnimationController;
   double _lastDragPos = 0.0;
-  bool _dragDirection;
+  bool _dragDirection = false;
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
     final Size layerSize = constraints.biggest;
@@ -48,23 +44,23 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       begin: RelativeRect.fromLTRB(
           0.0, _backDropMaxHeight, 0.0, layerTop - layerSize.height),
       end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
-    ).animate(_backdropAnimationController.view);
+    ).animate(_backdropAnimationController!.view);
 
     void closeBackdrop() {
-      _backdropAnimationController.fling(velocity: _backdropVelocity);
+      _backdropAnimationController!.fling(velocity: _backdropVelocity);
     }
 
     void backdropGrab(position) {
       if (!_frontLayerVisible) {
-        _backdropAnimationController.value =
+        _backdropAnimationController!.value =
             1 - (_backDropMaxHeight + position) /
                 _backDropMaxHeight;
       }
     }
 
     void backdropGrabEnd() {
-      _backdropAnimationController.fling(
-          velocity: _backdropAnimationController.value < 0.25
+      _backdropAnimationController!.fling(
+          velocity: _backdropAnimationController!.value < 0.25
               ? -_backdropVelocity
               : _backdropVelocity);
     }
@@ -73,18 +69,13 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       key: _backdropKey,
       children: <Widget>[
         ExcludeSemantics(
-          child: NavigationMenu(
-            routeScope: widget.scope,
-            closeBackdrop: closeBackdrop,
-            backDropGrab: backdropGrab,
-            backDropGrabEnd: backdropGrabEnd,
-          ),
+          child: Container(),
           excluding: _frontLayerVisible,
         ),
         PositionedTransition(
           rect: layerAnimation,
           child: _FrontLayer(
-            child: widget.frontLayer,
+            child: widget.frontLayer!,
           ),
         ),
       ],
@@ -92,13 +83,13 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   }
 
   bool get _frontLayerVisible {
-    final AnimationStatus status = _backdropAnimationController.status;
+    final AnimationStatus status = _backdropAnimationController!.status;
     return status == AnimationStatus.completed ||
         status == AnimationStatus.forward;
   }
 
   void _toggleBackdropLayerVisibility() {
-    _backdropAnimationController.fling(
+    _backdropAnimationController!.fling(
         velocity: _frontLayerVisible ? -_backdropVelocity : _backdropVelocity);
   }
 
@@ -118,7 +109,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    _backdropAnimationController.dispose();
+    _backdropAnimationController!.dispose();
     super.dispose();
   }
 
@@ -143,7 +134,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       ...widget.customActions,
       IconButton(
         icon: AnimatedIcon(
-          progress: _backdropAnimationController.view,
+          progress: _backdropAnimationController!.view,
           icon: AnimatedIcons.close_menu,
         ),
         onPressed: _toggleBackdropLayerVisibility,
@@ -171,16 +162,16 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
           if (_frontLayerVisible) {
             _dragDirection = details.localPosition.dy > _lastDragPos;
             _lastDragPos = details.localPosition.dy;
-            _backdropAnimationController.value =
+            _backdropAnimationController!.value =
                 (_backDropMaxHeight - details.localPosition.dy + 30) /
                     _backDropMaxHeight;
           }
         },
         onVerticalDragEnd: (DragEndDetails details) {
-          _backdropAnimationController.fling(
+          _backdropAnimationController!.fling(
               velocity: _dragDirection != null &&
                       _dragDirection &&
-                      _backdropAnimationController.value < 0.75
+                      _backdropAnimationController!.value < 0.75
                   ? -_backdropVelocity
                   : _backdropVelocity);
         },
@@ -205,10 +196,10 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
 class _FrontLayer extends StatelessWidget {
   const _FrontLayer({
-    Key key,
-    this.child,
+    Key? key,
+    @required this.child,
   }) : super(key: key);
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
