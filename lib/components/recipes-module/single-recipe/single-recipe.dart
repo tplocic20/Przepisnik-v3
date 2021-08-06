@@ -61,30 +61,32 @@ class _SingleRecipeState extends State<SingleRecipe> {
         recipe: widget.recipe,
         portion: this._portion,
       ),
-      customActions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.room_service),
-          onPressed: () {
-            showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) {
-                  return _buildCookModeModal();
-                });
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.pie_chart),
-          onPressed: () {
-            showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) {
-                  return _buildPortionModal();
-                });
-          },
-        )
-      ],
+      backLayer: Column(
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.room_service),
+            onPressed: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return _buildCookModeModal();
+                  });
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.pie_chart),
+            onPressed: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return _buildPortionModal();
+                  });
+            },
+          )
+        ],
+      ),
     );
   }
 }

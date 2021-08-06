@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:przepisnik_v3/models/routes.dart';
+import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
 
 const double _backdropVelocity = 2.0;
 const double _layerTitleHeight = 48.0;
@@ -11,7 +11,6 @@ class Backdrop extends StatefulWidget {
   final Widget? backLayer;
   final Widget? bottomNavigation;
   final Widget? bottomMainBtn;
-  final List<Widget> customActions;
   final Widget title;
   final bool backButtonOverride;
   final FloatingActionButtonLocation actionButtonLocation;
@@ -23,7 +22,6 @@ class Backdrop extends StatefulWidget {
       this.bottomMainBtn,
       this.title = const Text(''),
       this.actionButtonLocation = FloatingActionButtonLocation.centerDocked,
-      this.customActions = const <Widget>[],
       this.backButtonOverride = false})
       : assert(frontLayer != null);
 
@@ -55,16 +53,103 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     void backdropGrab(position) {
       if (!_frontLayerVisible) {
         _backdropAnimationController!.value =
-            1 - (_backDropMaxHeight + position) /
-                _backDropMaxHeight;
+            1 - (_backDropMaxHeight + position) / _backDropMaxHeight;
       }
     }
 
     void backdropGrabEnd() {
       _backdropAnimationController!.fling(
-          velocity: _backdropAnimationController!.value < 0.25
+          velocity: _backdropAnimationController!.value < 0.40
               ? -_backdropVelocity
               : _backdropVelocity);
+    }
+
+    Widget commonBackdropOptions() {
+      return GestureDetector(
+        onVerticalDragUpdate: (DragUpdateDetails details) {
+          backdropGrab(details.localPosition.dy);
+        },
+        onVerticalDragEnd: (DragEndDetails details) {
+          backdropGrabEnd();
+        },
+        child: Container(
+          height: 100,
+          alignment: Alignment.topCenter,
+          width: MediaQuery.of(context).size.width,
+          color: Theme.of(context).primaryColor,
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      child: SizedBox(
+                        width: 60,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            closeBackdrop();
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).accentColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(0),
+                            child: const Icon(Icons.settings_rounded),
+                          ),
+                        ),
+                      )),
+                  Padding(
+                      padding: EdgeInsets.only(left: 10, right: 10),
+                      child: SizedBox(
+                        width: 60,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            closeBackdrop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Theme.of(context).accentColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15))),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(0),
+                            child: const Icon(Icons.person_rounded),
+                          ),
+                        ),
+                      )),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: SizedBox(
+                  height: 50,
+                  child: OutlinedButton.icon(
+                    onPressed: () {},
+                    style: OutlinedButton.styleFrom(
+                        primary: Theme.of(context).accentColor,
+                        side: BorderSide(color: Theme.of(context).accentColor),
+                        shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15)))),
+                    icon: const Icon(Icons.logout_rounded),
+                    label: Text('Wyloguj'),
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      );
     }
 
     return Stack(
@@ -72,8 +157,15 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       children: <Widget>[
         ExcludeSemantics(
           child: Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor
+            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
+            child: Column(
+              children: [
+                Container(
+                  height: 215,
+                  child: widget.backLayer,
+                ),
+                commonBackdropOptions()
+              ],
             ),
           ),
           excluding: _frontLayerVisible,
@@ -121,7 +213,6 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
   Widget _defaultBottomBtn() {
     return Container();
-
   }
 
   Widget _defaultBottomNavBar() {
@@ -129,15 +220,15 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       elevation: 0,
       notchMargin: 5,
       color: Theme.of(context).primaryColorLight,
-      child: Container(height: 1,),
+      child: Container(
+        height: 1,
+      ),
     );
-
   }
 
   @override
   Widget build(BuildContext context) {
     List<Widget> barActions = [
-      ...widget.customActions,
       IconButton(
         icon: AnimatedIcon(
           progress: _backdropAnimationController!.view,
@@ -165,7 +256,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                   EdgeInsets.only(left: widget.backButtonOverride ? 0 : 15),
             )),
         onVerticalDragUpdate: (DragUpdateDetails details) {
-          if (_frontLayerVisible) {
+          if (_frontLayerVisible && widget.backLayer != null) {
             _dragDirection = details.localPosition.dy > _lastDragPos;
             _lastDragPos = details.localPosition.dy;
             _backdropAnimationController!.value =
@@ -175,14 +266,13 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         },
         onVerticalDragEnd: (DragEndDetails details) {
           _backdropAnimationController!.fling(
-              velocity: _dragDirection != null &&
-                      _dragDirection &&
-                      _backdropAnimationController!.value < 0.75
-                  ? -_backdropVelocity
-                  : _backdropVelocity);
+              velocity:
+                  _dragDirection && _backdropAnimationController!.value < 0.55
+                      ? -_backdropVelocity
+                      : _backdropVelocity);
         },
       ),
-      actions: barActions,
+      actions: widget.backLayer != null ? barActions : [],
     );
     return Scaffold(
         extendBody: true,
@@ -191,11 +281,11 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         floatingActionButtonLocation: widget.actionButtonLocation,
         floatingActionButton: AnimatedContainer(
           duration: Duration(milliseconds: 300),
-          child: widget.bottomMainBtn != null ? widget.bottomMainBtn : _defaultBottomBtn(),
+          child: widget.bottomMainBtn ?? _defaultBottomBtn(),
         ),
         bottomNavigationBar: AnimatedContainer(
           duration: Duration(milliseconds: 300),
-          child: widget.bottomNavigation != null ? widget.bottomNavigation : _defaultBottomNavBar(),
+          child: widget.bottomNavigation ?? _defaultBottomNavBar(),
         ));
   }
 }
@@ -211,20 +301,16 @@ class _FrontLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 16.0,
-      color: Color(0xFFf2f5f7),
-      // color: Color(0xFFfffaf5),
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(25), topRight: Radius.circular(25)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(25)),
-              clipBehavior: Clip.antiAlias,
-              child: child
-            )
-          ),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(25)),
+                  clipBehavior: Clip.antiAlias,
+                  child: child)),
         ],
       ),
     );

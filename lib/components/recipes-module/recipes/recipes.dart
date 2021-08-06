@@ -46,7 +46,7 @@ class _RecipesState extends State<RecipesPage> {
         value: '',
         groupValue: _selectedCategory,
         onChanged: (value) {
-          _updateCategory(null, null);
+          _updateCategory('', '');
           _title = 'Wszystkie';
         },
         title: Text('Wszystkie'),
@@ -207,6 +207,7 @@ class _RecipesState extends State<RecipesPage> {
           bottomNavigation: _buildBottomBar(),
           bottomMainBtn: _buildBottomActionButton(),
           title: Text(this._title),
+          backLayer: Container(),
           frontLayer: Column(
             children: [
               this._searchString.isEmpty ? Container() : _buildSearchText(),
