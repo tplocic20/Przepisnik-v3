@@ -1,14 +1,16 @@
 import 'dart:async';
 import 'dart:ui';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipes-list.dart';
-import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
+import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/services/recipes-service.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class RecipesPage extends StatefulWidget {
   const RecipesPage();
@@ -122,40 +124,32 @@ class _RecipesState extends State<RecipesPage> {
                     topRight: Radius.circular(25))),
             StadiumBorder()),
         clipBehavior: Clip.antiAlias,
-        child: Container(
-            child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Padding(
-                padding: EdgeInsets.all(5),
-                child: IconButton(
-                  icon: Icon(Icons.menu),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        backgroundColor: Colors.transparent,
-                        context: context,
-                        builder: (context) {
-                          return _buildCategoriesModal();
-                        });
-                  },
-                )),
-            Padding(
-              padding: EdgeInsets.all(5),
-              child: IconButton(
-                icon: Icon(Icons.search),
-                onPressed: () {
-                  showModalBottomSheet(
-                      backgroundColor: Colors.transparent,
-                      context: context,
-                      builder: (context) {
-                        return _buildSearchModal();
-                      });
-                },
-              ),
-            )
-          ],
-        )),
+        child: [
+          IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return _buildCategoriesModal();
+                  });
+            },
+          ).paddingDirectional(all: 15),
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return _buildSearchModal();
+                  });
+            },
+          ).paddingDirectional(all: 15),
+        ].toRow(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween),
       );
     }
 

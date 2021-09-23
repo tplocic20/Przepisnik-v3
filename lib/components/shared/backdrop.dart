@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
 import 'package:przepisnik_v3/components/start/home.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 const double _backdropVelocity = 2.0;
 const double _layerTitleHeight = 48.0;
@@ -67,116 +68,75 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     }
 
     Widget commonBackdropOptions() {
-      return GestureDetector(
-        onVerticalDragUpdate: (DragUpdateDetails details) {
-          backdropGrab(details.localPosition.dy);
-        },
-        onVerticalDragEnd: (DragEndDetails details) {
-          backdropGrabEnd();
-        },
-        child: Container(
-          height: 100,
-          alignment: Alignment.topCenter,
-          width: MediaQuery.of(context).size.width,
-          color: Theme.of(context).primaryColor,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                      padding: EdgeInsets.only(left: 10, right: 10),
-                      child: SizedBox(
-                        width: 60,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            closeBackdrop();
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => SettingsPage()));
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).accentColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(0),
-                            child: const Icon(Icons.settings_rounded),
-                          ),
-                        ),
-                      )),
-                  Padding(
-                      padding: EdgeInsets.only(left: 10, right: 10),
-                      child: SizedBox(
-                        width: 60,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            closeBackdrop();
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Theme.of(context).accentColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.all(0),
-                            child: const Icon(Icons.person_rounded),
-                          ),
-                        ),
-                      )),
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                child: SizedBox(
-                  height: 50,
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      AuthService().signOut();
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomePage()),
-                          (Route<dynamic> route) => false);
-                    },
-                    style: OutlinedButton.styleFrom(
-                        primary: Theme.of(context).accentColor,
-                        side: BorderSide(color: Theme.of(context).accentColor),
-                        shape: RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(15)))),
-                    icon: const Icon(Icons.logout_rounded),
-                    label: Text('Wyloguj'),
-                  ),
+      return Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+            Row(mainAxisSize: MainAxisSize.min, children: [
+              ElevatedButton(
+                onPressed: () {
+                  closeBackdrop();
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => SettingsPage()));
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).accentColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
                 ),
-              )
-            ],
-          ),
-        ),
-      );
+                child: const Icon(Icons.settings_rounded).padding(all: 0),
+              ).width(60).height(50).padding(horizontal: 10),
+              ElevatedButton(
+                onPressed: () {
+                  closeBackdrop();
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Theme.of(context).accentColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                ),
+                child: const Icon(Icons.person_rounded).padding(all: 0),
+              ).width(60).height(50).padding(horizontal: 10),
+            ]),
+            OutlinedButton.icon(
+              onPressed: () {
+                AuthService().signOut();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                    (Route<dynamic> route) => false);
+              },
+              style: OutlinedButton.styleFrom(
+                  primary: Theme.of(context).accentColor,
+                  side: BorderSide(color: Theme.of(context).accentColor),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15)))),
+              icon: const Icon(Icons.logout_rounded),
+              label: Text('Wyloguj'),
+            ).height(50).padding(horizontal: 10),
+          ])
+          .backgroundColor(Theme.of(context).primaryColor)
+          .width(MediaQuery.of(context).size.width)
+          .alignment(Alignment.topCenter)
+          .height(100)
+          .gestures(
+              onVerticalDragUpdate: (DragUpdateDetails details) =>
+                  backdropGrab(details.localPosition.dy),
+              onVerticalDragEnd: (DragEndDetails details) => backdropGrabEnd());
     }
 
     return Stack(
       key: _backdropKey,
       children: <Widget>[
         ExcludeSemantics(
-          child: Container(
-            decoration: BoxDecoration(color: Theme.of(context).primaryColor),
-            child: Column(
-              children: [
-                Container(
-                  height: 215,
-                  child: widget.backLayer,
-                ),
-                commonBackdropOptions()
-              ],
-            ),
-          ),
+          child: Column(
+            children: [
+              Styled.widget(
+                child: widget.backLayer,
+              ).height(215),
+              commonBackdropOptions()
+            ],
+          ).backgroundColor(Theme.of(context).primaryColor),
           excluding: _frontLayerVisible,
         ),
         PositionedTransition(
@@ -257,13 +217,9 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
             )
           : null,
       title: GestureDetector(
-        child: Container(
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              child: widget.title,
-              padding:
-                  EdgeInsets.only(left: widget.backButtonOverride ? 0 : 15),
-            )),
+        child: Styled.widget(child: widget.title)
+            .width(MediaQuery.of(context).size.width)
+            .padding(left: widget.backButtonOverride ? 0 : 15),
         onVerticalDragUpdate: (DragUpdateDetails details) {
           if (_frontLayerVisible && widget.backLayer != null) {
             _dragDirection = details.localPosition.dy > _lastDragPos;

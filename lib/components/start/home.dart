@@ -8,7 +8,6 @@ import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-
 const authErrors = const {
   'user_': 'Użytkownik nie istnieje',
   'bad_pass': 'Błędne hasło',
@@ -65,9 +64,7 @@ class _HomeState extends State<HomePage> {
                     RecipesService().init();
                     print(globals.categories.length);
                     Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => RecipesPage()),
-                            (Route<dynamic> route) => false);
+                        context, _recipesPage(), (Route<dynamic> route) => false);
                   },
                   onRecoverPassword: recover,
                   navigateBackAfterRecovery: true,
@@ -111,5 +108,17 @@ class _HomeState extends State<HomePage> {
   Future<String?> recover(String email) {
     return _authService
         .recoverPassword(email);
+  }
+
+  Route _recipesPage() {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => const RecipesPage(),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        return FadeTransition(
+          opacity: animation,
+          child: child,
+        );
+      },
+    );
   }
 }
