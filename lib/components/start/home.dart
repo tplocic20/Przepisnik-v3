@@ -62,7 +62,7 @@ class _HomeState extends State<HomePage> {
                   onSignup: signup,
                   onSubmitAnimationCompleted: () {
                     RecipesService().init();
-                    print(globals.categories.length);
+                    print(RecipesService().categories.length);
                     Navigator.pushAndRemoveUntil(
                         context, _recipesPage(), (Route<dynamic> route) => false);
                   },

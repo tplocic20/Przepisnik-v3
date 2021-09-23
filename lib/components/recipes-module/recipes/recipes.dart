@@ -54,7 +54,7 @@ class _RecipesState extends State<RecipesPage> {
         title: Text('Wszystkie'),
       ));
 
-      globals.categories.forEach((category) {
+      RecipesService().categories.forEach((category) {
         listElements.add(RadioListTile(
           value: category.key,
           groupValue: _selectedCategory,
@@ -74,9 +74,7 @@ class _RecipesState extends State<RecipesPage> {
     Widget _buildSearchModal() {
       Timer? _debounce;
       return BottomModalSearchWrapper(
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
-          child: TextFormField(
+        child: TextFormField(
             controller: _searchController,
             autofocus: true,
             onChanged: (txt) {
@@ -107,8 +105,7 @@ class _RecipesState extends State<RecipesPage> {
             style: new TextStyle(
               fontFamily: "Poppins",
             ),
-          ),
-        ),
+          ).padding(all: 10),
       );
     }
 

@@ -4,6 +4,7 @@ import 'package:przepisnik_v3/components/settings-module/settings/settings.dart'
 import 'package:przepisnik_v3/components/start/home.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:przepisnik_v3/globals/globals.dart' as globals;
 
 const double _backdropVelocity = 2.0;
 const double _layerTitleHeight = 48.0;
@@ -51,6 +52,10 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
     void closeBackdrop() {
       _backdropAnimationController!.fling(velocity: _backdropVelocity);
+    }
+
+    if (globals.globalBackdropHandler != null) {
+      globals.globalBackdropHandler = closeBackdrop;
     }
 
     void backdropGrab(position) {
