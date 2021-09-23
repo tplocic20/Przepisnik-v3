@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
+import 'package:przepisnik_v3/components/start/home.dart';
+import 'package:przepisnik_v3/services/auth-service.dart';
 
 const double _backdropVelocity = 2.0;
 const double _layerTitleHeight = 48.0;
@@ -92,7 +94,8 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                         child: ElevatedButton(
                           onPressed: () {
                             closeBackdrop();
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SettingsPage()));
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Theme.of(context).accentColor,
@@ -134,7 +137,13 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                 child: SizedBox(
                   height: 50,
                   child: OutlinedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      AuthService().signOut();
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                          (Route<dynamic> route) => false);
+                    },
                     style: OutlinedButton.styleFrom(
                         primary: Theme.of(context).accentColor,
                         side: BorderSide(color: Theme.of(context).accentColor),

@@ -35,6 +35,9 @@ dependencies:
   flutter_staggered_animations: ^1.0.0
   lottie: ^1.1.0
   google_fonts: ^2.1.0
+  particles_flutter: ^0.1.1
+  styled_widget: ^0.4.0+3
+  flutter_login: ^2.2.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
