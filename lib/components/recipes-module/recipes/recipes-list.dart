@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipe-item.dart';
@@ -20,27 +21,12 @@ class RecipesList extends StatefulWidget {
 }
 
 class _RecipesListSate extends State<RecipesList> {
-
-  String? openedRecipe;
-
-  void initState() {
-    super.initState();
-    openedRecipe = null;
-  }
-
-  void openRecipe(String? recipeKey) {
-    print(recipeKey);
-    this.setState(() {
-      openedRecipe = recipeKey ?? null;
-    });
-  }
+  final SlidableController slidableController = SlidableController();
 
   Widget getRecipesList(List<Recipe> recipes) {
     List<Recipe> filteredRecipes = recipes.where((r) {
-      final isCategory = widget._currentCategory == null ||
-          r.categories.contains(widget._currentCategory);
-      final isSearchResult = widget._searchString == null ||
-          r.name.toLowerCase().contains(widget._searchString.toLowerCase());
+      final isCategory = r.categories.contains(widget._currentCategory);
+      final isSearchResult = r.name.toLowerCase().contains(widget._searchString.toLowerCase());
       return isCategory && isSearchResult;
     }).toList();
     return filteredRecipes.length > 0
@@ -60,9 +46,9 @@ class _RecipesListSate extends State<RecipesList> {
                           child: RecipeItem(
                         recipe: filteredRecipes[index],
                         isLast: filteredRecipes.length > index + 1,
+                        isFirst: index == 0,
+                        slidableController: slidableController,
                         selectedCategory: widget._currentCategory,
-                        openedRecipe: openedRecipe,
-                        openRecipe: openRecipe,
                       )),
                     ),
                     ),

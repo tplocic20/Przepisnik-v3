@@ -271,6 +271,7 @@ class _FrontLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 16.0,
+      color: Theme.of(context).backgroundColor,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(25), topRight: Radius.circular(25)),
       child: Column(

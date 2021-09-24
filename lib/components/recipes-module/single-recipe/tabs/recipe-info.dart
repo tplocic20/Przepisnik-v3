@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class RecipeInfo extends StatefulWidget {
   final Recipe? recipe;
@@ -23,14 +24,11 @@ class _RecipeInfoState extends State<RecipeInfo> {
           widget.recipe!.temperature == '-') {
         return Container();
       } else {
-        return Padding(
-          padding: EdgeInsets.only(right: 25, left: 25),
-          child: ListTile(
+        return ListTile(
             title: const Text('Temperatura'),
             trailing: Text('${widget.recipe!.temperature} stC'),
             leading: Icon(Icons.wb_incandescent),
-          ),
-        );
+          ).padding(horizontal: 25);
       }
     }
 
@@ -38,14 +36,11 @@ class _RecipeInfoState extends State<RecipeInfo> {
       if (widget.recipe!.time == null || widget.recipe!.time == '-') {
         return Container();
       } else {
-        return Padding(
-          padding: EdgeInsets.only(right: 25, left: 25),
-          child: ListTile(
+        return ListTile(
             title: const Text('Czas'),
             trailing: Text('${widget.recipe!.time}'),
             leading: Icon(Icons.timer),
-          ),
-        );
+          ).padding(horizontal: 25);
       }
     }
 
@@ -53,18 +48,14 @@ class _RecipeInfoState extends State<RecipeInfo> {
       children: <Widget>[
         _getTemperature(),
         _getTime(),
-        Padding(
-              padding:
-                  EdgeInsets.only(bottom: 100.0, left: 10, right: 10, top: 10),
-              child: RoundedExpansionPanelList(
+        RoundedExpansionPanelList(
                 expansionCallback: (int index, bool isExpanded) {
                   setState(() {
                     groupExpanded[index] = !isExpanded;
                   });
                 },
                 children: _buildIngredientsGroupList(),
-              ),
-            ),
+              ).padding(bottom: 100.0, left: 10, right: 10, top: 10),
       ],
     );
   }
@@ -90,16 +81,14 @@ class _RecipeInfoState extends State<RecipeInfo> {
   }
 
   _buildIngredientsList(groupIdx) {
-    List<Padding> widgets = [];
+    List<Widget> widgets = [];
     widget.recipe!.ingredients[groupIdx].positions
         .asMap()
         .forEach((index, Ingredient value) {
       num parsedValue =
             num.parse((value.qty * widget.portion!.toInt()).toStringAsFixed(2));
 
-      widgets.add(Padding(
-          padding: EdgeInsets.only(left: 10, right: 10),
-          child: Container(
+      widgets.add(Container(
             decoration: widget.recipe!.ingredients[groupIdx].positions.length >
                     index + 1
                 ? BoxDecoration(
@@ -111,7 +100,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
               subtitle: Text(
                   '${value.qty != null ? parsedValue : ''} ${value.unit != null ? value.unit : ''}'),
             ),
-          )));
+          ).paddingDirectional(horizontal: 10));
     });
     return widgets;
   }

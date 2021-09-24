@@ -51,18 +51,10 @@ ThemeData _appTheme() {
       accentColor: const Color(0xFFeebb4d),
       scaffoldBackgroundColor: const Color(0xFFF5F3E7),
       backgroundColor: const Color(0xFFF5F3E7),
-      primaryTextTheme: const TextTheme(bodyText1: const TextStyle(color: Colors.white)),
-
-      // Define the default TextTheme. Use this to specify the default
-      // text styling for headlines, titles, bodies of text, and more.
       textTheme: GoogleFonts.montserratTextTheme(TextTheme(
         headline1: const TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
         bodyText2: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
       )),
-      // textTheme: TextTheme(
-      //   headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-      //   bodyText2: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
-      // ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -72,7 +64,14 @@ ThemeData _appTheme() {
       inputDecorationTheme: InputDecorationTheme(
           filled: true,
           isDense: true,
-          labelStyle: TextStyle(fontSize: 15, letterSpacing: 1),
+          labelStyle: TextStyle(fontSize: 15, letterSpacing: 1, color: const Color(0xFF6c864f)),
+          focusColor: const Color(0xFF6c864f),
+          prefixStyle: TextStyle(
+            color: const Color(0xFF6c864f)
+          ),
+          suffixStyle: TextStyle(
+            color: const Color(0xFF6c864f)
+          ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
             borderSide: BorderSide(color: Color(0xFF41681f)),

@@ -1,56 +1,52 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-
 class RecipeItem extends StatefulWidget {
   final Recipe? recipe;
-  final String? openedRecipe;
-  final Function? openRecipe;
   final bool? isLast;
+  final bool? isFirst;
   final String? selectedCategory;
+  final SlidableController? slidableController;
 
-  RecipeItem({this.recipe, this.isLast, this.selectedCategory, this.openedRecipe, this.openRecipe});
+  RecipeItem(
+      {this.recipe,
+      this.isLast,
+      this.isFirst,
+      this.selectedCategory,
+      this.slidableController});
 
   _RecipeItemState createState() => _RecipeItemState();
 }
 
-class _RecipeItemState extends State<RecipeItem>
-    with SingleTickerProviderStateMixin {
-  bool pressed = false;
-
+class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
   void initState() {
     super.initState();
-    pressed = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Styled.widget(child: Stack(
-      children: [_buildTile(), _buildActions()],
+    return Styled.widget(
+            child: Slidable(
+      actionPane: SlidableDrawerActionPane(),
+      actionExtentRatio: 0.22,
+      controller: widget.slidableController,
+      child: _buildTile(),
+      actions: _buildActions(),
     ))
         .alignment(Alignment.center)
         .borderRadius(all: 15)
-        .ripple()
-        .backgroundColor(Colors.white, animate: true)
+        .backgroundColor(Colors.transparent, animate: true)
         .clipRRect(all: 25) // clip ripple
         .borderRadius(all: 25, animate: true)
-        .elevation(pressed ? 0 : 20,
+        .elevation(20,
             borderRadius: BorderRadius.circular(25),
             shadowColor: Color(0x30000000)) // shadow borderRadius
         .constrained(height: 80)
-        .padding(bottom: 12) // margin
-        .gestures(
-            onTapChange: (tapStatus) => setState(() => pressed = tapStatus),
-            onLongPressEnd: (details) => widget.openRecipe!(widget.recipe?.key),
-            onTap: () {
-              widget.openRecipe!(null);
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SingleRecipe(widget.recipe!)));
-            })
-        .scale(all: pressed ? 0.95 : 1.0, animate: true)
+        .padding(bottom: 12, horizontal: 10, top: widget.isFirst! ? 12 : 0) // margin
         .animate(Duration(milliseconds: 150), Curves.easeOut);
   }
 
@@ -69,37 +65,42 @@ class _RecipeItemState extends State<RecipeItem>
           Text(widget.recipe!.recipe, overflow: TextOverflow.ellipsis)
         ],
       ),
-    );
+    )
+        .ripple()
+        .gestures(onTap: () {
+          print(widget.slidableController!);
+          widget.slidableController!.activeState = null;
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => SingleRecipe(widget.recipe!)));
+        })
+        .backgroundColor(Colors.white)
+        .clipRRect(all: 25);
   }
 
-  Widget _buildActions() {
-    if (widget.openedRecipe != widget.recipe!.key) {
-      return Container();
-    }
-    const shape = RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(15)));
+  List<Widget> _buildActions() {
     List<Widget> buttons = [
-      ElevatedButton(onPressed: (){}, child: const Icon(Icons.delete_rounded).padding(all: 0), style: ElevatedButton.styleFrom(
-        primary: Colors.red, shape: shape,
-      )).width(60).height(50).padding(vertical: 15, left: 5, right: 15),
-      ElevatedButton(onPressed: (){}, child: const Icon(Icons.create_rounded).padding(all: 0), style: ElevatedButton.styleFrom(
-        primary: Theme.of(context).accentColor, shape: shape,
-      )).width(60).height(50).padding(vertical: 15, horizontal: 5),
-      ElevatedButton(onPressed: (){}, child: const Icon(Icons.share_rounded).padding(all: 0), style: ElevatedButton.styleFrom(
-        primary: Colors.green, shape: shape,
-      )).width(60).height(50).padding(vertical: 15, horizontal: 5),
-      ElevatedButton(onPressed: (){}, child: const Icon(Icons.favorite_outline_rounded).padding(all: 0), style: ElevatedButton.styleFrom(
-        primary: Colors.amber, shape: shape,
-      )).width(60).height(50).padding(vertical: 15, horizontal: 5),
+      getButton(action: () {}, icon: Icons.delete_rounded, color: Color(0xFFF46060)),
+      getButton(
+          action: () {},
+          icon: Icons.create_rounded,
+          color: Color(0xFFB5DEFF)),
+      getButton(action: () {}, icon: Icons.share_rounded, color: Color(0xFFCBE2B0)),
+      getButton(
+          action: () {},
+          icon: Icons.favorite_outline_rounded,
+          color: Color(0xFFF3D179)),
     ];
-    return AnimationLimiter(child: ListView.builder(
-        itemCount: buttons.length,
-        reverse: true,
-        scrollDirection: Axis.horizontal,
-        itemBuilder: (BuildContext context, int index) => AnimationConfiguration.staggeredList(
-            position: index, duration: const Duration(milliseconds: 0),
-            child: ScaleAnimation(child: FadeInAnimation(child: buttons[index]))
-        )
-    ));
+    return buttons;
+  }
+
+  Widget getButton({color: Color, icon: Icons, action: Function}) {
+    return ElevatedButton(
+        onPressed: action,
+        child: Icon(icon).padding(all: 0),
+        style: ElevatedButton.styleFrom(
+          primary: color,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(15))),
+        )).width(60).height(50).padding(vertical: 15, horizontal: 10);
   }
 }

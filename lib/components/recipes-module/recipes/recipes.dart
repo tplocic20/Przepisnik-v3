@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +77,7 @@ class _RecipesState extends State<RecipesPage> {
             controller: _searchController,
             autofocus: true,
             onChanged: (txt) {
-              if (_debounce!.isActive) _debounce!.cancel();
+              if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
               _debounce = Timer(const Duration(milliseconds: 350), () {
                 setState(() {
                   _searchString = txt;
@@ -93,6 +92,7 @@ class _RecipesState extends State<RecipesPage> {
             },
             decoration: InputDecoration(
                 filled: true,
+                prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor),
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25),
@@ -167,11 +167,11 @@ class _RecipesState extends State<RecipesPage> {
         title: RichText(
           text: TextSpan(
             text: 'Wyniki dla ',
-            style: DefaultTextStyle.of(context).style,
+            style: Theme.of(context).textTheme.bodyText2,
             children: <TextSpan>[
               TextSpan(
                   text: this._searchString,
-                  style: DefaultTextStyle.of(context).style.copyWith(
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
                       color: Colors.white,
                       backgroundColor: Theme.of(context).accentColor)),
             ],
