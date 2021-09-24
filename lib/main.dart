@@ -5,6 +5,7 @@ import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:przepisnik_v3/components/app.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,17 +45,19 @@ ThemeData _appTheme() {
   return ThemeData(
       // Define the default brightness and colors.
       brightness: Brightness.light,
-      primaryColor: Color(0xFF41681f),
-      primaryColorLight: Color(0xFF6f964a),
-      primaryColorDark: Color(0xFF153d00),
-      accentColor: Color(0xFFd87f33),
-      primaryTextTheme: TextTheme(bodyText1: TextStyle(color: Colors.white)),
+      primaryColor: const Color(0xFF6c864f),
+      primaryColorLight: const Color(0xFF9bb67c),
+      primaryColorDark: const Color(0xFF405925),
+      accentColor: const Color(0xFFeebb4d),
+      scaffoldBackgroundColor: const Color(0xFFF5F3E7),
+      backgroundColor: const Color(0xFFF5F3E7),
+      primaryTextTheme: const TextTheme(bodyText1: const TextStyle(color: Colors.white)),
 
       // Define the default TextTheme. Use this to specify the default
       // text styling for headlines, titles, bodies of text, and more.
       textTheme: GoogleFonts.montserratTextTheme(TextTheme(
-        headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-        bodyText2: TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
+        headline1: const TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+        bodyText2: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
       )),
       // textTheme: TextTheme(
       //   headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
