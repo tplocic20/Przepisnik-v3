@@ -4,8 +4,6 @@ import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-rec
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
-import 'package:przepisnik_v3/models/routes.dart';
-
 import 'modals/portion-modal.dart';
 
 class SingleRecipe extends StatefulWidget {
@@ -39,13 +37,12 @@ class _SingleRecipeState extends State<SingleRecipe> {
     }
 
     return Backdrop(
-      scope: Routes.recipes,
       title: Hero(
         tag: widget.recipe.key,
         child: Text(
             widget.recipe.name,
             overflow: TextOverflow.fade,
-            style: Theme.of(context).textTheme.bodyText1.copyWith(
+            style: Theme.of(context).textTheme.bodyText1!.copyWith(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
@@ -64,30 +61,32 @@ class _SingleRecipeState extends State<SingleRecipe> {
         recipe: widget.recipe,
         portion: this._portion,
       ),
-      customActions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.room_service),
-          onPressed: () {
-            showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) {
-                  return _buildCookModeModal();
-                });
-          },
-        ),
-        IconButton(
-          icon: Icon(Icons.pie_chart),
-          onPressed: () {
-            showModalBottomSheet(
-                backgroundColor: Colors.transparent,
-                context: context,
-                builder: (context) {
-                  return _buildPortionModal();
-                });
-          },
-        )
-      ],
+      backLayer: Column(
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.room_service),
+            onPressed: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return _buildCookModeModal();
+                  });
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.pie_chart),
+            onPressed: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  context: context,
+                  builder: (context) {
+                    return _buildPortionModal();
+                  });
+            },
+          )
+        ],
+      ),
     );
   }
 }

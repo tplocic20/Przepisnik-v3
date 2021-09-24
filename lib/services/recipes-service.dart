@@ -3,20 +3,27 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
+import 'package:rxdart/rxdart.dart';
 
 class RecipesService {
+  static final RecipesService _singleton = RecipesService._internal();
   final _db = FirebaseDatabase.instance.reference();
+  String _selectedCategory = '';
+  List<Category> _categories = [];
+
+  factory RecipesService() {
+    return _singleton;
+  }
+  RecipesService._internal();
+
 
   init() async {
-    if (globals.categories != null && globals.categories.length > 0) {
-      return;
-    }
     await _db
         .child('Categories')
         .child(globals.userState)
         .once()
         .then((element) {
-      globals.categories = parseCategories(element.value);
+      this._categories = parseCategories(element.value);
       return;
     });
   }
@@ -28,6 +35,16 @@ class RecipesService {
         .onValue;
   }
 
+  List<Category> get categories {
+    return this._categories;
+  }
+  String get selectedCategory {
+    return this._selectedCategory;
+  }
+
+  set selectedCategory(String value) {
+    this._selectedCategory = value;
+  }
   parseRecipes(element) {
     List<Recipe> parsedList = [];
     DataSnapshot dataValues = element.snapshot;
@@ -47,6 +64,6 @@ class RecipesService {
   }
 
   getCategoryByKey(key) {
-    return globals.categories?.singleWhere((element) => element.key == key);
+    return this._categories.singleWhere((element) => element.key == key);
   }
 }
