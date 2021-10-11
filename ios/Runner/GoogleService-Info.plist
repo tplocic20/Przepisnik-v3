@@ -3,34 +3,34 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>529215752695-ujsrb7q1b9itgv5ujqr8jrpgb9l68qv0.apps.googleusercontent.com</string>
+	<string>457833981759-pebrqku4rv7t5etsvg3q4fd2n0ons546.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.529215752695-ujsrb7q1b9itgv5ujqr8jrpgb9l68qv0</string>
+	<string>com.googleusercontent.apps.457833981759-pebrqku4rv7t5etsvg3q4fd2n0ons546</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAEvPTMmsonWOJiMahzahcGRWg6tOaHjAI</string>
+	<string>AIzaSyAjlofQWt-qYoSrPXWuD30_H_dqUiYLjZk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>529215752695</string>
+	<string>457833981759</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>pl.przepisnik.przepisnikV3</string>
+	<string>com.sakana.przepisnik</string>
 	<key>PROJECT_ID</key>
-	<string>przepisnik-v2</string>
+	<string>firebase-przepisnik</string>
 	<key>STORAGE_BUCKET</key>
-	<string>przepisnik-v2.appspot.com</string>
+	<string>firebase-przepisnik.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:529215752695:ios:f0f0f2365999ed964306f2</string>
+	<string>1:457833981759:ios:b3a4fedfa20d817bbd958a</string>
 	<key>DATABASE_URL</key>
-	<string>https://przepisnik-v2.firebaseio.com</string>
+	<string>https://przepisnik.firebaseio.com</string>
 </dict>
 </plist>

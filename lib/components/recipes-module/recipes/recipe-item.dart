@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
+import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
+import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:przepisnik_v3/globals/globals.dart' as globals;
 
 class RecipeItem extends StatefulWidget {
   final Recipe? recipe;
@@ -59,22 +62,42 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
                 Theme.of(context).textTheme.bodyText2?.copyWith(fontSize: 20)),
       ),
       isThreeLine: true,
-      subtitle: Column(
+      subtitle: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(widget.recipe!.recipe, overflow: TextOverflow.ellipsis)
-        ],
-      ),
+        children: _buildTags(),
+      ).padding(top: 5),
     )
         .ripple()
         .gestures(onTap: () {
-          print(widget.slidableController!);
           widget.slidableController!.activeState = null;
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => SingleRecipe(widget.recipe!)));
         })
         .backgroundColor(Colors.white)
         .clipRRect(all: 25);
+  }
+
+  List<Widget> _buildTags() {
+    return widget.recipe!.categories
+        .replaceAll(';', ',')
+        .split(',')
+        .map((category) => _buildCategoryTag(RecipesService().getCategoryByKey(category)))
+        .toList();
+  }
+
+  Widget _buildCategoryTag(Category? category) {
+    if (category == null) {
+      return Container();
+    }
+    return Container(
+      decoration: BoxDecoration(
+          border: Border.all(
+            color: Theme.of(context).primaryColor,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(20))
+      ),
+      child: Text(category.name).padding(all: 3),
+    ).paddingDirectional(end: 5);
   }
 
   List<Widget> _buildActions() {

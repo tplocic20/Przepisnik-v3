@@ -1,13 +1,15 @@
 import 'dart:async';
 import 'dart:ui';
+
+import 'package:animations/animations.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipes-list.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
-import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -74,38 +76,39 @@ class _RecipesState extends State<RecipesPage> {
       Timer? _debounce;
       return BottomModalSearchWrapper(
         child: TextFormField(
-            controller: _searchController,
-            autofocus: true,
-            onChanged: (txt) {
-              if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
-              _debounce = Timer(const Duration(milliseconds: 350), () {
-                setState(() {
-                  _searchString = txt;
-                });
-              });
-            },
-            onFieldSubmitted: (txt) {
-              Navigator.pop(context);
+          controller: _searchController,
+          autofocus: true,
+          onChanged: (txt) {
+            if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
+            _debounce = Timer(const Duration(milliseconds: 350), () {
               setState(() {
-                _searchString = _searchController!.text;
+                _searchString = txt;
               });
-            },
-            decoration: InputDecoration(
-                filled: true,
-                prefixIcon: Icon(Icons.search, color: Theme.of(context).primaryColor),
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
-                  borderSide: BorderSide(
-                      color: Theme.of(context).primaryColor,
-                      style: BorderStyle.solid,
-                      width: 1),
-                )),
-            keyboardType: TextInputType.text,
-            style: new TextStyle(
-              fontFamily: "Poppins",
-            ),
-          ).padding(all: 10),
+            });
+          },
+          onFieldSubmitted: (txt) {
+            Navigator.pop(context);
+            setState(() {
+              _searchString = _searchController!.text;
+            });
+          },
+          decoration: InputDecoration(
+              filled: true,
+              prefixIcon:
+                  Icon(Icons.search, color: Theme.of(context).primaryColor),
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(
+                    color: Theme.of(context).primaryColor,
+                    style: BorderStyle.solid,
+                    width: 1),
+              )),
+          keyboardType: TextInputType.text,
+          style: new TextStyle(
+            fontFamily: "Poppins",
+          ),
+        ).padding(all: 10),
       );
     }
 
@@ -151,9 +154,42 @@ class _RecipesState extends State<RecipesPage> {
     }
 
     Widget _buildBottomActionButton() {
+      const double _fabDimension = 50;
+      return OpenContainer(
+        transitionType: ContainerTransitionType.fadeThrough,
+        openBuilder: (BuildContext context, VoidCallback _) {
+          return const EditRecipe();
+        },
+        closedElevation: 6.0,
+        closedShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(_fabDimension / 2),
+          ),
+        ),
+        closedColor: Theme.of(context).colorScheme.secondary,
+        closedBuilder: (BuildContext context, VoidCallback openContainer) {
+          return SizedBox(
+            height: _fabDimension,
+            width: _fabDimension * 2.5,
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.add,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
+                  Text('Dodaj', style: TextStyle(letterSpacing: 1.0, fontWeight: FontWeight.bold),).padding(left: 5)
+                ],
+              ),
+            ),
+          );
+        },
+      );
       return FloatingActionButton.extended(
         onPressed: () {
-          // Navigator.push();
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (context) => EditRecipe()));
         },
         icon: Icon(Icons.add),
         label: Text('Dodaj'),
@@ -198,7 +234,7 @@ class _RecipesState extends State<RecipesPage> {
           bottomNavigation: _buildBottomBar(),
           bottomMainBtn: _buildBottomActionButton(),
           title: Text(this._title),
-          backLayer: Container(),
+          backLayer: [],
           frontLayer: Column(
             children: [
               this._searchString.isEmpty ? Container() : _buildSearchText(),

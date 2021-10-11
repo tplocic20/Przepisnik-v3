@@ -2,17 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
 import 'package:przepisnik_v3/components/start/home.dart';
+import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/services/auth-service.dart';
 import 'package:styled_widget/styled_widget.dart';
-import 'package:przepisnik_v3/globals/globals.dart' as globals;
 
 const double _backdropVelocity = 2.0;
 const double _layerTitleHeight = 48.0;
-const double _backDropMaxHeight = _layerTitleHeight * 6;
+const double _layerItemHeight = 65;
 
 class Backdrop extends StatefulWidget {
   final Widget? frontLayer;
-  final Widget? backLayer;
+  final List<Widget>? backLayer;
   final Widget? bottomNavigation;
   final Widget? bottomMainBtn;
   final Widget title;
@@ -46,7 +46,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
     Animation<RelativeRect> layerAnimation = RelativeRectTween(
       begin: RelativeRect.fromLTRB(
-          0.0, _backDropMaxHeight, 0.0, layerTop - layerSize.height),
+          0.0, (((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight), 0.0, layerTop - layerSize.height),
       end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
     ).animate(_backdropAnimationController!.view);
 
@@ -54,14 +54,10 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       _backdropAnimationController!.fling(velocity: _backdropVelocity);
     }
 
-    if (globals.globalBackdropHandler != null) {
-      globals.globalBackdropHandler = closeBackdrop;
-    }
-
     void backdropGrab(position) {
       if (!_frontLayerVisible) {
         _backdropAnimationController!.value =
-            1 - (_backDropMaxHeight + position) / _backDropMaxHeight;
+            1 - ((((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight) + position) / (((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight);
       }
     }
 
@@ -137,8 +133,10 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
           child: Column(
             children: [
               Styled.widget(
-                child: widget.backLayer,
-              ).height(215),
+                child: Column(
+                  children: widget.backLayer ?? [],
+                ),
+              ).height((((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight))),
               commonBackdropOptions()
             ],
           ).backgroundColor(Theme.of(context).primaryColor),
@@ -166,6 +164,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
   }
 
   void _goBackNavigation() {
+    _backdropAnimationController!.fling(velocity: _backdropVelocity);
     Navigator.pop(context);
   }
 
@@ -230,8 +229,8 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
             _dragDirection = details.localPosition.dy > _lastDragPos;
             _lastDragPos = details.localPosition.dy;
             _backdropAnimationController!.value =
-                (_backDropMaxHeight - details.localPosition.dy + 30) /
-                    _backDropMaxHeight;
+                ((((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight) - details.localPosition.dy + 30) /
+                    (((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight);
           }
         },
         onVerticalDragEnd: (DragEndDetails details) {

@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "529215752695",
-    "firebase_url": "https://przepisnik-v2.firebaseio.com",
-    "project_id": "przepisnik-v2",
-    "storage_bucket": "przepisnik-v2.appspot.com"
+    "project_number": "457833981759",
+    "firebase_url": "https://przepisnik.firebaseio.com",
+    "project_id": "firebase-przepisnik",
+    "storage_bucket": "firebase-przepisnik.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:529215752695:android:c1975d44c4b454144306f2",
+        "mobilesdk_app_id": "1:457833981759:android:9e1d96a1a455ae78bd958a",
         "android_client_info": {
-          "package_name": "pl.przepisnik.przepisnik_v3"
+          "package_name": "com.sakana.przepisnik"
         }
       },
       "oauth_client": [
         {
-          "client_id": "529215752695-baqg9hgk0vkvplr8450ln6h4ovuff02m.apps.googleusercontent.com",
+          "client_id": "457833981759-gr8t1o3qn3iv584e0tepjlcnfv2ddn3d.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAev5Vztdlu4purK3ILLaV7fgVArIU4hz4"
+          "current_key": "AIzaSyBv_smS84hEf4YJLQkaVas9z65AxFcjGto"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "529215752695-baqg9hgk0vkvplr8450ln6h4ovuff02m.apps.googleusercontent.com",
+              "client_id": "457833981759-gr8t1o3qn3iv584e0tepjlcnfv2ddn3d.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

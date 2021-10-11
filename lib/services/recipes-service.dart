@@ -3,7 +3,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
-import 'package:rxdart/rxdart.dart';
 
 class RecipesService {
   static final RecipesService _singleton = RecipesService._internal();
@@ -64,6 +63,10 @@ class RecipesService {
   }
 
   getCategoryByKey(key) {
-    return this._categories.singleWhere((element) => element.key == key);
+    try {
+      return this._categories.singleWhere((element) => element.key == key);
+    } catch (e) {
+      return null;
+    }
   }
 }
