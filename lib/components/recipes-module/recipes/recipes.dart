@@ -156,7 +156,7 @@ class _RecipesState extends State<RecipesPage> {
     Widget _buildBottomActionButton() {
       const double _fabDimension = 50;
       return OpenContainer(
-        transitionType: ContainerTransitionType.fadeThrough,
+        transitionType: ContainerTransitionType.fade,
         openBuilder: (BuildContext context, VoidCallback _) {
           return const EditRecipe();
         },
@@ -167,6 +167,8 @@ class _RecipesState extends State<RecipesPage> {
           ),
         ),
         closedColor: Theme.of(context).colorScheme.secondary,
+        openColor: Theme.of(context).colorScheme.secondary,
+        middleColor: Theme.of(context).colorScheme.secondary,
         closedBuilder: (BuildContext context, VoidCallback openContainer) {
           return SizedBox(
             height: _fabDimension,
@@ -179,22 +181,12 @@ class _RecipesState extends State<RecipesPage> {
                     Icons.add,
                     color: Theme.of(context).colorScheme.onSecondary,
                   ),
-                  Text('Dodaj', style: TextStyle(letterSpacing: 1.0, fontWeight: FontWeight.bold),).padding(left: 5)
+                  Text('Dodaj', style: TextStyle(letterSpacing: 2.0, fontWeight: FontWeight.bold),).padding(left: 5)
                 ],
               ),
             ),
           );
         },
-      );
-      return FloatingActionButton.extended(
-        onPressed: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => EditRecipe()));
-        },
-        icon: Icon(Icons.add),
-        label: Text('Dodaj'),
-        elevation: 1,
-        backgroundColor: Theme.of(context).accentColor,
       );
     }
 

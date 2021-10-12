@@ -10,6 +10,7 @@ class SettingsPage extends StatelessWidget {
           child: Text('setting baby~~~'),
         ),
       ),
+      backLayer: [],
       title: Text('Ustawienia'),
     );
   }

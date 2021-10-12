@@ -1,3 +1,4 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
@@ -68,36 +69,39 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
               : _backdropVelocity);
     }
 
+    Widget getBackDropButton(IconData icon, Widget nextPage) {
+      return OpenContainer(
+          closedBuilder: (BuildContext _, VoidCallback openContainer) {
+            return SizedBox(
+              height: 50,
+              width: 60,
+              child: Center(
+                child: Icon(icon, color: Colors.white),
+              ),
+            ).backgroundColor(Theme.of(context).colorScheme.secondary);
+          },
+          middleColor: Theme.of(context).colorScheme.secondary,
+          openColor: Theme.of(context).colorScheme.secondary,
+          closedColor: Theme.of(context).colorScheme.secondary,
+          closedElevation: 2,
+          closedShape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(15),
+            ),
+          ),
+          openBuilder: (BuildContext context, VoidCallback _) {
+            return nextPage;
+          }).padding(horizontal: 10);
+    }
+
     Widget commonBackdropOptions() {
       return Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
             Row(mainAxisSize: MainAxisSize.min, children: [
-              ElevatedButton(
-                onPressed: () {
-                  closeBackdrop();
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => SettingsPage()));
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).accentColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                child: const Icon(Icons.settings_rounded).padding(all: 0),
-              ).width(60).height(50).padding(horizontal: 10),
-              ElevatedButton(
-                onPressed: () {
-                  closeBackdrop();
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).accentColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                ),
-                child: const Icon(Icons.person_rounded).padding(all: 0),
-              ).width(60).height(50).padding(horizontal: 10),
+              getBackDropButton(Icons.settings_rounded, SettingsPage()),
+              getBackDropButton(Icons.person_rounded, SettingsPage()),
             ]),
             OutlinedButton.icon(
               onPressed: () {
