@@ -30,6 +30,13 @@
             {
               "client_id": "457833981759-gr8t1o3qn3iv584e0tepjlcnfv2ddn3d.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "457833981759-pebrqku4rv7t5etsvg3q4fd2n0ons546.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.sakana.przepisnik"
+              }
             }
           ]
         }

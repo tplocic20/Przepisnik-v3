@@ -17,7 +17,7 @@ class PrzepisnikApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-    // fetchModes();
+    fetchModes();
     return MaterialApp(
       title: 'Przepisnik',
       theme: _appTheme(),

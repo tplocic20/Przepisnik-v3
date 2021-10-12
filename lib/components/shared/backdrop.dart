@@ -215,7 +215,8 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       )
     ];
     var appBar = AppBar(
-      brightness: Brightness.light,
+      backgroundColor: Theme.of(context).primaryColor,
+      shadowColor: Colors.transparent,
       elevation: 0.0,
       titleSpacing: 0.0,
       leading: widget.backButtonOverride

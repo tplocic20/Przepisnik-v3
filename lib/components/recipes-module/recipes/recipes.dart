@@ -74,7 +74,7 @@ class _RecipesState extends State<RecipesPage> {
 
     Widget _buildSearchModal() {
       Timer? _debounce;
-      return BottomModalSearchWrapper(
+      return Center(
         child: TextFormField(
           controller: _searchController,
           autofocus: true,
@@ -141,6 +141,7 @@ class _RecipesState extends State<RecipesPage> {
             onPressed: () {
               showModalBottomSheet(
                   backgroundColor: Colors.transparent,
+                  isScrollControlled: true,
                   context: context,
                   builder: (context) {
                     return _buildSearchModal();
@@ -201,21 +202,25 @@ class _RecipesState extends State<RecipesPage> {
                   text: this._searchString,
                   style: Theme.of(context).textTheme.bodyText2!.copyWith(
                       color: Colors.white,
-                      backgroundColor: Theme.of(context).accentColor)),
+                      backgroundColor: Theme.of(context).colorScheme.secondary)),
             ],
           ),
         ),
         trailing: ElevatedButton(
           child: Text('Wyczyść'),
           style:
-              ElevatedButton.styleFrom(primary: Theme.of(context).accentColor),
+              ElevatedButton.styleFrom(primary: Theme.of(context).colorScheme.secondary, shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ),
+              )),
           onPressed: () {
             setState(() {
               this._searchController!.clear();
               this._searchString = '';
             });
           },
-        ),
+        ).borderRadius(all: 15),
       );
     }
 
