@@ -1,38 +1,37 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class RecipeText extends StatefulWidget {
-  final Recipe recipe;
+  final Recipe? recipe;
+  final double? textSize;
 
-  RecipeText(this.recipe);
+  RecipeText({this.recipe, this.textSize});
 
   @override
   _RecipeTextState createState() => _RecipeTextState();
 }
 
 class _RecipeTextState extends State<RecipeText> {
-  double fontSizeVM = 17;
-  double fontSize = 17;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Container(
-          // elevation: 0.5,
-          // shadowColor: Theme.of(context).primaryColorLight,
-          margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 100),
-          // borderOnForeground: false,
-          // shape: RoundedRectangleBorder(
-          //     borderRadius: BorderRadius.all(Radius.circular(25))
-          // ),
-          child: Padding(
-            padding: EdgeInsets.only(top: 20, left: 10, right: 10),
-            child: Text(widget.recipe.recipe,
-                style: TextStyle(
-                    fontSize: fontSize, textBaseline: TextBaseline.alphabetic)),
-          ),
+        child: Expanded(
+            flex: 1,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                child: Text(widget.recipe!.recipe,
+                    style: TextStyle(
+                        fontSize: widget.textSize,
+                        textBaseline: TextBaseline.alphabetic)).padding(bottom: 100),
+              ),
+            ),
         ),
+      ).paddingDirectional(all: 15),
     );
   }
 }

@@ -9,8 +9,12 @@ import 'package:styled_widget/styled_widget.dart';
 class SingleRecipeContainer extends StatefulWidget {
   final Recipe? recipe;
   final double? portion;
+  final double? textSize;
+  final bool? cookMode;
+  final Stream? cookModeReset;
 
-  SingleRecipeContainer({this.recipe, this.portion});
+  SingleRecipeContainer(
+      {this.recipe, this.portion, this.cookMode, this.textSize, this.cookModeReset});
 
   @override
   _SingleRecipeContainerState createState() => _SingleRecipeContainerState();
@@ -24,23 +28,28 @@ class _SingleRecipeContainerState extends State<SingleRecipeContainer> {
       child: Column(
         children: <Widget>[
           Container(
-              constraints: BoxConstraints(maxHeight: 150.0),
-              child: TabBar(
-                unselectedLabelColor: Theme.of(context).primaryColorLight,
-                labelColor: Theme.of(context).primaryColorDark,
-                indicatorColor: Theme.of(context).primaryColorDark,
-                tabs: [
-                  Tab(text: 'Informacje'),
-                  Tab(text: 'Przepis'),
-                  Tab(text: 'Galeria'),
-                ],
-              ),
+            constraints: BoxConstraints(maxHeight: 150.0),
+            child: TabBar(
+              unselectedLabelColor: Theme.of(context).primaryColorLight,
+              labelColor: Theme.of(context).primaryColorDark,
+              indicatorColor: Theme.of(context).primaryColorDark,
+              tabs: [
+                Tab(text: 'Informacje'),
+                Tab(text: 'Przepis'),
+                Tab(text: 'Galeria'),
+              ],
             ),
+          ),
           Expanded(
             child: TabBarView(
               children: [
-                RecipeInfo(recipe: widget.recipe!, portion: widget.portion!),
-                RecipeText(widget.recipe!),
+                RecipeInfo(
+                    recipe: widget.recipe!,
+                    portion: widget.portion!,
+                    cookMode: widget.cookMode!,
+                    cookModeReset: widget.cookModeReset!
+                ),
+                RecipeText(recipe: widget.recipe!, textSize: widget.textSize),
                 RecipeGallery(widget.recipe!),
               ],
             ),
