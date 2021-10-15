@@ -69,19 +69,19 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(widget.recipe!.name,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText2
-                            ?.copyWith(fontSize: 20)
-                  ),
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyText2
+                          ?.copyWith(fontSize: 20)),
                   ListView(
                     scrollDirection: Axis.horizontal,
                     children: this._buildTags(context),
                   ).height(30)
                 ],
               )),
-              widget.recipe!.favourite ? Icon(Icons.favorite_rounded,
-                  color: Colors.amber, size: 24) : Container()
+              widget.recipe!.favourite
+                  ? Icon(Icons.favorite_rounded, color: Colors.amber, size: 24)
+                  : Container()
             ],
           ).padding(vertical: 0, horizontal: 15),
         ).ripple().backgroundColor(Colors.white).clipRRect(all: 25);
@@ -181,17 +181,23 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
   }
 
   void _share(BuildContext context) {
-    print(RecipesService().prepareRecipeShareText(widget.recipe!));
     Share.share(RecipesService().prepareRecipeShareText(widget.recipe!),
-        subject: widget.recipe!.name);
+            subject: widget.recipe!.name)
+        .then((value) => {widget.slidableController!.activeState = null});
   }
 
   void _toggleFavourites(BuildContext context) {
     bool currentFavouriteState = widget.recipe!.favourite;
-    String message =
-        currentFavouriteState ? 'usunio z ulubionych' : 'dodano do ulubionych';
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('${widget.recipe!.name} - $message'),
-    ));
+    RecipesService()
+        .setFavourites(widget.recipe!.key, !currentFavouriteState)
+        .then((value) {
+      String message = currentFavouriteState
+          ? 'usunio z ulubionych'
+          : 'dodano do ulubionych';
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('${widget.recipe!.name} - $message'),
+      ));
+      widget.slidableController!.activeState = null;
+    });
   }
 }

@@ -4,6 +4,7 @@ class Recipe extends BaseElement {
   String categories = '';
   List<IngredientGroup> ingredients = [];
   String recipe = '';
+  bool favourite = false;
   var temperature = '';
   var time = '';
 
@@ -15,7 +16,7 @@ class Recipe extends BaseElement {
     recipe = v['Recipe'] ?? '';
     temperature = v['Temperature'] ?? '';
     time = v['Time'] ?? '';
-    // favourite = v['Favourite'] ?? '';
+    favourite = v['Favourite'] ?? false;
   }
 
   parseIngredients(items) {

@@ -95,4 +95,13 @@ class RecipesService {
 
     return textPartials.join('\n');
   }
+
+  Future<dynamic> setFavourites(String key, bool newValue) {
+    return this._db
+        .child('Recipes')
+        .child(globals.userState)
+        .child(key)
+        .child('Favourite')
+        .set(newValue);
+  }
 }
