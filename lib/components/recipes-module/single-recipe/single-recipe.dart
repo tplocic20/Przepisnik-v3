@@ -85,9 +85,10 @@ class _SingleRecipeState extends State<SingleRecipe> {
             },
             icon: Icon(Icons.cancel_outlined),
             style: OutlinedButton.styleFrom(
+              elevation: 1,
               primary: Colors.white,
-              backgroundColor: Color(0x55F46060),
-              side: BorderSide(color: Color(0xFFF46060)),
+              backgroundColor: Color(0x50F46060),
+              side: BorderSide(color: Color(0xFFF46060), width: 1.5),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15)))
             ),
             label: Text('Resetuj')).height(50).padding(left: 15),
@@ -101,11 +102,16 @@ class _SingleRecipeState extends State<SingleRecipe> {
       icon: Icon(Icons.pie_chart),
       label: Text('Kalkulator składników'),
       style: ElevatedButton.styleFrom(
-        primary: Theme.of(context).colorScheme.secondary,
+        elevation: this._cookMode ? 0 : 1.0,
+        splashFactory: this._cookMode ? NoSplash.splashFactory : InkRipple.splashFactory,
+        primary: this._cookMode ? Colors.grey : Theme.of(context).colorScheme.secondary,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15))),
       ),
       onPressed: () {
+        if (this._cookMode) {
+          return;
+        }
         globals.globalBackdropHandler!();
         showModalBottomSheet(
             backgroundColor: Colors.transparent,
