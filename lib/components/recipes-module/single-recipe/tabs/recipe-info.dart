@@ -148,13 +148,14 @@ class _RecipeInfoState extends State<RecipeInfo> {
             title: Text(title),
             subtitle: Text(subtitle),
             dense: isChecked,
-            trailing: Icon(isChecked ? Icons.check_circle_outline : Icons.circle_outlined).gestures(
-              onTap: () {
-                setState(() {
-                  this.ingredientChecked[cookingId] = !isChecked;
-                });
-              }
-            ))
+            trailing: Icon(isChecked
+                    ? Icons.check_circle_outline
+                    : Icons.circle_outlined)
+                .gestures(onTap: () {
+              setState(() {
+                this.ingredientChecked[cookingId] = !isChecked;
+              });
+            }))
         .ripple()
         .gestures(onLongPress: () {
           setState(() {
