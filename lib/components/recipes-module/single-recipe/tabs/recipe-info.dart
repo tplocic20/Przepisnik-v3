@@ -86,7 +86,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         .asMap()
         .forEach((index, Ingredient value) {
       num parsedValue =
-            num.parse((value.qty * widget.portion!.toInt()).toStringAsFixed(2));
+            num.parse((value.qty * widget.portion!.toDouble()).toStringAsFixed(2));
 
       widgets.add(Container(
             decoration: widget.recipe!.ingredients[groupIdx].positions.length >

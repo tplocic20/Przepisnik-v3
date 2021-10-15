@@ -51,10 +51,6 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
     ).animate(_backdropAnimationController!.view);
 
-    void closeBackdrop() {
-      _backdropAnimationController!.fling(velocity: _backdropVelocity);
-    }
-
     void backdropGrab(position) {
       if (!_frontLayerVisible) {
         _backdropAnimationController!.value =
@@ -180,6 +176,9 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
       value: 1.0,
       vsync: this,
     );
+    globals.globalBackdropHandler = () {
+      _backdropAnimationController!.fling(velocity: _backdropVelocity);
+    };
   }
 
   @override

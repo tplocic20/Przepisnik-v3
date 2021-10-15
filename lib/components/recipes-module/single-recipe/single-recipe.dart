@@ -6,6 +6,7 @@ import 'package:przepisnik_v3/components/shared/backdrop.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'modals/portion-modal.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:przepisnik_v3/globals/globals.dart' as globals;
 
 class SingleRecipe extends StatefulWidget {
   final Recipe recipe;
@@ -58,7 +59,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
         onPressed: () {},
         child: Icon(Icons.menu),
         elevation: 1,
-        backgroundColor: Theme.of(context).accentColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
       ),
       frontLayer: SingleRecipeContainer(
         recipe: widget.recipe,
@@ -69,7 +70,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
             icon: Icon(Icons.room_service),
             label: Text('Tryb szefa kuchni'),
             style: ElevatedButton.styleFrom(
-              primary: Theme.of(context).accentColor,
+              primary: Theme.of(context).colorScheme.secondary,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
@@ -86,11 +87,12 @@ class _SingleRecipeState extends State<SingleRecipe> {
             icon: Icon(Icons.pie_chart),
             label: Text('Kalkulator składników'),
             style: ElevatedButton.styleFrom(
-              primary: Theme.of(context).accentColor,
+              primary: Theme.of(context).colorScheme.secondary,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
             ),
             onPressed: () {
+              globals.globalBackdropHandler!();
               showModalBottomSheet(
                   backgroundColor: Colors.transparent,
                   context: context,
@@ -104,7 +106,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
             min: 12,
             max: 48,
             divisions: 9,
-            activeColor: Theme.of(context).accentColor,
+            activeColor: Theme.of(context).colorScheme.secondary,
             inactiveColor: Theme.of(context).primaryColorDark,
             label: _currentSliderValue.round().toString(),
             onChanged: (double value) {
