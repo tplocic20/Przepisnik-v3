@@ -62,7 +62,6 @@ class _HomeState extends State<HomePage> {
                   onSignup: signup,
                   onSubmitAnimationCompleted: () {
                     RecipesService().init();
-                    print(RecipesService().categories.length);
                     Navigator.pushAndRemoveUntil(
                         context, _recipesPage(), (Route<dynamic> route) => false);
                   },
@@ -120,7 +119,7 @@ class _HomeState extends State<HomePage> {
 
   Route _recipesPage() {
     return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => const RecipesPage(),
+      pageBuilder: (context, animation, secondaryAnimation) => RecipesPage(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         return FadeTransition(
           opacity: animation,

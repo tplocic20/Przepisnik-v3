@@ -37,6 +37,7 @@ class RecipesService {
   List<Category> get categories {
     return this._categories;
   }
+
   String get selectedCategory {
     return this._selectedCategory;
   }
@@ -44,6 +45,7 @@ class RecipesService {
   set selectedCategory(String value) {
     this._selectedCategory = value;
   }
+
   parseRecipes(element) {
     List<Recipe> parsedList = [];
     DataSnapshot dataValues = element.snapshot;
@@ -68,5 +70,29 @@ class RecipesService {
     } catch (e) {
       return null;
     }
+  }
+
+  String prepareRecipeShareText(Recipe recipe) {
+    List<String> textPartials = [];
+    textPartials.add(recipe.name);
+
+    if (recipe.temperature.isNotEmpty) {
+      textPartials.add('Temperatura: ${recipe.temperature}');
+    }
+
+    if (recipe.time.isNotEmpty) {
+      textPartials.add('Czas: ${recipe.time}');
+    }
+
+    recipe.ingredients.forEach((category) {
+      textPartials.add('\n - ${category.name}');
+      category.positions.forEach((position) {
+        textPartials.add('\t - ${position.name}, ${position.unit.isNotEmpty ? '${position.qty}, ${position.unit}' : ''}');
+      });
+    });
+
+    textPartials.add('\n${recipe.recipe}');
+
+    return textPartials.join('\n');
   }
 }

@@ -7,6 +7,7 @@ import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-rec
 import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class RecipeItem extends StatefulWidget {
@@ -38,8 +39,8 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.22,
       controller: widget.slidableController,
-      child: _buildTile(),
-      actions: _buildActions(),
+      child: this._buildTile(context),
+      actions: this._buildActions(context),
     ))
         .alignment(Alignment.center)
         .borderRadius(all: 15)
@@ -55,7 +56,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
         .animate(Duration(milliseconds: 150), Curves.easeOut);
   }
 
-  Widget _buildTile() {
+  Widget _buildTile(BuildContext context) {
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
       closedBuilder: (BuildContext _, VoidCallback openContainer) {
@@ -69,9 +70,10 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
                     ?.copyWith(fontSize: 20)),
           ),
           isThreeLine: true,
-          subtitle: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: _buildTags(),
+          trailing: Icon(Icons.favorite_rounded, color: widget.recipe!.favourite ? Colors.amber : Colors.transparent),
+          subtitle: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.start,
+            children: this._buildTags(context),
           ).padding(top: 5),
         ).ripple().backgroundColor(Colors.white).clipRRect(all: 25);
       },
@@ -82,16 +84,16 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     ).clipRRect(all: 25).borderRadius(all: 25, animate: true);
   }
 
-  List<Widget> _buildTags() {
+  List<Widget> _buildTags(BuildContext context) {
     return widget.recipe!.categories
         .replaceAll(';', ',')
         .split(',')
-        .map((category) =>
-            _buildCategoryTag(RecipesService().getCategoryByKey(category)))
+        .map((category) => _buildCategoryTag(
+            RecipesService().getCategoryByKey(category), context))
         .toList();
   }
 
-  Widget _buildCategoryTag(Category? category) {
+  Widget _buildCategoryTag(Category? category, BuildContext context) {
     if (category == null) {
       return Container();
     }
@@ -105,24 +107,30 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     ).paddingDirectional(end: 5);
   }
 
-  List<Widget> _buildActions() {
+  List<Widget> _buildActions(BuildContext context) {
     List<Widget> buttons = [
-      getButton(
+      this._getButton(
           action: () {}, icon: Icons.delete_rounded, color: Color(0xFFF46060)),
       // getButton(
       //     action: () {}, icon: Icons.create_rounded, color: Color(0xFFB5DEFF)),
-      getEditButton(),
-      getButton(
-          action: () {}, icon: Icons.share_rounded, color: Color(0xFFCBE2B0)),
-      getButton(
-          action: () {},
-          icon: Icons.favorite_outline_rounded,
+      this._getEditButton(context),
+      this._getButton(
+          action: () {
+            this._share(context);
+          },
+          icon: Icons.share_rounded,
+          color: Color(0xFFCBE2B0)),
+      this._getButton(
+          action: () {
+            this._toggleFavourites(context);
+          },
+          icon: widget.recipe!.favourite ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
           color: Color(0xFFF3D179)),
     ];
     return buttons;
   }
 
-  Widget getEditButton() {
+  Widget _getEditButton(BuildContext context) {
     return OpenContainer(
         closedBuilder: (BuildContext _, VoidCallback openContainer) {
           return SizedBox(
@@ -150,7 +158,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
         }).padding(vertical: 15, horizontal: 10);
   }
 
-  Widget getButton({color: Color, icon: Icons, action: Function}) {
+  Widget _getButton({color: Color, icon: Icons, action: Function}) {
     return ElevatedButton(
         onPressed: action,
         child: Icon(icon).padding(all: 0),
@@ -159,5 +167,20 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
         )).width(60).height(50).padding(vertical: 15, horizontal: 10);
+  }
+
+  void _share(BuildContext context) {
+    print(RecipesService().prepareRecipeShareText(widget.recipe!));
+    Share.share(RecipesService().prepareRecipeShareText(widget.recipe!),
+        subject: widget.recipe!.name);
+  }
+
+  void _toggleFavourites(BuildContext context) {
+    bool currentFavouriteState = widget.recipe!.favourite;
+    String message =
+        currentFavouriteState ? 'usunio z ulubionych' : 'dodano do ulubionych';
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('${widget.recipe!.name} - $message'),
+    ));
   }
 }
