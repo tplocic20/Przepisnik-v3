@@ -45,12 +45,12 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
         .alignment(Alignment.center)
         .borderRadius(all: 15)
         .backgroundColor(Colors.transparent, animate: true)
+        .constrained(height: 100)
         .clipRRect(all: 25) // clip ripple
         .borderRadius(all: 25, animate: true)
         .elevation(20,
             borderRadius: BorderRadius.circular(25),
             shadowColor: Color(0x30000000)) // shadow borderRadius
-        .constrained(height: 80)
         .padding(
             bottom: 12, horizontal: 10, top: widget.isFirst! ? 12 : 0) // margin
         .animate(Duration(milliseconds: 150), Curves.easeOut);
@@ -60,21 +60,30 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
       closedBuilder: (BuildContext _, VoidCallback openContainer) {
-        return ListTile(
-          title: Hero(
-            tag: widget.recipe!.key,
-            child: Text(widget.recipe!.name,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyText2
-                    ?.copyWith(fontSize: 20)),
-          ),
-          isThreeLine: true,
-          trailing: Icon(Icons.favorite_rounded, color: widget.recipe!.favourite ? Colors.amber : Colors.transparent),
-          subtitle: Wrap(
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: this._buildTags(context),
-          ).padding(top: 5),
+        return Container(
+          child: Row(
+            children: [
+              Expanded(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(widget.recipe!.name,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2
+                            ?.copyWith(fontSize: 20)
+                  ),
+                  ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: this._buildTags(context),
+                  ).height(30)
+                ],
+              )),
+              widget.recipe!.favourite ? Icon(Icons.favorite_rounded,
+                  color: Colors.amber, size: 24) : Container()
+            ],
+          ).padding(vertical: 0, horizontal: 15),
         ).ripple().backgroundColor(Colors.white).clipRRect(all: 25);
       },
       openBuilder: (BuildContext context, VoidCallback _) {
@@ -124,7 +133,9 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
           action: () {
             this._toggleFavourites(context);
           },
-          icon: widget.recipe!.favourite ? Icons.favorite_rounded : Icons.favorite_outline_rounded,
+          icon: widget.recipe!.favourite
+              ? Icons.favorite_rounded
+              : Icons.favorite_outline_rounded,
           color: Color(0xFFF3D179)),
     ];
     return buttons;
