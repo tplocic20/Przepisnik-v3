@@ -6,6 +6,7 @@ import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-rec
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/models/recipe.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:styled_widget/styled_widget.dart';
 import 'modals/portion-modal.dart';
 
@@ -22,7 +23,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
   double _portion = 1;
   bool _cookMode = false;
   double _currentTextSize = 20;
-  StreamController<bool> controller = StreamController<bool>();
+  StreamController<bool> controller = new BehaviorSubject<bool>();
 
   @override
   void dispose() {

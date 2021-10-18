@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -25,19 +26,22 @@ class _RecipeInfoState extends State<RecipeInfo> {
 
   @override
   void initState() {
-    this.streamSubscription = widget.cookModeReset!.listen((value) {
-      if (value == true) {
-        setState(() {
-          ingredientChecked = new Map();
-        });
-      }
-    });
+    if (this.streamSubscription == null) {
+      this.streamSubscription = widget.cookModeReset!.listen((value) {
+        if (value == true) {
+          setState(() {
+            ingredientChecked = new Map();
+          });
+        }
+      });
+    }
     super.initState();
   }
 
   @override
   void dispose() {
     this.streamSubscription!.cancel();
+    this.streamSubscription = null;
     super.dispose();
   }
 
@@ -152,22 +156,39 @@ class _RecipeInfoState extends State<RecipeInfo> {
                     ? Icons.check_circle_outline
                     : Icons.circle_outlined)
                 .gestures(onTap: () {
+              HapticFeedback.lightImpact();
               setState(() {
                 this.ingredientChecked[cookingId] = !isChecked;
+                this.verifyAllChecked(groupIdx, cookingId);
               });
             }))
         .ripple()
+        .opacity(isChecked ? 0.5 : 1, animate: true)
         .gestures(onLongPress: () {
+          HapticFeedback.lightImpact();
           setState(() {
             this.ingredientChecked[cookingId] = !isChecked;
+            this.verifyAllChecked(groupIdx, cookingId);
           });
         })
-        .backgroundColor(isChecked ? Color(0xFFCCCCCC) : Colors.transparent,
+        .backgroundColor(isChecked ? Color(0x15000000) : Colors.transparent,
             animate: true)
         .clipRRect(
             bottomLeft: isNotLast ? 0 : 10, bottomRight: isNotLast ? 0 : 10)
         .constrained(height: isChecked ? 55 : 70, animate: true)
         .animate(Duration(milliseconds: 150), Curves.easeOut);
+  }
+
+  void verifyAllChecked(groupIdx, cookingId) {
+    num checkedLen = this
+        .ingredientChecked
+        .entries
+        .where((MapEntry<String, bool> element) =>
+            element.key.split('_')[0] == groupIdx.toString() &&
+            element.value == true)
+        .length;
+    this.groupExpanded[groupIdx] =
+        !(checkedLen == widget.recipe!.ingredients[groupIdx].positions.length);
   }
 
   BoxDecoration? _ingredientDecoration(bool isNotLast) {

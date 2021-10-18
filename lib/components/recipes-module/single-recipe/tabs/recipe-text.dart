@@ -14,23 +14,25 @@ class RecipeText extends StatefulWidget {
 }
 
 class _RecipeTextState extends State<RecipeText> {
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Container(
-        child: Expanded(
+      child: Column(
+        children: [
+          Expanded(
             flex: 1,
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Container(
                 child: Text(widget.recipe!.recipe,
-                    style: TextStyle(
-                        fontSize: widget.textSize,
-                        textBaseline: TextBaseline.alphabetic)).padding(bottom: 100),
+                        style: TextStyle(
+                            fontSize: widget.textSize,
+                            textBaseline: TextBaseline.alphabetic))
+                    .padding(bottom: 100),
               ),
             ),
-        ),
+          )
+        ],
       ).paddingDirectional(all: 15),
     );
   }
