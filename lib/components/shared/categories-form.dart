@@ -111,8 +111,8 @@ class _CategoriesFormState extends State<CategoriesForm> {
               primary: Theme.of(context).primaryColor,
               side: BorderSide(color: Theme.of(context).primaryColor),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15)))),
-        )
+                  borderRadius: BorderRadius.all(Radius.circular(25)))
+          ))
             .width(this.isAddCategory ? 80 : 250, animate: true)
             .height(50)
             .animate(duration, Curves.elasticInOut)

@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe-container.dart';

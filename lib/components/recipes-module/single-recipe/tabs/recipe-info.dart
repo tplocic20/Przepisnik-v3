@@ -54,7 +54,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
       } else {
         return ListTile(
           title: const Text('Temperatura'),
-          trailing: Text('${widget.recipe!.temperature} stC'),
+          trailing: Text('${widget.recipe!.temperature} \u2103'),
           leading: Icon(Icons.wb_incandescent),
         ).padding(horizontal: 25);
       }
