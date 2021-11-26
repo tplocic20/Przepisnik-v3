@@ -10,6 +10,7 @@ import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipes-list.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
+import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -74,42 +75,24 @@ class _RecipesState extends State<RecipesPage> {
 
     Widget _buildSearchModal() {
       Timer? _debounce;
-      return Center(
-        child: TextFormField(
-          controller: _searchController,
-          autofocus: true,
-          onChanged: (txt) {
-            if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
-            _debounce = Timer(const Duration(milliseconds: 350), () {
-              setState(() {
-                _searchString = txt;
-              });
-            });
-          },
-          onFieldSubmitted: (txt) {
-            Navigator.pop(context);
+      return TextInput(
+        controller: _searchController,
+        icon: Icons.search,
+        onChanged: (txt) {
+          if (_debounce != null && _debounce!.isActive) _debounce!.cancel();
+          _debounce = Timer(const Duration(milliseconds: 350), () {
             setState(() {
-              _searchString = _searchController!.text;
+              _searchString = txt;
             });
-          },
-          decoration: InputDecoration(
-              filled: true,
-              prefixIcon:
-                  Icon(Icons.search, color: Theme.of(context).primaryColor),
-              fillColor: Colors.white,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(25),
-                borderSide: BorderSide(
-                    color: Theme.of(context).primaryColor,
-                    style: BorderStyle.solid,
-                    width: 1),
-              )),
-          keyboardType: TextInputType.text,
-          style: new TextStyle(
-            fontFamily: "Poppins",
-          ),
-        ).padding(all: 10),
-      );
+          });
+        },
+        onFieldSubmitted: (txt) {
+          Navigator.pop(context);
+          setState(() {
+            _searchString = _searchController!.text;
+          });
+        },
+      ).padding(all: 10);
     }
 
     Widget _buildBottomBar() {
@@ -159,7 +142,7 @@ class _RecipesState extends State<RecipesPage> {
       return OpenContainer(
         transitionType: ContainerTransitionType.fade,
         openBuilder: (BuildContext context, VoidCallback _) {
-          return const EditRecipe();
+          return EditRecipe();
         },
         closedElevation: 6.0,
         closedShape: const RoundedRectangleBorder(

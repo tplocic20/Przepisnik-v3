@@ -108,8 +108,8 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                     (Route<dynamic> route) => false);
               },
               style: OutlinedButton.styleFrom(
-                  primary: Theme.of(context).accentColor,
-                  side: BorderSide(color: Theme.of(context).accentColor),
+                  primary: Theme.of(context).colorScheme.secondary,
+                  side: BorderSide(color: Theme.of(context).colorScheme.secondary),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)))),
               icon: const Icon(Icons.logout_rounded),
@@ -274,7 +274,7 @@ class _FrontLayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       elevation: 16.0,
-      color: Theme.of(context).backgroundColor,
+      color: Theme.of(context).colorScheme.background,
       borderRadius: BorderRadius.only(
           topLeft: Radius.circular(25), topRight: Radius.circular(25)),
       child: Column(

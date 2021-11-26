@@ -19,6 +19,10 @@ class Recipe extends BaseElement {
     favourite = v['Favourite'] ?? false;
   }
 
+  Recipe.empty() {
+    ingredients.add(IngredientGroup.empty());
+  }
+
   parseIngredients(items) {
     List<IngredientGroup> parsedList = [];
     for( var i = 0 ; i < items!.length; i++ ) {
@@ -38,6 +42,11 @@ class IngredientGroup {
     name = v['Name'] ?? '';
     positions = parsePositions(v['Positions']);
   }
+
+  IngredientGroup.empty() {
+    name = 'Nowa grupa';
+  }
+
   parsePositions(items) {
     List<Ingredient> parsedList = [];
     if (items != null) {

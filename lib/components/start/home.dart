@@ -68,15 +68,15 @@ class _HomeState extends State<HomePage> {
                   onRecoverPassword: recover,
                   navigateBackAfterRecovery: true,
                   theme: LoginTheme(
-                      pageColorLight: Theme.of(context).accentColor.withAlpha(0),
-                      pageColorDark: Theme.of(context).accentColor.withAlpha(32),
+                      pageColorLight: Theme.of(context).colorScheme.secondary.withAlpha(0),
+                      pageColorDark: Theme.of(context).colorScheme.secondary.withAlpha(32),
                       primaryColor: Theme.of(context).primaryColor,
-                      accentColor: Theme.of(context).accentColor,
+                      accentColor: Theme.of(context).colorScheme.secondary,
                       errorColor: Color(0xFFF46060),
                       switchAuthTextColor: Theme.of(context).primaryColor,
                       cardTheme: CardTheme(
-                        color: Theme.of(context).backgroundColor,
-                        shadowColor: Theme.of(context).accentColor,
+                        color: Theme.of(context).colorScheme.background,
+                        shadowColor: Theme.of(context).colorScheme.secondary,
                         elevation: 5,
                         margin: EdgeInsets.all(0),
                         shape: ContinuousRectangleBorder(

@@ -69,7 +69,7 @@ class _PortionModalState extends State<PortionModal> {
               data: SliderThemeData(
                   thumbColor: Theme.of(context).primaryColor,
                   activeTrackColor: Theme.of(context).primaryColor,
-                  inactiveTrackColor: Theme.of(context).accentColor,
+                  inactiveTrackColor: Theme.of(context).colorScheme.secondary,
                   overlayColor: Theme.of(context).primaryColorLight,
                   valueIndicatorColor: Theme.of(context).primaryColor),
               child: Slider(

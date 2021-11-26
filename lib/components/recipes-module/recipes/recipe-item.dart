@@ -45,7 +45,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
         .alignment(Alignment.center)
         .borderRadius(all: 15)
         .backgroundColor(Colors.transparent, animate: true)
-        .constrained(height: 100)
+        .constrained(height: 110)
         .clipRRect(all: 25) // clip ripple
         .borderRadius(all: 25, animate: true)
         .elevation(20,
@@ -61,10 +61,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
       transitionType: ContainerTransitionType.fade,
       closedBuilder: (BuildContext _, VoidCallback openContainer) {
         return Container(
-          child: Row(
-            children: [
-              Expanded(
-                  child: Column(
+          child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -76,14 +73,10 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
                   ListView(
                     scrollDirection: Axis.horizontal,
                     children: this._buildTags(context),
-                  ).height(30)
+                  ).height(30),
+                  _buildExtras(context)
                 ],
-              )),
-              widget.recipe!.favourite
-                  ? Icon(Icons.favorite_rounded, color: Colors.amber, size: 24)
-                  : Container()
-            ],
-          ).padding(vertical: 0, horizontal: 15),
+              ).padding(vertical: 0, horizontal: 15),
         ).ripple().backgroundColor(Colors.white).clipRRect(all: 25);
       },
       openBuilder: (BuildContext context, VoidCallback _) {
@@ -91,6 +84,29 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
         return SingleRecipe(widget.recipe!);
       },
     ).clipRRect(all: 25).borderRadius(all: 25, animate: true);
+  }
+
+  Widget _buildExtras(BuildContext context) {
+    Widget _favouriteWidget = widget.recipe!.favourite
+        ? Icon(Icons.favorite_rounded, color: Colors.amber, size: 24).padding(left: 10, right: 10).border(left: 2, color: Theme.of(context).primaryColor)
+        : Container();
+    Widget _timeWidget = widget.recipe!.time.isNotEmpty
+    ? Text(widget.recipe!.time).padding(left: 10, right: 10)
+    : Container();
+
+    Widget _temperatureWidget = widget.recipe!.temperature.isNotEmpty
+    ? Text(widget.recipe!.temperature).padding(left: 10, right: 10).border(left: 2, color: Theme.of(context).primaryColor)
+    : Container();
+
+    return ListView(
+      scrollDirection: Axis.horizontal,
+      children: [
+        _timeWidget,
+        _temperatureWidget,
+        _favouriteWidget
+      ],
+    ).height(20).padding(bottom: 10);
+
   }
 
   List<Widget> _buildTags(BuildContext context) {
@@ -106,14 +122,17 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     if (category == null) {
       return Container();
     }
+    bool current = widget.selectedCategory == category.key;
     return Container(
       decoration: BoxDecoration(
           border: Border.all(
-            color: Theme.of(context).primaryColor,
+            color: current ? Colors.white : Theme.of(context).primaryColor,
           ),
           borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Text(category.name).padding(all: 3),
-    ).paddingDirectional(end: 5);
+      child: Text(category.name).padding(horizontal: 5, vertical: 3),
+    ).backgroundColor(current ? Theme.of(context).primaryColor : Colors.transparent)
+        .clipRRect(all: 20)
+        .paddingDirectional(end: 5);
   }
 
   List<Widget> _buildActions(BuildContext context) {
