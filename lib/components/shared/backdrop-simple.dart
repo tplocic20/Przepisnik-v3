@@ -73,7 +73,7 @@ class _BackdropSimpleState extends State<BackdropSimple> {
     return BottomAppBar(
       elevation: 0,
       notchMargin: 5,
-      color: Theme.of(context).primaryColorLight,
+      color: Colors.transparent,
       child: Container(
         height: 1,
       ),

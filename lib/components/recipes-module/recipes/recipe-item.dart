@@ -1,5 +1,4 @@
 import 'package:animations/animations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
@@ -12,15 +11,11 @@ import 'package:styled_widget/styled_widget.dart';
 
 class RecipeItem extends StatefulWidget {
   final Recipe? recipe;
-  final bool? isLast;
-  final bool? isFirst;
   final String? selectedCategory;
   final SlidableController? slidableController;
 
   RecipeItem(
       {this.recipe,
-      this.isLast,
-      this.isFirst,
       this.selectedCategory,
       this.slidableController});
 
@@ -52,7 +47,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(25),
             shadowColor: Color(0x30000000)) // shadow borderRadius
         .padding(
-            bottom: 12, horizontal: 10, top: widget.isFirst! ? 12 : 0) // margin
+            bottom: 12, horizontal: 10, top: 0) // margin
         .animate(Duration(milliseconds: 150), Curves.easeOut);
   }
 

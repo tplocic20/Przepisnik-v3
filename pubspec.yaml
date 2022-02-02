@@ -28,7 +28,7 @@ dependencies:
   firebase_database: ^8.0.0
   firebase_core: ^1.7.0
   provider: ^5.0.0
-  flutter_statusbarcolor_ns: ^0.3.0-nullsafety
+  flutter_statusbarcolor_ns: ^0.4.0
   flutter_displaymode: 0.3.2
   dotted_border: ^2.0.0
   flutter_slidable: ^0.6.0

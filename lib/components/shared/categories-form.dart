@@ -26,26 +26,32 @@ class _CategoriesFormState extends State<CategoriesForm> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: ListView(
-        children: [
-          ...RecipesService()
-              .categories
-              .map((Category category) => CheckboxListTile(
-                    value: this.selectedCategories.indexOf(category.key) >= 0,
-                    title: Text(category.name),
-                    onChanged: (bool? value) {
-                      setState(() {
-                        if (value! == true) {
-                          this.selectedCategories.add(category.key);
-                        } else {
-                          this.selectedCategories.remove(category.key);
-                        }
-                      });
-                    },
-                  ))
-              .toList(),
-          addCategory(context)
-        ],
+      child: Wrap(
+        children: RecipesService()
+            .categories
+            .map((Category category) => ElevatedButton(
+                  child: Text(category.name),
+                  style: ElevatedButton.styleFrom(
+                    elevation: this.selectedCategories.indexOf(category.key) >= 0 ? 2 : 0,
+                    primary: this.selectedCategories.indexOf(category.key) >= 0
+                        ? Theme.of(context).colorScheme.secondary
+                        : Colors.grey,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      bool value =
+                          this.selectedCategories.indexOf(category.key) >= 0;
+                      if (!value) {
+                        this.selectedCategories.add(category.key);
+                      } else {
+                        this.selectedCategories.remove(category.key);
+                      }
+                    });
+                  },
+                ).padding(right: 5).animate(Duration(milliseconds: 150), Curves.easeOut))
+            .toList(),
       ),
     ).paddingDirectional(vertical: 25, horizontal: 10);
   }
@@ -59,60 +65,60 @@ class _CategoriesFormState extends State<CategoriesForm> {
     Widget? addTitleIcon =
         this.isAddCategory ? Container().width(0) : Icon(Icons.add_outlined);
 
-    Widget formWidget = (this.isAddCategory ? Row(
-      children: [
-        TextButton(
-          child: Text('Anuluj'),
-          style: TextButton.styleFrom(primary: Theme.of(context).errorColor),
-          onPressed: () {
-            setState(() {
-              this.isAddCategory = false;
-            });
-          },
-        ),
-        Flexible(
-            child: TextInput().padding(right: 5)
-        )
-      ],
-    ) : Container());
+    Widget formWidget = (this.isAddCategory
+        ? Row(
+            children: [
+              TextButton(
+                child: Text('Anuluj'),
+                style:
+                    TextButton.styleFrom(primary: Theme.of(context).errorColor),
+                onPressed: () {
+                  setState(() {
+                    this.isAddCategory = false;
+                  });
+                },
+              ),
+              Flexible(child: TextInput().padding(right: 5))
+            ],
+          )
+        : Container());
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Expanded(child: formWidget),
         OutlinedButton(
-          onPressed: () {
-            setState(() {
-              this.isAddCategory = !this.isAddCategory;
-            });
-          },
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              AnimatedSwitcher(
-                duration: duration,
-                child: addTitleIcon,
-              ),
-              Flexible(
-                  child: AnimatedSwitcher(
-                    duration: duration,
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) =>
-                            ScaleTransition(
-                      scale: animation,
-                      child: child,
+                onPressed: () {
+                  setState(() {
+                    this.isAddCategory = !this.isAddCategory;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    AnimatedSwitcher(
+                      duration: duration,
+                      child: addTitleIcon,
                     ),
-                    child: addTitle,
-                  ),
-                  fit: FlexFit.loose)
-            ],
-          ),
-          style: OutlinedButton.styleFrom(
-              primary: Theme.of(context).primaryColor,
-              side: BorderSide(color: Theme.of(context).primaryColor),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25)))
-          ))
+                    Flexible(
+                        child: AnimatedSwitcher(
+                          duration: duration,
+                          transitionBuilder:
+                              (Widget child, Animation<double> animation) =>
+                                  ScaleTransition(
+                            scale: animation,
+                            child: child,
+                          ),
+                          child: addTitle,
+                        ),
+                        fit: FlexFit.loose)
+                  ],
+                ),
+                style: OutlinedButton.styleFrom(
+                    primary: Theme.of(context).primaryColor,
+                    side: BorderSide(color: Theme.of(context).primaryColor),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(25)))))
             .width(this.isAddCategory ? 80 : 250, animate: true)
             .height(50)
             .animate(duration, Curves.elasticInOut)

@@ -1,5 +1,4 @@
 import 'package:animations/animations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
 import 'package:przepisnik_v3/components/start/home.dart';
@@ -195,7 +194,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     return BottomAppBar(
       elevation: 0,
       notchMargin: 5,
-      color: Theme.of(context).primaryColorLight,
+      color: Colors.transparent,
       child: Container(
         height: 1,
       ),

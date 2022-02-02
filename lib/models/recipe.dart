@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/models/baseElement.dart';
 
 class Recipe extends BaseElement {
@@ -75,5 +76,11 @@ class Ingredient {
         qty = double.tryParse((v['Qty'] as String).replaceAll(',', '.')) ?? 0.0;
       }
     }
+  }
+
+  Ingredient.empty() {
+    name = 'New';
+    unit = '';
+    qty = 0;
   }
 }

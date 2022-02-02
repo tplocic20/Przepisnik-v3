@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
@@ -48,8 +46,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
   @override
   Widget build(BuildContext context) {
     Widget _getTemperature() {
-      if (widget.recipe!.temperature == null ||
-          widget.recipe!.temperature == '-') {
+      if (widget.recipe!.temperature == '-') {
         return Container();
       } else {
         return ListTile(
@@ -61,7 +58,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
     }
 
     Widget _getTime() {
-      if (widget.recipe!.time == null || widget.recipe!.time == '-') {
+      if (widget.recipe!.time == '-') {
         return Container();
       } else {
         return ListTile(
@@ -100,8 +97,9 @@ class _RecipeInfoState extends State<RecipeInfo> {
             );
           },
           isExpanded: groupExpanded[index],
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          body: ListView(
+            shrinkWrap: true,
+            physics: ScrollPhysics(),
             children: _buildIngredientsList(index),
           )));
     });
