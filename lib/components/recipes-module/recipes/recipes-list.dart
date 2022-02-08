@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:animations/animations.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipe-item.dart';
@@ -68,7 +70,9 @@ class _RecipesListSate extends State<RecipesList> {
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: Theme.of(context).primaryColor.withAlpha(this.selectedCategory.isEmpty ? 255 : 120),
+              primary: Theme.of(context)
+                  .primaryColor
+                  .withAlpha(this.selectedCategory.isEmpty ? 255 : 120),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
             )).width(120).height(100).padding(horizontal: 10),
@@ -89,7 +93,9 @@ class _RecipesListSate extends State<RecipesList> {
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: Theme.of(context).primaryColor.withAlpha(this.selectedCategory == e.key ? 255 : 120),
+              primary: Theme.of(context)
+                  .primaryColor
+                  .withAlpha(this.selectedCategory == e.key ? 255 : 120),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
             )).width(120).height(100).padding(horizontal: 10))
@@ -150,7 +156,9 @@ class _RecipesListSate extends State<RecipesList> {
               this.focusNode!.unfocus();
             });
           },
-        ).animate(const Duration(milliseconds: 300), Curves.ease).padding(all: 10)),
+        )
+                .animate(const Duration(milliseconds: 300), Curves.ease)
+                .padding(all: 10)),
         Container(
             child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
@@ -230,6 +238,21 @@ class _RecipesListSate extends State<RecipesList> {
   }
 
   Widget _buildBottomActionButton() {
+    return FloatingActionButton.extended(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        onPressed: () {
+          showCupertinoModalBottomSheet(
+              context: context,
+              builder: (context) => WillPopScope(
+                    child: EditRecipe(),
+                    onWillPop: () => Future.value(true),
+                  ));
+        },
+        label: Text('Dodaj'),
+        icon: const Icon(Icons.delete));
+  }
+
+  Widget _buildBottomActionButton2() {
     const double _fabDimension = 50;
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
@@ -238,10 +261,9 @@ class _RecipesListSate extends State<RecipesList> {
       },
       closedElevation: 6.0,
       closedShape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(_fabDimension / 2),
-        ),
-      ),
+          borderRadius: BorderRadius.all(
+        Radius.circular(_fabDimension / 2),
+      )),
       closedColor: Theme.of(context).colorScheme.secondary,
       openColor: Theme.of(context).colorScheme.secondary,
       middleColor: Theme.of(context).colorScheme.secondary,

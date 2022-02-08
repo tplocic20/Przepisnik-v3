@@ -1,5 +1,6 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
 import 'package:przepisnik_v3/components/start/home.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
@@ -46,14 +47,27 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
     Animation<RelativeRect> layerAnimation = RelativeRectTween(
       begin: RelativeRect.fromLTRB(
-          0.0, (((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight), 0.0, layerTop - layerSize.height),
+          0.0,
+          (((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) *
+                  _layerItemHeight) +
+              _layerItemHeight),
+          0.0,
+          layerTop - layerSize.height),
       end: RelativeRect.fromLTRB(0.0, 0.0, 0.0, 0.0),
     ).animate(_backdropAnimationController!.view);
 
     void backdropGrab(position) {
       if (!_frontLayerVisible) {
-        _backdropAnimationController!.value =
-            1 - ((((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight) + position) / (((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight);
+        _backdropAnimationController!.value = 1 -
+            ((((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) *
+                            _layerItemHeight) +
+                        _layerItemHeight) +
+                    position) /
+                (((widget.backLayer!.length > 0
+                            ? widget.backLayer!.length
+                            : 1) *
+                        _layerItemHeight) +
+                    _layerItemHeight);
       }
     }
 
@@ -65,28 +79,21 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
     }
 
     Widget getBackDropButton(IconData icon, Widget nextPage) {
-      return OpenContainer(
-          closedBuilder: (BuildContext _, VoidCallback openContainer) {
-            return SizedBox(
-              height: 50,
-              width: 60,
-              child: Center(
-                child: Icon(icon, color: Colors.white),
+      return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
               ),
-            ).backgroundColor(Theme.of(context).colorScheme.secondary);
-          },
-          middleColor: Theme.of(context).colorScheme.secondary,
-          openColor: Theme.of(context).colorScheme.secondary,
-          closedColor: Theme.of(context).colorScheme.secondary,
-          closedElevation: 2,
-          closedShape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(15),
             ),
-          ),
-          openBuilder: (BuildContext context, VoidCallback _) {
-            return nextPage;
-          }).padding(horizontal: 10);
+              primary: Theme.of(context).colorScheme.secondary),
+          onPressed: () {
+            _toggleBackdropLayerVisibility();
+            showCupertinoModalBottomSheet(
+                context: context, builder: (context) => nextPage);
+          },
+          child: Icon(icon)).height(50).width(60).padding(horizontal: 10);
     }
 
     Widget commonBackdropOptions() {
@@ -108,7 +115,8 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
               },
               style: OutlinedButton.styleFrom(
                   primary: Theme.of(context).colorScheme.secondary,
-                  side: BorderSide(color: Theme.of(context).colorScheme.secondary),
+                  side: BorderSide(
+                      color: Theme.of(context).colorScheme.secondary),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)))),
               icon: const Icon(Icons.logout_rounded),
@@ -135,7 +143,10 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                 child: Column(
                   children: widget.backLayer ?? [],
                 ),
-              ).height((((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight))),
+              ).height((((widget.backLayer!.length > 0
+                      ? widget.backLayer!.length
+                      : 1) *
+                  _layerItemHeight))),
               commonBackdropOptions()
             ],
           ).backgroundColor(Theme.of(context).primaryColor),
@@ -232,8 +243,18 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
             _dragDirection = details.localPosition.dy > _lastDragPos;
             _lastDragPos = details.localPosition.dy;
             _backdropAnimationController!.value =
-                ((((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight) - details.localPosition.dy + 30) /
-                    (((widget.backLayer!.length > 0 ? widget.backLayer!.length : 1) * _layerItemHeight) + _layerItemHeight);
+                ((((widget.backLayer!.length > 0
+                                    ? widget.backLayer!.length
+                                    : 1) *
+                                _layerItemHeight) +
+                            _layerItemHeight) -
+                        details.localPosition.dy +
+                        30) /
+                    (((widget.backLayer!.length > 0
+                                ? widget.backLayer!.length
+                                : 1) *
+                            _layerItemHeight) +
+                        _layerItemHeight);
           }
         },
         onVerticalDragEnd: (DragEndDetails details) {

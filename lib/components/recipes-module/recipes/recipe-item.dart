@@ -1,6 +1,7 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
 import 'package:przepisnik_v3/models/category.dart';
@@ -37,6 +38,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
       child: this._buildTile(context),
       actions: this._buildActions(context),
     ))
+        .elevation(0)
         .alignment(Alignment.center)
         .borderRadius(all: 15)
         .backgroundColor(Colors.transparent, animate: true)
@@ -136,7 +138,18 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
           action: () {}, icon: Icons.delete_rounded, color: Color(0xFFF46060)),
       // getButton(
       //     action: () {}, icon: Icons.create_rounded, color: Color(0xFFB5DEFF)),
-      this._getEditButton(context),
+      this._getButton(
+        action: () {
+          showCupertinoModalBottomSheet(
+              context: context,
+              builder: (context) => WillPopScope(
+                child: EditRecipe.withRecipe(recipe: widget.recipe!),
+                onWillPop: () => Future.value(true),
+              ));
+        },
+        color: Color(0xFFB5DEFF),
+        icon: Icons.create_rounded
+      ),
       this._getButton(
           action: () {
             this._share(context);
@@ -154,35 +167,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     ];
     return buttons;
   }
-
-  Widget _getEditButton(BuildContext context) {
-    return OpenContainer(
-        closedBuilder: (BuildContext _, VoidCallback openContainer) {
-          return SizedBox(
-            height: 50,
-            width: 60,
-            child: Center(
-              child: Icon(
-                Icons.create_rounded,
-                color: Colors.white,
-              ),
-            ),
-          ).backgroundColor(Color(0xFFB5DEFF));
-        },
-        middleColor: Color(0xFFB5DEFF),
-        openColor: Color(0xFFB5DEFF),
-        closedColor: Color(0xFFB5DEFF),
-        closedElevation: 2,
-        closedShape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          ),
-        ),
-        openBuilder: (BuildContext context, VoidCallback _) {
-          return EditRecipe();
-        }).padding(vertical: 15, horizontal: 10);
-  }
-
+  
   Widget _getButton({color: Color, icon: Icons, action: Function}) {
     return ElevatedButton(
         onPressed: action,

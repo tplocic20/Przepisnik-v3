@@ -90,7 +90,7 @@ class _BackdropSimpleState extends State<BackdropSimple> {
       titleSpacing: 0.0,
       leading: widget.backButtonOverride
           ? IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: Icon(Icons.arrow_back_ios),
         onPressed: _goBackNavigation,
       )
           : null,

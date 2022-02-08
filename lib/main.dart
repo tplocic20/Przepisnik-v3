@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:przepisnik_v3/components/app.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -27,9 +28,12 @@ class PrzepisnikApp extends StatelessWidget {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     fetchModes();
     return MaterialApp(
+      onGenerateRoute: (settings) {
+        return MaterialWithModalsPageRoute(settings: settings, builder: (context) => EntrySwitchApp());
+      },
       title: 'Przepisnik',
       theme: _appTheme(),
-      home: EntrySwitchApp(),
+      // home: EntrySwitchApp(),
     );
   }
 }
