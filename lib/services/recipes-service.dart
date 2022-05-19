@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/models/category.dart';
@@ -6,15 +5,15 @@ import 'package:przepisnik_v3/models/recipe.dart';
 
 class RecipesService {
   static final RecipesService _singleton = RecipesService._internal();
-  final _db = FirebaseDatabase.instance.reference();
+  final _db = FirebaseDatabase.instance.ref();
   String _selectedCategory = '';
   List<Category> _categories = [];
 
   factory RecipesService() {
     return _singleton;
   }
-  RecipesService._internal();
 
+  RecipesService._internal();
 
   init() async {
     await _db
@@ -22,12 +21,12 @@ class RecipesService {
         .child(globals.userState)
         .once()
         .then((element) {
-      this._categories = parseCategories(element.value);
+      this._categories = parseCategories(element.snapshot.value);
       return;
     });
   }
 
-  Stream<Event> get recipeList {
+  Stream<DatabaseEvent> get recipeList {
     return _db
         .child('Recipes')
         .child(globals.userState)
@@ -46,10 +45,16 @@ class RecipesService {
     this._selectedCategory = value;
   }
 
-  parseRecipes(element) {
+  Future updateCategory(String key, Category category) {
+    print(category.saveObject());
+    return _db.child('Categories')
+        .child(globals.userState).child(key).set(category.saveObject());
+  }
+
+  parseRecipes(DatabaseEvent element) {
     List<Recipe> parsedList = [];
     DataSnapshot dataValues = element.snapshot;
-    Map<dynamic, dynamic> values = dataValues.value;
+    Map<dynamic, dynamic> values = dataValues.value as Map<dynamic, dynamic>;
     values.forEach((key, values) {
       parsedList.add(Recipe(key, values));
     });
@@ -87,7 +92,9 @@ class RecipesService {
     recipe.ingredients.forEach((category) {
       textPartials.add('\n - ${category.name}');
       category.positions.forEach((position) {
-        textPartials.add('\t - ${position.name}, ${position.unit.isNotEmpty ? '${position.qty}, ${position.unit}' : ''}');
+        textPartials.add(
+            '\t - ${position.name}, ${position.unit.isNotEmpty ? '${position
+                .qty}, ${position.unit}' : ''}');
       });
     });
 

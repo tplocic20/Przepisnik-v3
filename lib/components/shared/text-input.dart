@@ -10,14 +10,28 @@ class TextInput extends StatelessWidget {
   final bool? autofocus;
   final bool? isDense;
   final Widget? label;
+  final Widget? prefix;
   final String? hint;
   final FocusNode? focusNode;
 
-  const TextInput({this.controller, this.onChanged, this.onFieldSubmitted, this.icon, this.autofocus, this.label, this.hint, this.isDense, this.focusNode, this.onTap});
+  const TextInput(
+      {this.controller,
+      this.prefix,
+      this.onChanged,
+      this.onFieldSubmitted,
+      this.icon,
+      this.autofocus,
+      this.label,
+      this.hint,
+      this.isDense,
+      this.focusNode,
+      this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    Widget? prefixIcon = this.icon != null ? Icon(this.icon, color: Theme.of(context).primaryColor) : null;
+    Widget? prefixIcon = this.icon != null
+        ? Icon(this.icon, color: Theme.of(context).primaryColor)
+        : null;
     return Center(
       child: TextFormField(
         controller: this.controller,
@@ -31,9 +45,12 @@ class TextInput extends StatelessWidget {
         decoration: InputDecoration(
             filled: true,
             prefixIcon: prefixIcon,
+            prefix: this.prefix,
             label: this.label,
             hintText: this.hint,
-            contentPadding: this.isDense != null && this.isDense! ? EdgeInsets.all(2) : null,
+            contentPadding: this.isDense != null && this.isDense!
+                ? EdgeInsets.all(2)
+                : null,
             fillColor: Color(0xFFDBDBDB),
             border: OutlineInputBorder(
               gapPadding: 2,
@@ -44,11 +61,10 @@ class TextInput extends StatelessWidget {
             )),
         keyboardType: TextInputType.text,
         style: new TextStyle(
-          fontFamily: "Poppins",
-          fontSize: this.isDense != null && this.isDense! ? 16 : null,
-          height: 1,
-          letterSpacing: 1
-        ),
+            fontFamily: "Poppins",
+            fontSize: this.isDense != null && this.isDense! ? 16 : null,
+            height: 1,
+            letterSpacing: 1),
       ).height(this.isDense != null && this.isDense! ? 35 : 55),
     );
   }

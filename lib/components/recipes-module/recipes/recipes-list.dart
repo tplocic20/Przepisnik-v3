@@ -1,11 +1,10 @@
 import 'dart:async';
-
 import 'package:animations/animations.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
@@ -23,11 +22,12 @@ class RecipesList extends StatefulWidget {
 }
 
 class _RecipesListSate extends State<RecipesList> {
-  final SlidableController slidableController = SlidableController();
-  String selectedCategory = '';
-  String searchString = '';
+  // final SlidableController slidableController = SlidableController();
+  bool showOnlyFavourites = false;
   bool searchInteracted = false;
   String? selectedCategoryName;
+  String selectedCategory = '';
+  String searchString = '';
   String title = 'Wszystkie';
   ScrollController scrollController =
       ScrollController(initialScrollOffset: 50.0);
@@ -57,45 +57,72 @@ class _RecipesListSate extends State<RecipesList> {
             onPressed: () {
               setState(() {
                 this.selectedCategory = '';
+                this.showOnlyFavourites = false;
                 this.title = 'Wszystkie';
               });
             },
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.ac_unit).padding(all: 0),
+                SvgPicture.asset('assets/category_icons/dining-room.svg', width: 40, height: 40,).padding(all: 0),
                 Text('Wszystkie', textAlign: TextAlign.center),
               ],
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: Theme.of(context)
-                  .primaryColor
-                  .withAlpha(this.selectedCategory.isEmpty ? 255 : 120),
+              primary: Theme.of(context).primaryColor.withAlpha(
+                  this.selectedCategory.isEmpty && !this.showOnlyFavourites
+                      ? 255
+                      : 120),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
             )).width(120).height(100).padding(horizontal: 10),
-        ...RecipesService().categories.map((e) => ElevatedButton(
+        ElevatedButton(
             onPressed: () {
               setState(() {
-                this.selectedCategory = e.key;
-                this.title = e.name;
+                this.selectedCategory = '';
+                this.showOnlyFavourites = true;
+                this.title = 'Ulubione';
               });
             },
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(Icons.ac_unit).padding(all: 0),
-                Text(e.name, textAlign: TextAlign.center),
+                SvgPicture.asset('assets/category_icons/favorite.svg', width: 40, height: 40,).padding(all: 0),
+                Text('Ulubione', textAlign: TextAlign.center),
               ],
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
               primary: Theme.of(context)
-                  .primaryColor
-                  .withAlpha(this.selectedCategory == e.key ? 255 : 120),
+                  .colorScheme
+                  .secondary
+                  .withAlpha(this.showOnlyFavourites ? 255 : 120),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15))),
+            )).width(120).height(100).padding(horizontal: 10),
+        ...RecipesService().categories.map((category) => ElevatedButton(
+            onPressed: () {
+              setState(() {
+                this.selectedCategory = category.key;
+                this.showOnlyFavourites = false;
+                this.title = category.name;
+              });
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset('assets/category_icons/${category.icon}.svg', width: 40, height: 40,).padding(all: 0),
+                Text(category.name, textAlign: TextAlign.center),
+              ],
+            ),
+            style: ElevatedButton.styleFrom(
+              elevation: 0,
+              primary: (category.color == null ? Theme.of(context).primaryColor : Color(int.parse("0xFF${category.color!}")))
+                  .withAlpha(this.selectedCategory == category.key ? 255 : 120),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
             )).width(120).height(100).padding(horizontal: 10))
@@ -116,7 +143,7 @@ class _RecipesListSate extends State<RecipesList> {
           child: FadeInAnimation(
               child: RecipeItem(
             recipe: filteredRecipes[index],
-            slidableController: slidableController,
+            // slidableController: slidableController,
             selectedCategory: selectedCategory,
           )),
         ),
@@ -193,25 +220,27 @@ class _RecipesListSate extends State<RecipesList> {
 
   Widget getRecipesList(List<Recipe> recipes) {
     List<Recipe> filteredRecipes = recipes.where((r) {
+      final isFav = !this.showOnlyFavourites || r.favourite;
       final isCategory =
           selectedCategory == '' || r.categories.contains(selectedCategory);
       // final isCategory = true;
       final isSearchResult = searchString.isEmpty ||
           r.name.toLowerCase().contains(searchString.toLowerCase());
       // final isSearchResult = true;
-      return isCategory && isSearchResult;
+      return isCategory && isSearchResult && isFav;
     }).toList();
 
     Widget emptyText = Center(
       child: Text(
         '¯\\_(ツ)_/¯\n ${searchString.length > 0 ? 'Nic nie znaleziono' : 'Brak przepisów w bazie\nPora jakiś dodać'}',
-        style: TextStyle(fontSize: 25),
+        style: TextStyle(fontSize: 19),
         textAlign: TextAlign.center,
       ),
     );
 
     return AnimationLimiter(
-      child: ListView.builder(
+      child: SlidableAutoCloseBehavior(
+          child: ListView.builder(
         controller: scrollController,
         itemCount: filteredRecipes.length + 3,
         itemBuilder: (BuildContext context, int index) {
@@ -221,12 +250,14 @@ class _RecipesListSate extends State<RecipesList> {
             return getCategoriesPicker();
           } else if (index == filteredRecipes.length + 2) {
             return SizedBox(
-                height: 100, width: MediaQuery.of(context).size.width);
+                height: 100,
+                width: MediaQuery.of(context).size.width,
+                child: Container());
           } else {
-            return getRecipeAnimation(context, index - 2, filteredRecipes);
+            return filteredRecipes.isEmpty ? emptyText : getRecipeAnimation(context, index - 2, filteredRecipes);
           }
         },
-      ),
+      )),
     );
   }
 
@@ -294,7 +325,7 @@ class _RecipesListSate extends State<RecipesList> {
 
   @override
   Widget build(BuildContext context) {
-    final _recipesEvent = Provider.of<Event?>(context);
+    final _recipesEvent = Provider.of<DatabaseEvent?>(context);
 
     return Backdrop(
         bottomMainBtn: _buildBottomActionButton(),

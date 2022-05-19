@@ -19,7 +19,7 @@ class _RecipesState extends State<RecipesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<Event?>.value(
+    return StreamProvider<DatabaseEvent?>.value(
         initialData: null,
         value: RecipesService().recipeList,
         child:  RecipesList());

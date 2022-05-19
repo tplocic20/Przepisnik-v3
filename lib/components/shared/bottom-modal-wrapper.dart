@@ -12,7 +12,7 @@ class BottomModalWrapper extends StatelessWidget {
       decoration: BoxDecoration(
           color: Theme.of(context).canvasColor,
           borderRadius: BorderRadius.all(Radius.circular(25))),
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: 30),
       child: Container(
         child: Padding(
           padding: EdgeInsets.only(top: 15, bottom: 15),

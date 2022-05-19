@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-const double _backdropVelocity = 2.0;
-const double _layerTitleHeight = 48.0;
-const double _layerItemHeight = 65;
+typedef void VoidCallback();
 
 class BackdropSimple extends StatefulWidget {
   final Widget? frontLayer;
   final Widget? bottomMainBtn;
   final Widget title;
   final bool backButtonOverride;
+  final VoidCallback? action;
   final FloatingActionButtonLocation actionButtonLocation;
 
   const BackdropSimple(
       {@required this.frontLayer,
         this.bottomMainBtn,
+        this.action,
         this.title = const Text(''),
         this.actionButtonLocation = FloatingActionButtonLocation.centerDocked,
         this.backButtonOverride = false})
@@ -28,10 +28,6 @@ class _BackdropSimpleState extends State<BackdropSimple> {
   final GlobalKey _backdropKey = GlobalKey(debugLabel: 'BackdropSimple');
 
   Widget _buildStack(BuildContext context, BoxConstraints constraints) {
-    final Size layerSize = constraints.biggest;
-    final double layerTop = layerSize.height - _layerTitleHeight;
-
-
     return Stack(
       key: _backdropKey,
       children: <Widget>[
@@ -82,7 +78,6 @@ class _BackdropSimpleState extends State<BackdropSimple> {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> barActions = [];
     var appBar = AppBar(
       backgroundColor: Theme.of(context).primaryColor,
       shadowColor: Colors.transparent,
@@ -92,7 +87,12 @@ class _BackdropSimpleState extends State<BackdropSimple> {
           ? IconButton(
         icon: Icon(Icons.arrow_back_ios),
         onPressed: _goBackNavigation,
-      )
+      ): null,
+      actions: widget.action != null
+          ? [IconButton(
+        icon: Icon(Icons.check_rounded),
+        onPressed: widget.action,
+      )]
           : null,
       title: widget.title,
     );

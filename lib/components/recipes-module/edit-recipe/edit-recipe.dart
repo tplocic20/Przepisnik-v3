@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe-content.dart';
 import 'package:przepisnik_v3/components/shared/backdrop-simple.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 class EditRecipe extends StatefulWidget {
   Recipe? recipe;

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/tabs/recipe-gallery.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/tabs/recipe-info.dart';

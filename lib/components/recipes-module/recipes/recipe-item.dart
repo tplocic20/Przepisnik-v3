@@ -1,9 +1,11 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
+import 'package:przepisnik_v3/main.dart';
 import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
@@ -15,10 +17,7 @@ class RecipeItem extends StatefulWidget {
   final String? selectedCategory;
   final SlidableController? slidableController;
 
-  RecipeItem(
-      {this.recipe,
-      this.selectedCategory,
-      this.slidableController});
+  RecipeItem({this.recipe, this.selectedCategory, this.slidableController});
 
   _RecipeItemState createState() => _RecipeItemState();
 }
@@ -32,11 +31,13 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Styled.widget(
             child: Slidable(
-      actionPane: SlidableDrawerActionPane(),
-      actionExtentRatio: 0.22,
-      controller: widget.slidableController,
+      groupTag: 'recipes_list',
+      startActionPane: ActionPane(
+        extentRatio: 0.9,
+        motion: const ScrollMotion(),
+        children: this._buildActions(context),
+      ),
       child: this._buildTile(context),
-      actions: this._buildActions(context),
     ))
         .elevation(0)
         .alignment(Alignment.center)
@@ -48,8 +49,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
         .elevation(20,
             borderRadius: BorderRadius.circular(25),
             shadowColor: Color(0x30000000)) // shadow borderRadius
-        .padding(
-            bottom: 12, horizontal: 10, top: 0) // margin
+        .padding(bottom: 12, horizontal: 10, top: 0) // margin
         .animate(Duration(milliseconds: 150), Curves.easeOut);
   }
 
@@ -59,25 +59,25 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
       closedBuilder: (BuildContext _, VoidCallback openContainer) {
         return Container(
           child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(widget.recipe!.name,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyText2
-                          ?.copyWith(fontSize: 20)),
-                  ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: this._buildTags(context),
-                  ).height(30),
-                  _buildExtras(context)
-                ],
-              ).padding(vertical: 0, horizontal: 15),
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(widget.recipe!.name,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2
+                      ?.copyWith(fontSize: 20)),
+              ListView(
+                scrollDirection: Axis.horizontal,
+                children: this._buildTags(context),
+              ).height(30),
+              _buildExtras(context)
+            ],
+          ).padding(vertical: 0, horizontal: 15),
         ).ripple().backgroundColor(Colors.white).clipRRect(all: 25);
       },
       openBuilder: (BuildContext context, VoidCallback _) {
-        widget.slidableController!.activeState = null;
+        // widget.slidableController!.activeState = null;
         return SingleRecipe(widget.recipe!);
       },
     ).clipRRect(all: 25).borderRadius(all: 25, animate: true);
@@ -85,25 +85,45 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
 
   Widget _buildExtras(BuildContext context) {
     Widget _favouriteWidget = widget.recipe!.favourite
-        ? Icon(Icons.favorite_rounded, color: Colors.amber, size: 24).padding(left: 10, right: 10).border(left: 2, color: Theme.of(context).primaryColor)
+        ? SvgPicture.asset(
+            'assets/category_icons/favorite.svg',
+            width: 20,
+            height: 20,
+          ).padding(left: 10, right: 10).border(
+            left: 2,
+            color: widget.recipe!.time.isNotEmpty ||
+                    widget.recipe!.temperature.isNotEmpty
+                ? Theme.of(context).primaryColor
+                : Colors.transparent)
         : Container();
     Widget _timeWidget = widget.recipe!.time.isNotEmpty
-    ? Text(widget.recipe!.time).padding(left: 10, right: 10)
-    : Container();
+        ? [
+            Icon(
+              Icons.access_time,
+              size: 20,
+            ).padding(right: 5),
+            Text(widget.recipe!.time)
+          ].toRow().padding(left: 10, right: 10)
+        : Container();
 
     Widget _temperatureWidget = widget.recipe!.temperature.isNotEmpty
-    ? Text(widget.recipe!.temperature).padding(left: 10, right: 10).border(left: 2, color: Theme.of(context).primaryColor)
-    : Container();
+        ? [
+            Icon(
+              Icons.thermostat,
+              size: 20,
+            ).padding(right: 5),
+            Text('${widget.recipe!.temperature} ')
+          ].toRow().padding(left: 10, right: 10).border(
+            left: 2,
+            color: widget.recipe!.time.isNotEmpty
+                ? Theme.of(context).primaryColor
+                : Colors.transparent)
+        : Container();
 
     return ListView(
       scrollDirection: Axis.horizontal,
-      children: [
-        _timeWidget,
-        _temperatureWidget,
-        _favouriteWidget
-      ],
+      children: [_timeWidget, _temperatureWidget, _favouriteWidget],
     ).height(20).padding(bottom: 10);
-
   }
 
   List<Widget> _buildTags(BuildContext context) {
@@ -123,11 +143,22 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     return Container(
       decoration: BoxDecoration(
           border: Border.all(
-            color: current ? Colors.white : Theme.of(context).primaryColor,
+            color: current
+                ? Colors.white
+                : Color(int.parse("0xFF${category.color!}")),
           ),
           borderRadius: BorderRadius.all(Radius.circular(20))),
-      child: Text(category.name).padding(horizontal: 5, vertical: 3),
-    ).backgroundColor(current ? Theme.of(context).primaryColor : Colors.transparent)
+      child: Row(
+       children: [
+         SvgPicture.asset('assets/category_icons/${category.icon}.svg', width: 20, height: 20,).padding(right: 5),
+         Text(category.name)
+             .textColor(current ? Colors.white : Colors.black)
+       ],
+      ).padding(horizontal: 15, vertical: 5),
+    )
+        .backgroundColor(current
+            ? Color(int.parse("0xFF${category.color!}"))
+            : Colors.transparent)
         .clipRRect(all: 20)
         .paddingDirectional(end: 5);
   }
@@ -135,21 +166,22 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
   List<Widget> _buildActions(BuildContext context) {
     List<Widget> buttons = [
       this._getButton(
-          action: () {}, icon: Icons.delete_rounded, color: Color(0xFFF46060)),
+          action: () {},
+          icon: Icons.delete_rounded,
+          color: PrzepisnikColors.ERROR),
       // getButton(
       //     action: () {}, icon: Icons.create_rounded, color: Color(0xFFB5DEFF)),
       this._getButton(
-        action: () {
-          showCupertinoModalBottomSheet(
-              context: context,
-              builder: (context) => WillPopScope(
-                child: EditRecipe.withRecipe(recipe: widget.recipe!),
-                onWillPop: () => Future.value(true),
-              ));
-        },
-        color: Color(0xFFB5DEFF),
-        icon: Icons.create_rounded
-      ),
+          action: () {
+            showCupertinoModalBottomSheet(
+                context: context,
+                builder: (context) => WillPopScope(
+                      child: EditRecipe.withRecipe(recipe: widget.recipe!),
+                      onWillPop: () => Future.value(true),
+                    ));
+          },
+          color: PrzepisnikColors.INFO,
+          icon: Icons.create_rounded),
       this._getButton(
           action: () {
             this._share(context);
@@ -163,11 +195,11 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
           icon: widget.recipe!.favourite
               ? Icons.favorite_rounded
               : Icons.favorite_outline_rounded,
-          color: Color(0xFFF3D179)),
+          color: PrzepisnikColors.WARNING),
     ];
     return buttons;
   }
-  
+
   Widget _getButton({color: Color, icon: Icons, action: Function}) {
     return ElevatedButton(
         onPressed: action,
@@ -176,13 +208,13 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
           primary: color,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
-        )).width(60).height(50).padding(vertical: 15, horizontal: 10);
+        )).width(60).height(50).padding(vertical: 10, horizontal: 5);
   }
 
   void _share(BuildContext context) {
     Share.share(RecipesService().prepareRecipeShareText(widget.recipe!),
-            subject: widget.recipe!.name)
-        .then((value) => {widget.slidableController!.activeState = null});
+        subject: widget.recipe!.name);
+    // .then((value) => {widget.slidableController!.activeState = null});
   }
 
   void _toggleFavourites(BuildContext context) {
@@ -196,7 +228,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Text('${widget.recipe!.name} - $message'),
       ));
-      widget.slidableController!.activeState = null;
+      // widget.slidableController!.activeState = null;
     });
   }
 }

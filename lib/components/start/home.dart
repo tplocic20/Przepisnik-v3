@@ -59,7 +59,7 @@ class _HomeState extends State<HomePage> {
             FlutterLogin(
                   // logo: 'assets/loader.json',
                   onLogin: authenticate,
-                  onSignup: signup,
+                  // onSignup: signup,
                   onSubmitAnimationCompleted: () {
                     RecipesService().init();
                     Navigator.pushAndRemoveUntil(
