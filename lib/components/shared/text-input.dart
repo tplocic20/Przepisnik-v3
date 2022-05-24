@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class TextInput extends StatelessWidget {
@@ -9,6 +10,7 @@ class TextInput extends StatelessWidget {
   final IconData? icon;
   final bool? autofocus;
   final bool? isDense;
+  final bool? isNumeric;
   final Widget? label;
   final Widget? prefix;
   final String? hint;
@@ -21,6 +23,7 @@ class TextInput extends StatelessWidget {
       this.onFieldSubmitted,
       this.icon,
       this.autofocus,
+      this.isNumeric,
       this.label,
       this.hint,
       this.isDense,
@@ -37,6 +40,10 @@ class TextInput extends StatelessWidget {
         controller: this.controller,
         autofocus: autofocus ?? false,
         onChanged: onChanged,
+        keyboardType: this.isNumeric == true ? TextInputType.number : TextInputType.text,
+        inputFormatters: <TextInputFormatter>[
+      this.isNumeric == true ? FilteringTextInputFormatter.digitsOnly : FilteringTextInputFormatter.singleLineFormatter
+        ],
         onTap: onTap,
         focusNode: focusNode,
         onFieldSubmitted: onFieldSubmitted,
@@ -59,7 +66,6 @@ class TextInput extends StatelessWidget {
                   style: BorderStyle.solid,
                   width: 1),
             )),
-        keyboardType: TextInputType.text,
         style: new TextStyle(
             fontFamily: "Poppins",
             fontSize: this.isDense != null && this.isDense! ? 16 : null,

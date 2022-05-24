@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
@@ -30,7 +31,16 @@ class _CategoriesFormState extends State<CategoriesForm> {
         children: RecipesService()
             .categories
             .map((Category category) => ElevatedButton(
-                  child: Text(category.name),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SvgPicture.asset(
+                          'assets/category_icons/${category.icon}.svg',
+                          height: 30,
+                          width: 30),
+                      Text(category.name).padding(left: 5)
+                    ],
+                  ),
                   style: ElevatedButton.styleFrom(
                     elevation: this.selectedCategories.indexOf(category.key) >= 0 ? 2 : 0,
                     primary: this.selectedCategories.indexOf(category.key) >= 0
@@ -53,7 +63,7 @@ class _CategoriesFormState extends State<CategoriesForm> {
                 ).padding(right: 5).animate(Duration(milliseconds: 150), Curves.easeOut))
             .toList(),
       ),
-    ).paddingDirectional(vertical: 25, horizontal: 10);
+    ).paddingDirectional(vertical: 25);
   }
 
   Widget addCategory(BuildContext context) {

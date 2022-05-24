@@ -20,8 +20,18 @@ class Recipe extends BaseElement {
     favourite = v['Favourite'] ?? false;
   }
 
-  Recipe.empty() {
-    ingredients.add(IngredientGroup.empty());
+  Recipe.empty();
+
+  Recipe.from(Recipe r) {
+    key = r.key;
+    categories = r.categories;
+    ingredients = r.ingredients;
+    name = r.name;
+    recipe = r.recipe;
+    temperature = r.temperature;
+    time = r.time;
+    favourite = r.favourite;
+
   }
 
   parseIngredients(items) {
@@ -44,8 +54,8 @@ class IngredientGroup {
     positions = parsePositions(v['Positions']);
   }
 
-  IngredientGroup.empty() {
-    name = 'Nowa grupa';
+  IngredientGroup.empty(String n) {
+    name = n;
   }
 
   parsePositions(items) {

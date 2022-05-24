@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
@@ -62,8 +63,14 @@ class _CategoriesSettingsState extends State<CategoriesSettings> {
                   ),
                 ],
               ),
-              child: ListTile(title: Text(category.name)).backgroundColor(Colors.white).height(60),
-            ).padding(vertical: 10)
+              child: ListTile(
+                  title: Text(category.name),
+                leading: SvgPicture.asset(
+                    'assets/category_icons/${category.icon}.svg',
+                    height: 55,
+                    width: 55),
+              ).backgroundColor(Colors.white).height(60),
+            )
         ).toList(),
       ),
     );

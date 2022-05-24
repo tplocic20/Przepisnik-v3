@@ -84,52 +84,55 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
   }
 
   Widget _buildExtras(BuildContext context) {
-    Widget _favouriteWidget = widget.recipe!.favourite
-        ? SvgPicture.asset(
-            'assets/category_icons/favorite.svg',
-            width: 20,
-            height: 20,
-          ).padding(left: 10, right: 10).border(
-            left: 2,
-            color: widget.recipe!.time.isNotEmpty ||
-                    widget.recipe!.temperature.isNotEmpty
-                ? Theme.of(context).primaryColor
-                : Colors.transparent)
-        : Container();
-    Widget _timeWidget = widget.recipe!.time.isNotEmpty
-        ? [
-            Icon(
-              Icons.access_time,
-              size: 20,
-            ).padding(right: 5),
-            Text(widget.recipe!.time)
-          ].toRow().padding(left: 10, right: 10)
-        : Container();
+    List<Widget> extras = [];
 
-    Widget _temperatureWidget = widget.recipe!.temperature.isNotEmpty
-        ? [
-            Icon(
-              Icons.thermostat,
-              size: 20,
-            ).padding(right: 5),
-            Text('${widget.recipe!.temperature} ')
-          ].toRow().padding(left: 10, right: 10).border(
-            left: 2,
-            color: widget.recipe!.time.isNotEmpty
-                ? Theme.of(context).primaryColor
-                : Colors.transparent)
-        : Container();
+    if (widget.recipe!.time.isNotEmpty) {
+      extras.add(Row(
+        children: [
+          Icon(
+            Icons.access_time,
+            size: 20,
+          ).padding(right: 5),
+          Text(widget.recipe!.time)
+        ],
+      ));
+    }
+
+    if (widget.recipe!.temperature.isNotEmpty) {
+      if (extras.isNotEmpty) {
+        extras.add(VerticalDivider());
+      }
+      extras.add(Row(
+        children: [
+          Icon(
+            Icons.thermostat,
+            size: 20,
+          ).padding(right: 5),
+          Text('${widget.recipe!.temperature} ')
+        ],
+      ));
+    }
+
+    if (widget.recipe!.favourite) {
+      if (extras.isNotEmpty) {
+        extras.add(VerticalDivider());
+      }
+      extras.add(SvgPicture.asset(
+        'assets/category_icons/favorite.svg',
+        width: 20,
+        height: 20,
+      ));
+    }
 
     return ListView(
       scrollDirection: Axis.horizontal,
-      children: [_timeWidget, _temperatureWidget, _favouriteWidget],
-    ).height(20).padding(bottom: 10);
+      children: extras,
+    ).height(20).padding(bottom: 10, left: 10);
   }
 
   List<Widget> _buildTags(BuildContext context) {
     return widget.recipe!.categories
-        .replaceAll(';', ',')
-        .split(',')
+        .split(';')
         .map((category) => _buildCategoryTag(
             RecipesService().getCategoryByKey(category), context))
         .toList();
@@ -149,14 +152,14 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
           ),
           borderRadius: BorderRadius.all(Radius.circular(20))),
       child: Row(
-       children: [
-         SvgPicture.asset('assets/category_icons/${category.icon}.svg', width: 20, height: 20,).padding(right: 5),
-         Text(category.name)
-             .textColor(current ? Colors.white : Colors.black)
-       ],
-      ).padding(horizontal: 15, vertical: 5),
-    )
-        .backgroundColor(current
+        children: [
+          SvgPicture.asset('assets/category_icons/${category.icon}.svg',
+                  width: 30, height: 30)
+              .padding(right: 5, left: 0),
+          Text(category.name).textColor(current ? Colors.white : Colors.black)
+        ],
+      ).padding(left: 5, vertical: 5, right: 10),
+    ).backgroundColor(current
             ? Color(int.parse("0xFF${category.color!}"))
             : Colors.transparent)
         .clipRRect(all: 20)

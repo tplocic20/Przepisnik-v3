@@ -176,7 +176,6 @@ class _RecipesListSate extends State<RecipesList> {
             });
           },
           onFieldSubmitted: (txt) {
-            Navigator.pop(context);
             setState(() {
               searchString = searchController!.text;
               this.searchInteracted = false;
@@ -206,6 +205,7 @@ class _RecipesListSate extends State<RecipesList> {
                           this.searchController!.clear();
                           this.searchString = '';
                           this.focusNode!.unfocus();
+                          this.scrollController.animateTo(50, duration: const Duration(microseconds: 550), curve: Curves.ease);
                         });
                       },
                       child: Text('Anuluj'),

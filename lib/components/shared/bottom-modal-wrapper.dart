@@ -12,36 +12,30 @@ class BottomModalWrapper extends StatelessWidget {
       decoration: BoxDecoration(
           color: Theme.of(context).canvasColor,
           borderRadius: BorderRadius.all(Radius.circular(25))),
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: 30),
+      margin: EdgeInsets.only(left: 10, right: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
       child: Container(
-        child: Padding(
-          padding: EdgeInsets.only(top: 15, bottom: 15),
-          child: child,
-        ),
+        margin: EdgeInsets.only(top: 20),
+        child: child,
       ),
     );
   }
 }
 
-class BottomModalSearchWrapper extends StatelessWidget {
+class BottomModalInputWrapper extends StatelessWidget {
   final Widget? child;
 
-  BottomModalSearchWrapper({this.child});
+  BottomModalInputWrapper({this.child});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              color: Theme.of(context).canvasColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(25), topRight: Radius.circular(25))),
-          child: child,
-        )
-      ],
+    return Container(
+      decoration: BoxDecoration(
+          color: Theme.of(context).canvasColor,
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(25), topRight: Radius.circular(25))),
+      margin: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+      child: Container(
+        child: child,
+      ),
     );
   }
 }

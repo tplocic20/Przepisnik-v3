@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:przepisnik_v3/components/recipes-module/edit-recipe/components/ingredient-group-form.dart';
+import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/categories-form.dart';
+import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
+import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -19,10 +23,18 @@ class EditRecipeInfo extends StatefulWidget {
 class _EditRecipeInfoState extends State<EditRecipeInfo> {
   bool categoriesExpanded = true;
   var groupExpanded = [];
+  Recipe recipe = Recipe.empty();
+
+  void initState() {
+    if (widget.recipe != null) {
+      this.recipe = Recipe.from(this.recipe);
+    }
+    super.initState();
+  }
 
   _buildIngredientsGroupList() {
     List<ExpansionPanel> widgets = [];
-    widget.recipe!.ingredients.asMap().forEach((index, value) {
+    this.recipe.ingredients.asMap().forEach((index, value) {
       groupExpanded.add(true);
       widgets.add(ExpansionPanel(
           canTapOnHeader: true,
@@ -41,7 +53,10 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
 
   _buildIngredientsList(groupIdx) {
     List<Widget> widgets = [];
-    widget.recipe!.ingredients[groupIdx].positions
+    this
+        .recipe
+        .ingredients[groupIdx]
+        .positions
         .asMap()
         .forEach((index, Ingredient value) {
       widgets.add(ListTile(
@@ -51,49 +66,71 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
     });
 
     final buttonStyleSuccess = TextButton.styleFrom(
-      primary: Theme.of(context).primaryColor,
+      primary: Theme
+          .of(context)
+          .primaryColor,
     );
     final buttonStyle = TextButton.styleFrom(
-      primary: Theme.of(context).colorScheme.primary,
+      primary: Theme
+          .of(context)
+          .colorScheme
+          .primary,
     );
     final buttonStyleError = TextButton.styleFrom(
-      primary: Theme.of(context).colorScheme.error,
+      primary: Theme
+          .of(context)
+          .colorScheme
+          .error,
     );
 
     return [
       Row(
         children: [
           TextButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.edit),
-                  label: Text('Edit'),
-                  style: buttonStyle)
+              onPressed: () {
+                IngredientGroup group = this.recipe.ingredients[groupIdx];
+
+                showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    isScrollControlled: true,
+                    context: context,
+                    builder: (context) {
+                      return IngredientGroupForm(
+                              group: group,
+                              onSubmit: (txt) {
+                                Navigator.pop(context);
+                                setState(() {
+                                  this.recipe.ingredients[groupIdx].name = txt;
+                                });
+                              },
+                            );
+                    });
+              },
+              icon: Icon(Icons.edit),
+              label: Text('Edit'),
+              style: buttonStyle)
               .padding(right: 10),
           TextButton.icon(
               onPressed: () {
-                showCupertinoDialog(
+                showModalBottomSheet(
+                    backgroundColor: Colors.transparent,
+                    isScrollControlled: true,
                     context: context,
-                    builder: (_) => CupertinoAlertDialog(
-                          title: Text(
-                              'Usuwanie ${widget.recipe!.ingredients[groupIdx].name}'),
-                          content: Text('Czy na pewno usunąć kategorię?'),
-                          actions: [
-                            CupertinoDialogAction(
-                                child: Text('Nie'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                }),
-                            CupertinoDialogAction(
-                                child: Text('Tak'),
-                                isDestructiveAction: true,
-                                onPressed: () {
-                                  setState(() {
-                                    widget.recipe!.ingredients.removeAt(groupIdx);
-                                  });
-                                  Navigator.of(context).pop();
-                                }),
-                          ],
-                        ));
+                    builder: (context) {
+                      return BottomModalWrapper(
+                        child: ConfirmBottomModal(
+                          title: 'Na pewno chcesz usunąć kategorię?',
+                          msg: 'Operacji nie będzie można cofnąć',
+                          type: ConfirmBottomModalType.danger,
+                          action: () {
+                            setState(() {
+                              this.recipe.ingredients.removeAt(groupIdx);
+                            });
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      );
+                    });
               },
               icon: Icon(Icons.delete),
               label: Text('Remove'),
@@ -107,14 +144,18 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
         children: widgets,
       ),
       TextButton.icon(
-              onPressed: () {
-                setState(() {
-                  widget.recipe!.ingredients[groupIdx].positions.add(Ingredient.empty());
-                });
-              },
-              icon: Icon(Icons.add),
-              label: Text('Dodaj składnik'),
-              style: buttonStyleSuccess)
+          onPressed: () {
+            setState(() {
+              this
+                  .recipe
+                  .ingredients[groupIdx]
+                  .positions
+                  .add(Ingredient.empty());
+            });
+          },
+          icon: Icon(Icons.add),
+          label: Text('Dodaj pozycję'),
+          style: buttonStyleSuccess)
           .padding(top: 10),
     ];
   }
@@ -122,7 +163,9 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
   @override
   Widget build(BuildContext context) {
     final buttonStyle = TextButton.styleFrom(
-      primary: Theme.of(context).primaryColor,
+      primary: Theme
+          .of(context)
+          .primaryColor,
     );
     return ListView(
       children: [
@@ -153,14 +196,24 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
           children: _buildIngredientsGroupList(),
         ).padding(all: 5),
         TextButton.icon(
-                onPressed: () {
-                  setState(() {
-                    widget.recipe!.ingredients.add(IngredientGroup.empty());
+            onPressed: () {
+              showModalBottomSheet(
+                  backgroundColor: Colors.transparent,
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) {
+                    return IngredientGroupForm(onSubmit: (txt) {
+                      Navigator.pop(context);
+                      setState(() {
+                        this.recipe.ingredients.add(
+                            IngredientGroup.empty(txt));
+                      });
+                    });
                   });
-                },
-                icon: Icon(Icons.add),
-                label: Text('Dodaj grupę'),
-                style: buttonStyle)
+            },
+            icon: Icon(Icons.add),
+            label: Text('Dodaj grupę składników'),
+            style: buttonStyle)
             .padding(top: 10),
       ],
     );

@@ -1,0 +1,6 @@
+version: "Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)"
+options: "50ea8faf3f3c4f1c670ef2fbcb1020e5d84a1749099727dbc52f773dc5d3feeb"
+build_start_time: [1652980146, 626533031]
+build_end_time: [1652980146, 733677864]
+inputs:
+  "/Users/tomaszplocic/WebstormProjects/Przepisnik-v3/ios/Runner/AppDelegate.swift": !private [1602530699, 104666471]

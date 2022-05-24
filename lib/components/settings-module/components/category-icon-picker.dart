@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:styled_widget/styled_widget.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 import 'category-tile-preview.dart';
 
@@ -11,6 +11,7 @@ const icons = [
   'asparagus',
   'avocado',
   'basil',
+  'bay-leaf',
   'birthday-cake',
   'blueberry',
   'bonsai',
@@ -26,6 +27,7 @@ const icons = [
   'cherry',
   'chocolate-bar',
   'citrus',
+  'cocktail',
   'coconut',
   'coffee-beans',
   'cooker',
@@ -40,9 +42,12 @@ const icons = [
   'dragon-fruit',
   'dry',
   'eggs',
+  'favorite',
   'food-and-wine',
+  'food',
   'french-fries',
   'french-press',
+  'fridge',
   'garlic',
   'gingerbread-house',
   'grapes',
@@ -56,6 +61,7 @@ const icons = [
   'kiwi',
   'leek',
   'lemonade',
+  'lettuce',
   'mango',
   'mate',
   'melon',
@@ -63,6 +69,7 @@ const icons = [
   'moka-pot',
   'mulled-wine',
   'mushroom',
+  'natural-food',
   'noodles',
   'nut',
   'octopus',
@@ -86,6 +93,7 @@ const icons = [
   'raspberry',
   'restaurant',
   'rice-bowl',
+  'soda-water',
   'soursop',
   'soy',
   'squash',
@@ -109,7 +117,7 @@ const icons = [
   'weber',
   'wheat',
   'whole-fish',
-  'wooden-beer-keg',
+  'wooden-beer-keg'
 ];
 
 class CategoryIconPicker extends StatefulWidget {
@@ -118,14 +126,17 @@ class CategoryIconPicker extends StatefulWidget {
   final Color? color;
   final Function? onChanged;
 
-  const CategoryIconPicker({this.current, @required this.name, @required this.color, @required this.onChanged});
+  const CategoryIconPicker(
+      {this.current,
+      @required this.name,
+      @required this.color,
+      @required this.onChanged});
 
   @override
   State<CategoryIconPicker> createState() => _CategoryIconPickerState();
 }
 
 class _CategoryIconPickerState extends State<CategoryIconPicker> {
-
   String selected = 'dining-room';
 
   @override
@@ -138,23 +149,36 @@ class _CategoryIconPickerState extends State<CategoryIconPicker> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CategoryTilePreview(selectedIcon: this.selected, name: widget.name!, selectedColor: widget.color!, mode: CategoryTilePreviewMode.iconColor),
-        Expanded(child: SingleChildScrollView(
+        CategoryTilePreview(
+            selectedIcon: this.selected,
+            name: widget.name!,
+            selectedColor: widget.color!,
+            mode: CategoryTilePreviewMode.iconColor),
+        Expanded(
+            child: SingleChildScrollView(
           child: Wrap(
-            children: icons.map((image) => TextButton(onPressed: () {
-              setState(() {
-                this.selected = image;
-                widget.onChanged!(image);
-              });
-            },
-                style: TextButton.styleFrom(
-                  backgroundColor: this.selected == image ? Colors.grey.shade200 : Colors.transparent
-                ),
-                child: SvgPicture.asset('assets/category_icons/$image.svg', height: 55, width: 55)).clipRRect(all: 15).padding(all: 10)).toList(),
+            children: icons
+                .map((image) => TextButton(
+                        onPressed: () {
+                          setState(() {
+                            this.selected = image;
+                            widget.onChanged!(image);
+                          });
+                        },
+                        style: TextButton.styleFrom(
+                            backgroundColor: this.selected == image
+                                ? Colors.grey.shade200
+                                : Colors.transparent),
+                        child: SvgPicture.asset(
+                            'assets/category_icons/$image.svg',
+                            height: 55,
+                            width: 55))
+                    .clipRRect(all: 15)
+                    .padding(all: 10))
+                .toList(),
           ),
         ))
       ],
     );
   }
 }
-
