@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:przepisnik_v3/components/settings-module/components/category-color-picker.dart';
 import 'package:przepisnik_v3/components/settings-module/components/category-icon-picker.dart';
 import 'package:przepisnik_v3/components/settings-module/components/category-tile-preview.dart';
@@ -69,7 +70,7 @@ class _CategoryFormState extends State<CategoryForm> {
                     Expanded(
                         child: TextInput(
                             controller: nameController,
-                            icon: Icons.search,
+                            icon: 'time',
                             hint: 'Nazwa',
                             isDense: false,
                             onChanged: (txt) {

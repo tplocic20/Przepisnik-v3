@@ -24,7 +24,7 @@ class IngredientGroupForm extends StatelessWidget {
           TextInput(
             controller: inputController,
             autofocus: true,
-            icon: Icons.search,
+            icon: 'time',
             onFieldSubmitted: (text) {
               this.onSubmit!(text);
             },

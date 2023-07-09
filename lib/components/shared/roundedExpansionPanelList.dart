@@ -90,7 +90,7 @@ class RoundedExpansionPanelList extends StatelessWidget {
         new Container(
           key: new _SaltedKey<BuildContext, int>(context, index * 2),
           child: new Material(
-            shadowColor: Theme.of(context).accentColor,
+            shadowColor: Theme.of(context).colorScheme.secondary,
             elevation: 1.5,
             borderRadius: childRadius,
             child: new Column(
@@ -119,6 +119,7 @@ class RoundedExpansionPanelList extends StatelessWidget {
         items.add(new Divider(
           key: new _SaltedKey<BuildContext, int>(context, index * 2 + 1),
           height: 15.0,
+          color: Colors.transparent,
         ));
     }
 

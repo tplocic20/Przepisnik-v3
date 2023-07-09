@@ -1,7 +1,7 @@
-import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/components/start/home.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/services/auth-service.dart';
@@ -78,22 +78,25 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
               : _backdropVelocity);
     }
 
-    Widget getBackDropButton(IconData icon, Widget nextPage) {
+    Widget getBackDropButton(Widget icon, Widget nextPage) {
       return ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(15),
-              ),
-            ),
-              primary: Theme.of(context).colorScheme.secondary),
-          onPressed: () {
-            _toggleBackdropLayerVisibility();
-            showCupertinoModalBottomSheet(
-                context: context, builder: (context) => nextPage);
-          },
-          child: Icon(icon)).height(50).width(60).padding(horizontal: 10);
+              style: ElevatedButton.styleFrom(
+                  elevation: 2,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(15),
+                    ),
+                  ),
+                  backgroundColor: Theme.of(context).colorScheme.secondary),
+              onPressed: () {
+                _toggleBackdropLayerVisibility();
+                showCupertinoModalBottomSheet(
+                    context: context, builder: (context) => nextPage);
+              },
+              child: Container(child: icon))
+          .height(50)
+          .width(60)
+          .padding(horizontal: 10);
     }
 
     Widget commonBackdropOptions() {
@@ -102,8 +105,10 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
             Row(mainAxisSize: MainAxisSize.min, children: [
-              getBackDropButton(Icons.settings_rounded, SettingsPage()),
-              getBackDropButton(Icons.person_rounded, SettingsPage()),
+              getBackDropButton(
+                  PrzepisnikIcon(icon: 'settings', size: 35), SettingsPage()),
+              getBackDropButton(
+                  PrzepisnikIcon(icon: 'customer', size: 35), SettingsPage()),
             ]),
             OutlinedButton.icon(
               onPressed: () {
@@ -114,12 +119,15 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                     (Route<dynamic> route) => false);
               },
               style: OutlinedButton.styleFrom(
-                  primary: Theme.of(context).colorScheme.secondary,
+                  foregroundColor: Theme.of(context).colorScheme.secondary,
                   side: BorderSide(
                       color: Theme.of(context).colorScheme.secondary),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)))),
-              icon: const Icon(Icons.logout_rounded),
+              icon: PrzepisnikIcon(
+                  icon: 'logout',
+                  size: 35,
+                  color: Theme.of(context).colorScheme.secondary),
               label: Text('Wyloguj'),
             ).height(50).padding(horizontal: 10),
           ])
@@ -139,6 +147,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         ExcludeSemantics(
           child: Column(
             children: [
+              SizedBox(height: 5),
               Styled.widget(
                 child: Column(
                   children: widget.backLayer ?? [],

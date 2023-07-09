@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -52,7 +53,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         return ListTile(
           title: const Text('Temperatura'),
           trailing: Text('${widget.recipe!.temperature} \u2103'),
-          leading: Icon(Icons.wb_incandescent),
+          leading: PrzepisnikIcon(icon: 'temperature'),
         ).padding(horizontal: 25);
       }
     }
@@ -64,7 +65,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         return ListTile(
           title: const Text('Czas'),
           trailing: Text('${widget.recipe!.time}'),
-          leading: Icon(Icons.timer),
+          leading: PrzepisnikIcon(icon: 'time'),
         ).padding(horizontal: 25);
       }
     }

@@ -26,18 +26,78 @@ void main() async {
   runApp(PrzepisnikApp());
 }
 
+final ThemeData theme = ThemeData();
+
 class PrzepisnikApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     fetchModes();
     return MaterialApp(
-      onGenerateRoute: (settings) {
-        return MaterialWithModalsPageRoute(settings: settings, builder: (context) => EntrySwitchApp());
-      },
       title: 'Przepisnik',
-      theme: _appTheme(),
-      // home: EntrySwitchApp(),
+      theme: theme.copyWith(
+          colorScheme: theme.colorScheme.copyWith(
+            primary: PrzepisnikColors.PRIMARY,
+              secondary: PrzepisnikColors.ACCENT,
+            background: PrzepisnikColors.BACKGROUND,
+          ),
+          brightness: Brightness.light,
+          primaryColor: PrzepisnikColors.PRIMARY,
+          primaryColorLight: PrzepisnikColors.PRIMARY_LIGHT,
+          primaryColorDark: PrzepisnikColors.PRIMARY_DARK,
+          scaffoldBackgroundColor: PrzepisnikColors.SCAFFOLD,
+          backgroundColor: PrzepisnikColors.BACKGROUND,
+          errorColor: PrzepisnikColors.ERROR,
+          textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme.apply(bodyColor: Colors.black87, displayColor: Colors.black87)),
+          snackBarTheme: SnackBarThemeData(
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+          ),
+          textSelectionTheme: TextSelectionThemeData(
+            selectionColor: PrzepisnikColors.PRIMARY,
+            selectionHandleColor: PrzepisnikColors.PRIMARY,
+          ),
+          inputDecorationTheme: InputDecorationTheme(
+              filled: true,
+              isDense: true,
+              labelStyle: TextStyle(fontSize: 15, letterSpacing: 1, color: PrzepisnikColors.PRIMARY),
+              focusColor: PrzepisnikColors.PRIMARY,
+              prefixStyle: TextStyle(
+                  color: PrzepisnikColors.PRIMARY
+              ),
+              suffixStyle: TextStyle(
+                  color: PrzepisnikColors.PRIMARY
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(color: PrzepisnikColors.PRIMARY),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide.none,
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(color: PrzepisnikColors.ERROR),
+              ),
+              focusedErrorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide(color: PrzepisnikColors.ERROR),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(25),
+                borderSide: BorderSide.none,
+              ))
+      ),
+      onGenerateRoute: (RouteSettings settings) {
+        return MaterialWithModalsPageRoute<void>(
+            builder: (BuildContext context) {
+              return EntrySwitchApp();
+            },
+          );
+      },
     );
   }
 }
@@ -61,6 +121,7 @@ ThemeData _appTheme() {
   return ThemeData(
       // Define the default brightness and colors.
       brightness: Brightness.light,
+      primarySwatch: Colors.green,
       primaryColor: PrzepisnikColors.PRIMARY,
       primaryColorLight: PrzepisnikColors.PRIMARY_LIGHT,
       primaryColorDark: PrzepisnikColors.PRIMARY_DARK,
@@ -112,5 +173,6 @@ ThemeData _appTheme() {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
             borderSide: BorderSide.none,
-          )));
+          ))
+  );
 }

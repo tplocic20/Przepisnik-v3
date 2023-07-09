@@ -6,15 +6,21 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipe-item.dart';
 import 'package:przepisnik_v3/components/shared/Loader.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
+import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';
+
+import '../../shared/bottom-modal-wrapper.dart';
+import '../../shared/confirm-bottom-modal.dart';
 
 class RecipesList extends StatefulWidget {
   @override
@@ -22,7 +28,6 @@ class RecipesList extends StatefulWidget {
 }
 
 class _RecipesListSate extends State<RecipesList> {
-  // final SlidableController slidableController = SlidableController();
   bool showOnlyFavourites = false;
   bool searchInteracted = false;
   String? selectedCategoryName;
@@ -71,7 +76,7 @@ class _RecipesListSate extends State<RecipesList> {
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: Theme.of(context).primaryColor.withAlpha(
+              backgroundColor: Theme.of(context).primaryColor.withAlpha(
                   this.selectedCategory.isEmpty && !this.showOnlyFavourites
                       ? 255
                       : 120),
@@ -96,7 +101,7 @@ class _RecipesListSate extends State<RecipesList> {
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: Theme.of(context)
+              backgroundColor: Theme.of(context)
                   .colorScheme
                   .secondary
                   .withAlpha(this.showOnlyFavourites ? 255 : 120),
@@ -121,7 +126,7 @@ class _RecipesListSate extends State<RecipesList> {
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: (category.color == null ? Theme.of(context).primaryColor : Color(int.parse("0xFF${category.color!}")))
+              backgroundColor: (category.color == null ? Theme.of(context).primaryColor : Color(int.parse("0xFF${category.color!}")))
                   .withAlpha(this.selectedCategory == category.key ? 255 : 120),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -143,7 +148,6 @@ class _RecipesListSate extends State<RecipesList> {
           child: FadeInAnimation(
               child: RecipeItem(
             recipe: filteredRecipes[index],
-            // slidableController: slidableController,
             selectedCategory: selectedCategory,
           )),
         ),
@@ -159,7 +163,7 @@ class _RecipesListSate extends State<RecipesList> {
             child: TextInput(
           controller: searchController,
           hint: 'Szukaj',
-          icon: Icons.search,
+          icon: 'time',
           focusNode: focusNode,
           isDense: true,
           onChanged: (txt) {
@@ -210,7 +214,7 @@ class _RecipesListSate extends State<RecipesList> {
                       },
                       child: Text('Anuluj'),
                       style: TextButton.styleFrom(
-                          primary: Theme.of(context).colorScheme.secondary))
+                          foregroundColor: Theme.of(context).colorScheme.secondary))
                   .padding(right: 15)
               : Container(),
         ))
@@ -271,6 +275,7 @@ class _RecipesListSate extends State<RecipesList> {
   Widget _buildBottomActionButton() {
     return FloatingActionButton.extended(
         backgroundColor: Theme.of(context).colorScheme.secondary,
+        foregroundColor: Colors.black87,
         onPressed: () {
           showCupertinoModalBottomSheet(
               context: context,
@@ -280,7 +285,7 @@ class _RecipesListSate extends State<RecipesList> {
                   ));
         },
         label: Text('Dodaj'),
-        icon: const Icon(Icons.delete));
+        icon: PrzepisnikIcon(icon: 'plus'));
   }
 
   Widget _buildBottomActionButton2() {
@@ -288,7 +293,30 @@ class _RecipesListSate extends State<RecipesList> {
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
       openBuilder: (BuildContext context, VoidCallback _) {
-        return EditRecipe();
+        return WillPopScope(
+          child: EditRecipe(),
+          onWillPop: () {
+            bool returnValue = false;
+            print('WillPopScope EditRecipe');
+            return showModalBottomSheet<bool>(
+                backgroundColor: Colors.transparent,
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return BottomModalWrapper(
+                    child: ConfirmBottomModal(
+                      title: 'Na pewno chcesz zamknąć edytor?',
+                      msg: 'Utrcisz wszystkie niezapisane zmiany',
+                      type: ConfirmBottomModalType.danger,
+                      action: () {
+                        returnValue = true;
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                }).then((value) => returnValue);
+          },
+        );
       },
       closedElevation: 6.0,
       closedShape: const RoundedRectangleBorder(
@@ -306,10 +334,7 @@ class _RecipesListSate extends State<RecipesList> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.add,
-                  color: Theme.of(context).colorScheme.onSecondary,
-                ),
+                PrzepisnikIcon(icon: 'plus'),
                 Text(
                   'Dodaj',
                   style: TextStyle(
@@ -328,7 +353,7 @@ class _RecipesListSate extends State<RecipesList> {
     final _recipesEvent = Provider.of<DatabaseEvent?>(context);
 
     return Backdrop(
-        bottomMainBtn: _buildBottomActionButton(),
+        bottomMainBtn: _buildBottomActionButton2(),
         actionButtonLocation: FloatingActionButtonLocation.centerFloat,
         title: Text(this.title),
         backLayer: [],

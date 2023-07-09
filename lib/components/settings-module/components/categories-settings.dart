@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';
 import '../../../models/category.dart';
@@ -27,8 +29,8 @@ class _CategoriesSettingsState extends State<CategoriesSettings> {
               startActionPane: ActionPane(
                 motion: const ScrollMotion(),
                 children: [
-                  SlidableAction(
-                    onPressed: (BuildContext context) {
+                  GestureDetector(
+                    onTap: () {
                       showModalBottomSheet(
                           backgroundColor: Colors.transparent,
                           isScrollControlled: true,
@@ -46,20 +48,18 @@ class _CategoriesSettingsState extends State<CategoriesSettings> {
                             );
                           });
                     },
-                    backgroundColor: Color(0xFFF46060),
-                    foregroundColor: Colors.white,
-                    icon: Icons.delete_rounded,
-                    label: 'Usuń',
+                    child: Container(child: PrzepisnikIcon(icon: 'trash').padding(all: 15))
+                        .backgroundColor(Color(0xFFF46060))
+                        .width(MediaQuery.of(context).size.width/4).height(60),
                   ),
-                  SlidableAction(
-                    onPressed: (BuildContext context) {
+                  GestureDetector(
+                    onTap: () {
                       showCupertinoModalBottomSheet(
                           context: context, builder: (context) => CategoryForm(category: category));
                     },
-                    backgroundColor: Color(0xFFB5DEFF),
-                    foregroundColor: Colors.white,
-                    icon: Icons.create_rounded,
-                    label: 'Edytuj',
+                    child: Container(child: PrzepisnikIcon(icon: 'edit').padding(all: 15))
+                        .backgroundColor(Color(0xFFB5DEFF))
+                        .width(MediaQuery.of(context).size.width/4).height(60),
                   ),
                 ],
               ),

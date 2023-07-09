@@ -88,9 +88,9 @@ class Ingredient {
     }
   }
 
-  Ingredient.empty() {
-    name = 'New';
-    unit = '';
-    qty = 0;
+  Ingredient.empty(String n, String u, double q) {
+    name = n;
+    unit = u;
+    qty = q;
   }
 }

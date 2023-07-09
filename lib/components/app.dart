@@ -14,8 +14,10 @@ class EntrySwitchApp extends StatelessWidget {
       return HomePage();
     } else {
       globals.userState = _userState.uid;
-      RecipesService().init();
-      return RecipesPage();
+      return FutureBuilder(
+          future: RecipesService().init(),
+          builder: (context, snapshot) => RecipesPage()
+      );
     }
   }
 }
