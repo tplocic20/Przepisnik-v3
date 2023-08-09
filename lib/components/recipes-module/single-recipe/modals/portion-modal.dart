@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 
@@ -96,9 +95,9 @@ class _PortionModalState extends State<PortionModal> {
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text('Ok'),
-              textColor: Theme.of(context).primaryColor,
+              style: TextButton.styleFrom(foregroundColor: Theme.of(context).primaryColor),
               onPressed: () {
                 Navigator.pop(context);
               },

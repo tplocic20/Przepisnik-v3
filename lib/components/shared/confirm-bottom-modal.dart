@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/main.dart';
 import 'package:styled_widget/styled_widget.dart';
 
-typedef void VoidCallback();
 
 enum ConfirmBottomModalType { none, warning, danger, info }
 

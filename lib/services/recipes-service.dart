@@ -8,6 +8,7 @@ class RecipesService {
   final _db = FirebaseDatabase.instance.ref();
   String _selectedCategory = '';
   List<Category> _categories = [];
+  List<String> _units = [];
 
   factory RecipesService() {
     return _singleton;
@@ -15,13 +16,14 @@ class RecipesService {
 
   RecipesService._internal();
 
-  init() async {
-    await _db
-        .child('Categories')
+  Future<void> init() {
+    return _db
+        .child('Users')
         .child(globals.userState)
         .once()
         .then((element) {
       this._categories = parseCategories(element.snapshot.value);
+      this._units = parseUnits(element.snapshot.value);
       return;
     });
   }
@@ -35,6 +37,10 @@ class RecipesService {
 
   List<Category> get categories {
     return this._categories;
+  }
+
+  List<String> get units {
+    return this._units;
   }
 
   String get selectedCategory {
@@ -61,10 +67,18 @@ class RecipesService {
     return parsedList;
   }
 
-  parseCategories(element) {
+  List<Category> parseCategories(element) {
     List<Category> parsedList = [];
     if (element != null) {
-      element.forEach((k, v) => parsedList.add(Category(k, v)));
+      element['Categories'].forEach((k, v) => parsedList.add(Category(k, v)));
+    }
+    return parsedList;
+  }
+
+  parseUnits(element) {
+    List<String> parsedList = [];
+    if (element != null) {
+      element['Units'].forEach((k, v) => parsedList.add(v['Name']));
     }
     return parsedList;
   }

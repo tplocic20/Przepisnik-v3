@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe-container.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:rxdart/rxdart.dart';
@@ -54,10 +54,10 @@ class _SingleRecipeState extends State<SingleRecipe> {
     }
 
     Widget _cookModeButton = ElevatedButton.icon(
-      icon: Icon(Icons.room_service),
+      icon: PrzepisnikIcon(icon: PrzepisnikIcons.cook),
       label: Text('Tryb szefa kuchni'),
       style: ElevatedButton.styleFrom(
-        primary: Theme.of(context).colorScheme.secondary,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15))),
       ),
@@ -83,10 +83,10 @@ class _SingleRecipeState extends State<SingleRecipe> {
                 controller.add(true);
               });
             },
-            icon: Icon(Icons.cancel_outlined),
+            icon: PrzepisnikIcon(icon: PrzepisnikIcons.cook),
             style: OutlinedButton.styleFrom(
               elevation: 1,
-              primary: Colors.white,
+              foregroundColor: Colors.white,
               backgroundColor: Color(0x50F46060),
               side: BorderSide(color: Color(0xFFF46060), width: 1.5),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15)))
@@ -99,12 +99,12 @@ class _SingleRecipeState extends State<SingleRecipe> {
 
 
     Widget _calculatorButton = ElevatedButton.icon(
-      icon: Icon(Icons.pie_chart),
+      icon: PrzepisnikIcon(icon: PrzepisnikIcons.scale),
       label: Text('Kalkulator składników'),
       style: ElevatedButton.styleFrom(
         elevation: this._cookMode ? 0 : 1.0,
         splashFactory: this._cookMode ? NoSplash.splashFactory : InkRipple.splashFactory,
-        primary: this._cookMode ? Colors.grey : Theme.of(context).colorScheme.secondary,
+        backgroundColor: this._cookMode ? Colors.grey : Theme.of(context).colorScheme.secondary,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(15))),
       ),
@@ -151,7 +151,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
         tag: widget.recipe.key,
         child: Text(widget.recipe.name,
             overflow: TextOverflow.fade,
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
@@ -159,12 +159,6 @@ class _SingleRecipeState extends State<SingleRecipe> {
       ),
       actionButtonLocation: FloatingActionButtonLocation.endFloat,
       backButtonOverride: true,
-      bottomMainBtn: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.menu),
-        elevation: 1,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-      ),
       frontLayer: SingleRecipeContainer(
         recipe: widget.recipe,
         portion: this._portion,

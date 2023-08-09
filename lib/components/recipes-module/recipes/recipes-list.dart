@@ -5,24 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipe-item.dart';
 import 'package:przepisnik_v3/components/shared/Loader.dart';
-import 'package:przepisnik_v3/components/shared/backdrop.dart';
+import 'package:przepisnik_v3/components/shared/backdrop-simple.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';
+import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
+import '../../shared/bottom-modal-wrapper.dart';
 
 class RecipesList extends StatefulWidget {
   @override
   _RecipesListSate createState() => _RecipesListSate();
 }
 
-class _RecipesListSate extends State<RecipesList> {
-  // final SlidableController slidableController = SlidableController();
+class _RecipesListSate extends State<RecipesList> with AutomaticKeepAliveClientMixin<RecipesList> {
   bool showOnlyFavourites = false;
   bool searchInteracted = false;
   String? selectedCategoryName;
@@ -71,7 +72,7 @@ class _RecipesListSate extends State<RecipesList> {
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: Theme.of(context).primaryColor.withAlpha(
+              backgroundColor: Theme.of(context).primaryColor.withAlpha(
                   this.selectedCategory.isEmpty && !this.showOnlyFavourites
                       ? 255
                       : 120),
@@ -96,7 +97,7 @@ class _RecipesListSate extends State<RecipesList> {
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: Theme.of(context)
+              backgroundColor: Theme.of(context)
                   .colorScheme
                   .secondary
                   .withAlpha(this.showOnlyFavourites ? 255 : 120),
@@ -121,7 +122,7 @@ class _RecipesListSate extends State<RecipesList> {
             ),
             style: ElevatedButton.styleFrom(
               elevation: 0,
-              primary: (category.color == null ? Theme.of(context).primaryColor : Color(int.parse("0xFF${category.color!}")))
+              backgroundColor: (category.color == null ? Theme.of(context).primaryColor : Color(int.parse("0xFF${category.color!}")))
                   .withAlpha(this.selectedCategory == category.key ? 255 : 120),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -143,7 +144,6 @@ class _RecipesListSate extends State<RecipesList> {
           child: FadeInAnimation(
               child: RecipeItem(
             recipe: filteredRecipes[index],
-            // slidableController: slidableController,
             selectedCategory: selectedCategory,
           )),
         ),
@@ -159,7 +159,7 @@ class _RecipesListSate extends State<RecipesList> {
             child: TextInput(
           controller: searchController,
           hint: 'Szukaj',
-          icon: Icons.search,
+          icon: PrzepisnikIcons.time,
           focusNode: focusNode,
           isDense: true,
           onChanged: (txt) {
@@ -210,7 +210,7 @@ class _RecipesListSate extends State<RecipesList> {
                       },
                       child: Text('Anuluj'),
                       style: TextButton.styleFrom(
-                          primary: Theme.of(context).colorScheme.secondary))
+                          foregroundColor: Theme.of(context).colorScheme.secondary))
                   .padding(right: 15)
               : Container(),
         ))
@@ -268,27 +268,35 @@ class _RecipesListSate extends State<RecipesList> {
     ));
   }
 
-  Widget _buildBottomActionButton() {
-    return FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        onPressed: () {
-          showCupertinoModalBottomSheet(
-              context: context,
-              builder: (context) => WillPopScope(
-                    child: EditRecipe(),
-                    onWillPop: () => Future.value(true),
-                  ));
-        },
-        label: Text('Dodaj'),
-        icon: const Icon(Icons.delete));
-  }
-
   Widget _buildBottomActionButton2() {
     const double _fabDimension = 50;
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
-      openBuilder: (BuildContext context, VoidCallback _) {
-        return EditRecipe();
+      openBuilder: (BuildContext context, VoidCallback openContainer) {
+        return WillPopScope(
+          child: EditRecipe(),
+          onWillPop: () {
+            bool returnValue = false;
+            print('WillPopScope EditRecipe');
+            return showModalBottomSheet<bool>(
+                backgroundColor: Colors.transparent,
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return BottomModalWrapper(
+                    child: ConfirmBottomModal(
+                      title: 'Na pewno chcesz zamknąć edytor?',
+                      msg: 'Utrcisz wszystkie niezapisane zmiany',
+                      type: ConfirmBottomModalType.danger,
+                      action: () {
+                        returnValue = true;
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                }).then((value) => returnValue);
+          },
+        );
       },
       closedElevation: 6.0,
       closedShape: const RoundedRectangleBorder(
@@ -298,7 +306,7 @@ class _RecipesListSate extends State<RecipesList> {
       closedColor: Theme.of(context).colorScheme.secondary,
       openColor: Theme.of(context).colorScheme.secondary,
       middleColor: Theme.of(context).colorScheme.secondary,
-      closedBuilder: (BuildContext context, VoidCallback openContainer) {
+      closedBuilder: (BuildContext context, VoidCallback callback) {
         return SizedBox(
           height: _fabDimension,
           width: _fabDimension * 2.5,
@@ -306,10 +314,7 @@ class _RecipesListSate extends State<RecipesList> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  Icons.add,
-                  color: Theme.of(context).colorScheme.onSecondary,
-                ),
+                PrzepisnikIcon(icon: PrzepisnikIcons.plus),
                 Text(
                   'Dodaj',
                   style: TextStyle(
@@ -327,13 +332,14 @@ class _RecipesListSate extends State<RecipesList> {
   Widget build(BuildContext context) {
     final _recipesEvent = Provider.of<DatabaseEvent?>(context);
 
-    return Backdrop(
-        bottomMainBtn: _buildBottomActionButton(),
-        actionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        title: Text(this.title),
-        backLayer: [],
-        frontLayer: _recipesEvent != null
+    return Scaffold(
+        floatingActionButton: _buildBottomActionButton2(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
+        body: _recipesEvent != null
             ? getRecipesList(RecipesService().parseRecipes(_recipesEvent))
             : getLoadingState());
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

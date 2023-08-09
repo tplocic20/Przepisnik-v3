@@ -13,8 +13,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
-    return BackdropSimple(
-      frontLayer: Container(
+    return Container(
         child: Container(
           child: DefaultTabController(
             length: 2,
@@ -44,8 +43,6 @@ class _SettingsState extends State<SettingsPage> {
             ).backgroundColor(Colors.transparent),
           ),
         ),
-      ),
-      title: Text('Ustawienia'),
-    );
+      );
   }
 }

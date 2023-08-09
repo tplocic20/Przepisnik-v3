@@ -2,9 +2,12 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
+import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
+import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/main.dart';
 import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
@@ -15,9 +18,8 @@ import 'package:styled_widget/styled_widget.dart';
 class RecipeItem extends StatefulWidget {
   final Recipe? recipe;
   final String? selectedCategory;
-  final SlidableController? slidableController;
 
-  RecipeItem({this.recipe, this.selectedCategory, this.slidableController});
+  RecipeItem({this.recipe, this.selectedCategory});
 
   _RecipeItemState createState() => _RecipeItemState();
 }
@@ -33,15 +35,15 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
             child: Slidable(
       groupTag: 'recipes_list',
       startActionPane: ActionPane(
-        extentRatio: 0.9,
-        motion: const ScrollMotion(),
+        extentRatio: (4 * 80) / MediaQuery.of(context).size.width,
+        motion: const BehindMotion(),
         children: this._buildActions(context),
       ),
       child: this._buildTile(context),
     ))
         .elevation(0)
         .alignment(Alignment.center)
-        .borderRadius(all: 15)
+        .borderRadius(all: 25)
         .backgroundColor(Colors.transparent, animate: true)
         .constrained(height: 110)
         .clipRRect(all: 25) // clip ripple
@@ -65,7 +67,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
               Text(widget.recipe!.name,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyMedium
                       ?.copyWith(fontSize: 20)),
               ListView(
                 scrollDirection: Axis.horizontal,
@@ -77,10 +79,9 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
         ).ripple().backgroundColor(Colors.white).clipRRect(all: 25);
       },
       openBuilder: (BuildContext context, VoidCallback _) {
-        // widget.slidableController!.activeState = null;
         return SingleRecipe(widget.recipe!);
       },
-    ).clipRRect(all: 25).borderRadius(all: 25, animate: true);
+    ).borderRadius(all: 25, animate: true).clipRRect(all: 25);
   }
 
   Widget _buildExtras(BuildContext context) {
@@ -89,10 +90,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     if (widget.recipe!.time.isNotEmpty) {
       extras.add(Row(
         children: [
-          Icon(
-            Icons.access_time,
-            size: 20,
-          ).padding(right: 5),
+          PrzepisnikIcon(icon: PrzepisnikIcons.time).padding(right: 5),
           Text(widget.recipe!.time)
         ],
       ));
@@ -104,10 +102,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
       }
       extras.add(Row(
         children: [
-          Icon(
-            Icons.thermostat,
-            size: 20,
-          ).padding(right: 5),
+          PrzepisnikIcon(icon: PrzepisnikIcons.temperature).padding(right: 5),
           Text('${widget.recipe!.temperature} ')
         ],
       ));
@@ -146,9 +141,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     return Container(
       decoration: BoxDecoration(
           border: Border.all(
-            color: current
-                ? Colors.white
-                : Color(int.parse("0xFF${category.color!}")),
+            color: Color(int.parse("0xFF${category.color!}")),
           ),
           borderRadius: BorderRadius.all(Radius.circular(20))),
       child: Row(
@@ -156,11 +149,11 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
           SvgPicture.asset('assets/category_icons/${category.icon}.svg',
                   width: 30, height: 30)
               .padding(right: 5, left: 0),
-          Text(category.name).textColor(current ? Colors.white : Colors.black)
+          Text(category.name).textColor(Colors.black)
         ],
       ).padding(left: 5, vertical: 5, right: 10),
     ).backgroundColor(current
-            ? Color(int.parse("0xFF${category.color!}"))
+            ? Color(int.parse("0xFF${category.color!}")).withAlpha(35)
             : Colors.transparent)
         .clipRRect(all: 20)
         .paddingDirectional(end: 5);
@@ -170,68 +163,99 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     List<Widget> buttons = [
       this._getButton(
           action: () {},
-          icon: Icons.delete_rounded,
+          icon: PrzepisnikIcon(icon: PrzepisnikIcons.trash, color: Colors.white,),
           color: PrzepisnikColors.ERROR),
-      // getButton(
-      //     action: () {}, icon: Icons.create_rounded, color: Color(0xFFB5DEFF)),
-      this._getButton(
-          action: () {
-            showCupertinoModalBottomSheet(
-                context: context,
-                builder: (context) => WillPopScope(
-                      child: EditRecipe.withRecipe(recipe: widget.recipe!),
-                      onWillPop: () => Future.value(true),
-                    ));
-          },
-          color: PrzepisnikColors.INFO,
-          icon: Icons.create_rounded),
+      this._getEditButton(),
       this._getButton(
           action: () {
             this._share(context);
           },
-          icon: Icons.share_rounded,
+          icon: PrzepisnikIcon(icon: PrzepisnikIcons.share),
           color: Color(0xFFCBE2B0)),
       this._getButton(
           action: () {
             this._toggleFavourites(context);
           },
-          icon: widget.recipe!.favourite
-              ? Icons.favorite_rounded
-              : Icons.favorite_outline_rounded,
+          icon: PrzepisnikIcon(icon: PrzepisnikIcons.favorite),
           color: PrzepisnikColors.WARNING),
     ];
     return buttons;
   }
 
-  Widget _getButton({color: Color, icon: Icons, action: Function}) {
+  Widget _getButton({color = Color, icon = Widget, action = Function}) {
     return ElevatedButton(
         onPressed: action,
-        child: Icon(icon).padding(all: 0),
+        child: Container(child: icon),
         style: ElevatedButton.styleFrom(
-          primary: color,
+          foregroundColor: color,
+          backgroundColor: color,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
         )).width(60).height(50).padding(vertical: 10, horizontal: 5);
   }
 
+  Widget _getEditButton() {
+    return OpenContainer(
+      transitionType: ContainerTransitionType.fade,
+      openBuilder: (BuildContext context, VoidCallback _) {
+        return WillPopScope(
+          child: EditRecipe(recipe: widget.recipe!),
+          onWillPop: () {
+            bool returnValue = false;
+            print('WillPopScope EditRecipe');
+            return showModalBottomSheet<bool>(
+                backgroundColor: Colors.transparent,
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return BottomModalWrapper(
+                    child: ConfirmBottomModal(
+                      title: 'Na pewno chcesz zamknąć edytor?',
+                      msg: 'Utrcisz wszystkie niezapisane zmiany',
+                      type: ConfirmBottomModalType.danger,
+                      action: () {
+                        returnValue = true;
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                }).then((value) => returnValue);
+          },
+        );
+      },
+      closedElevation: 2.0,
+      closedShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          )),
+      closedColor: PrzepisnikColors.INFO,
+      openColor: PrzepisnikColors.INFO,
+      middleColor: PrzepisnikColors.INFO,
+      closedBuilder: (BuildContext context, VoidCallback openContainer) {
+        return SizedBox(
+          height: 50,
+          width: 60,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PrzepisnikIcon(icon: PrzepisnikIcons.edit),
+              ],
+            ),
+          ),
+        );
+      },
+    ).padding(vertical: 10, horizontal: 5);
+  }
+
   void _share(BuildContext context) {
     Share.share(RecipesService().prepareRecipeShareText(widget.recipe!),
         subject: widget.recipe!.name);
-    // .then((value) => {widget.slidableController!.activeState = null});
   }
 
   void _toggleFavourites(BuildContext context) {
     bool currentFavouriteState = widget.recipe!.favourite;
     RecipesService()
-        .setFavourites(widget.recipe!.key, !currentFavouriteState)
-        .then((value) {
-      String message = currentFavouriteState
-          ? 'usunio z ulubionych'
-          : 'dodano do ulubionych';
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('${widget.recipe!.name} - $message'),
-      ));
-      // widget.slidableController!.activeState = null;
-    });
+        .setFavourites(widget.recipe!.key, !currentFavouriteState);
   }
 }

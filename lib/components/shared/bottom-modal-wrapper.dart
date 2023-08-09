@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 class BottomModalWrapper extends StatelessWidget {
   final Widget? child;
@@ -8,11 +8,11 @@ class BottomModalWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          color: Theme.of(context).canvasColor,
-          borderRadius: BorderRadius.all(Radius.circular(25))),
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
+    return SmoothContainer(
+      smoothness: 0.6,
+      borderRadius: BorderRadius.circular(45),
+      color: Theme.of(context).canvasColor,
+      margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 10),
       child: Container(
         margin: EdgeInsets.only(top: 20),
         child: child,
