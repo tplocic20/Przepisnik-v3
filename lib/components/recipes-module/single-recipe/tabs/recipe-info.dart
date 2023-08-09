@@ -53,7 +53,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         return ListTile(
           title: const Text('Temperatura'),
           trailing: Text('${widget.recipe!.temperature} \u2103'),
-          leading: PrzepisnikIcon(icon: 'temperature'),
+          leading: PrzepisnikIcon(icon: PrzepisnikIcons.temperature),
         ).padding(horizontal: 25);
       }
     }
@@ -65,7 +65,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         return ListTile(
           title: const Text('Czas'),
           trailing: Text('${widget.recipe!.time}'),
-          leading: PrzepisnikIcon(icon: 'time'),
+          leading: PrzepisnikIcon(icon: PrzepisnikIcons.time),
         ).padding(horizontal: 25);
       }
     }
@@ -144,7 +144,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
 
   Widget _buildCookModeBox(String title, String subtitle, int groupIdx,
       int portionIndex, bool isNotLast) {
-    String cookingId = '${groupIdx}_${portionIndex}';
+    String cookingId = '${groupIdx}_$portionIndex';
     bool isChecked = this.ingredientChecked[cookingId] != null &&
         this.ingredientChecked[cookingId] == true;
     return ListTile(

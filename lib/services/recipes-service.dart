@@ -69,7 +69,6 @@ class RecipesService {
 
   List<Category> parseCategories(element) {
     List<Category> parsedList = [];
-    print(element);
     if (element != null) {
       element['Categories'].forEach((k, v) => parsedList.add(Category(k, v)));
     }

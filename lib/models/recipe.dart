@@ -1,10 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/models/baseElement.dart';
 
 class Recipe extends BaseElement {
   String categories = '';
   List<IngredientGroup> ingredients = [];
   String recipe = '';
+  List<RecipeStep> recipeSteps = [];
   bool favourite = false;
   var temperature = '';
   var time = '';
@@ -12,7 +12,7 @@ class Recipe extends BaseElement {
   Recipe(k, v) {
     key = k;
     categories = v['Categories'];
-    ingredients = parseIngredients(v['Engredients']);
+    ingredients = parseIngredients(v['Engredients'] ?? []);
     name = v['Name'];
     recipe = v['Recipe'] ?? '';
     temperature = v['Temperature'] ?? '';
@@ -40,6 +40,22 @@ class Recipe extends BaseElement {
       parsedList.add(IngredientGroup(items[i]));
     }
     return parsedList;
+  }
+}
+
+class RecipeStep {
+  String name = '';
+  List<String> ingredients = [];
+  String content = '';
+
+  RecipeStep.from(v) {
+    name = v['name'] ?? '';
+    content = v['content'] ?? '';
+    ingredients = (v['ingredients'] ?? '').toString().split(';');
+  }
+
+  RecipeStep(String n) {
+    name = n;
   }
 }
 

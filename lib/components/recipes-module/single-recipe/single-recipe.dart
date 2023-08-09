@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe-container.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
@@ -55,7 +54,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
     }
 
     Widget _cookModeButton = ElevatedButton.icon(
-      icon: PrzepisnikIcon(icon: 'cook'),
+      icon: PrzepisnikIcon(icon: PrzepisnikIcons.cook),
       label: Text('Tryb szefa kuchni'),
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -84,7 +83,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
                 controller.add(true);
               });
             },
-            icon: PrzepisnikIcon(icon: 'cook'),
+            icon: PrzepisnikIcon(icon: PrzepisnikIcons.cook),
             style: OutlinedButton.styleFrom(
               elevation: 1,
               foregroundColor: Colors.white,
@@ -100,7 +99,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
 
 
     Widget _calculatorButton = ElevatedButton.icon(
-      icon: PrzepisnikIcon(icon: 'scale'),
+      icon: PrzepisnikIcon(icon: PrzepisnikIcons.scale),
       label: Text('Kalkulator składników'),
       style: ElevatedButton.styleFrom(
         elevation: this._cookMode ? 0 : 1.0,
@@ -152,7 +151,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
         tag: widget.recipe.key,
         child: Text(widget.recipe.name,
             overflow: TextOverflow.fade,
-            style: Theme.of(context).textTheme.bodyText1!.copyWith(
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontSize: 20,
                   fontWeight: FontWeight.w500,
                   color: Colors.white,
@@ -160,12 +159,6 @@ class _SingleRecipeState extends State<SingleRecipe> {
       ),
       actionButtonLocation: FloatingActionButtonLocation.endFloat,
       backButtonOverride: true,
-      bottomMainBtn: FloatingActionButton(
-        onPressed: () {},
-        child: Icon(Icons.menu),
-        elevation: 1,
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-      ),
       frontLayer: SingleRecipeContainer(
         recipe: widget.recipe,
         portion: this._portion,

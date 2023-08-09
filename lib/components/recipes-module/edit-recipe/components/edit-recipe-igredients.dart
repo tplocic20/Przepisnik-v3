@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/components/ingredient-group-form.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/components/ingredient-position-form.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
-import 'package:przepisnik_v3/components/shared/categories-form.dart';
 import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
-import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
-import 'package:reactive_forms/reactive_forms.dart';
 import 'package:styled_widget/styled_widget.dart';
 
 class EditRecipeIngredients extends StatefulWidget {
@@ -20,7 +16,7 @@ class EditRecipeIngredients extends StatefulWidget {
   _EditRecipeIngredientsState createState() => _EditRecipeIngredientsState();
 }
 
-class _EditRecipeIngredientsState extends State<EditRecipeIngredients> {
+class _EditRecipeIngredientsState extends State<EditRecipeIngredients> with AutomaticKeepAliveClientMixin<EditRecipeIngredients> {
   var groupExpanded = [];
 
   void initState() {
@@ -223,4 +219,7 @@ class _EditRecipeIngredientsState extends State<EditRecipeIngredients> {
       ],
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/shared/categories-form.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
@@ -14,7 +15,8 @@ class EditRecipeInfo extends StatefulWidget {
   _EditRecipeInfoState createState() => _EditRecipeInfoState();
 }
 
-class _EditRecipeInfoState extends State<EditRecipeInfo> {
+class _EditRecipeInfoState extends State<EditRecipeInfo>
+    with AutomaticKeepAliveClientMixin<EditRecipeInfo> {
   List<bool> expanded = [true, false];
 
   late TextEditingController nameInputController;
@@ -22,12 +24,10 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
   late TextEditingController timeInputController;
 
   void initState() {
-    nameInputController =
-        TextEditingController(text: widget.recipe.name ?? '');
+    nameInputController = TextEditingController(text: widget.recipe.name ?? '');
     temperatureInputController =
         TextEditingController(text: widget.recipe.temperature ?? '');
-    timeInputController =
-        TextEditingController(text: widget.recipe.time ?? '');
+    timeInputController = TextEditingController(text: widget.recipe.time ?? '');
 
     super.initState();
   }
@@ -61,7 +61,13 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
                           .textColor(Theme.of(context).primaryColor)
                           .width(100)
                           .padding(right: 10),
-                      Expanded(child: TextInput())
+                      Expanded(
+                          child: TextInput(
+                        controller: nameInputController,
+                        onChanged: (String name) {
+                          widget.recipe.name = name;
+                        },
+                      ))
                     ],
                   ).padding(top: 5),
                   Row(
@@ -73,7 +79,13 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
                           .textColor(Theme.of(context).primaryColor)
                           .width(100)
                           .padding(right: 10),
-                      Expanded(child: TextInput(icon: 'temperature'))
+                      Expanded(
+                          child: TextInput(
+                              icon: PrzepisnikIcons.temperature,
+                              controller: temperatureInputController,
+                              onChanged: (String temperature) {
+                                widget.recipe.temperature = temperature;
+                              }))
                     ],
                   ).padding(top: 5),
                   Row(
@@ -85,7 +97,13 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
                           .textColor(Theme.of(context).primaryColor)
                           .width(100)
                           .padding(right: 10),
-                      Expanded(child: TextInput(icon: 'time'))
+                      Expanded(
+                          child: TextInput(
+                              icon: PrzepisnikIcons.time,
+                              controller: timeInputController,
+                              onChanged: (String time) {
+                                widget.recipe.time = time;
+                              }))
                     ],
                   ).padding(top: 5),
                 ],
@@ -98,9 +116,12 @@ class _EditRecipeInfoState extends State<EditRecipeInfo> {
                   title: Text('Kategorie'),
                 );
               },
-              body: CategoriesForm())
+              body: CategoriesForm(recipe: widget.recipe))
         ],
       ).padding(all: 5).padding(bottom: 100),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

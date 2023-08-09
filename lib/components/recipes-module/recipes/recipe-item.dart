@@ -2,9 +2,11 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
+import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
+import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
 import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/main.dart';
 import 'package:przepisnik_v3/models/category.dart';
@@ -65,7 +67,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
               Text(widget.recipe!.name,
                   style: Theme.of(context)
                       .textTheme
-                      .bodyText2
+                      .bodyMedium
                       ?.copyWith(fontSize: 20)),
               ListView(
                 scrollDirection: Axis.horizontal,
@@ -74,12 +76,12 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
               _buildExtras(context)
             ],
           ).padding(vertical: 0, horizontal: 15),
-        ).ripple().backgroundColor(Colors.white);
+        ).ripple().backgroundColor(Colors.white).clipRRect(all: 25);
       },
       openBuilder: (BuildContext context, VoidCallback _) {
         return SingleRecipe(widget.recipe!);
       },
-    ).borderRadius(all: 25, animate: true);
+    ).borderRadius(all: 25, animate: true).clipRRect(all: 25);
   }
 
   Widget _buildExtras(BuildContext context) {
@@ -88,7 +90,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     if (widget.recipe!.time.isNotEmpty) {
       extras.add(Row(
         children: [
-          PrzepisnikIcon(icon: 'time').padding(right: 5),
+          PrzepisnikIcon(icon: PrzepisnikIcons.time).padding(right: 5),
           Text(widget.recipe!.time)
         ],
       ));
@@ -100,7 +102,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
       }
       extras.add(Row(
         children: [
-          PrzepisnikIcon(icon: 'temperature').padding(right: 5),
+          PrzepisnikIcon(icon: PrzepisnikIcons.temperature).padding(right: 5),
           Text('${widget.recipe!.temperature} ')
         ],
       ));
@@ -161,44 +163,89 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     List<Widget> buttons = [
       this._getButton(
           action: () {},
-          icon: PrzepisnikIcon(icon: 'trash', color: Colors.white,),
+          icon: PrzepisnikIcon(icon: PrzepisnikIcons.trash, color: Colors.white,),
           color: PrzepisnikColors.ERROR),
-      this._getButton(
-          action: () {
-            showCupertinoModalBottomSheet(
-                context: context,
-                builder: (context) => WillPopScope(
-                      child: EditRecipe(recipe: widget.recipe!),
-                      onWillPop: () => Future.value(true),
-                    ));
-          },
-          color: PrzepisnikColors.INFO,
-          icon: PrzepisnikIcon(icon: 'edit')),
+      this._getEditButton(),
       this._getButton(
           action: () {
             this._share(context);
           },
-          icon: PrzepisnikIcon(icon: 'share'),
+          icon: PrzepisnikIcon(icon: PrzepisnikIcons.share),
           color: Color(0xFFCBE2B0)),
       this._getButton(
           action: () {
             this._toggleFavourites(context);
           },
-          icon: PrzepisnikIcon(icon: 'favorite'),
+          icon: PrzepisnikIcon(icon: PrzepisnikIcons.favorite),
           color: PrzepisnikColors.WARNING),
     ];
     return buttons;
   }
 
-  Widget _getButton({color: Color, icon: Widget, action: Function}) {
+  Widget _getButton({color = Color, icon = Widget, action = Function}) {
     return ElevatedButton(
         onPressed: action,
         child: Container(child: icon),
         style: ElevatedButton.styleFrom(
           foregroundColor: color,
+          backgroundColor: color,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
         )).width(60).height(50).padding(vertical: 10, horizontal: 5);
+  }
+
+  Widget _getEditButton() {
+    return OpenContainer(
+      transitionType: ContainerTransitionType.fade,
+      openBuilder: (BuildContext context, VoidCallback _) {
+        return WillPopScope(
+          child: EditRecipe(recipe: widget.recipe!),
+          onWillPop: () {
+            bool returnValue = false;
+            print('WillPopScope EditRecipe');
+            return showModalBottomSheet<bool>(
+                backgroundColor: Colors.transparent,
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return BottomModalWrapper(
+                    child: ConfirmBottomModal(
+                      title: 'Na pewno chcesz zamknąć edytor?',
+                      msg: 'Utrcisz wszystkie niezapisane zmiany',
+                      type: ConfirmBottomModalType.danger,
+                      action: () {
+                        returnValue = true;
+                        Navigator.pop(context);
+                      },
+                    ),
+                  );
+                }).then((value) => returnValue);
+          },
+        );
+      },
+      closedElevation: 2.0,
+      closedShape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(15),
+          )),
+      closedColor: PrzepisnikColors.INFO,
+      openColor: PrzepisnikColors.INFO,
+      middleColor: PrzepisnikColors.INFO,
+      closedBuilder: (BuildContext context, VoidCallback openContainer) {
+        return SizedBox(
+          height: 50,
+          width: 60,
+          child: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                PrzepisnikIcon(icon: PrzepisnikIcons.edit),
+              ],
+            ),
+          ),
+        );
+      },
+    ).padding(vertical: 10, horizontal: 5);
   }
 
   void _share(BuildContext context) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:styled_widget/styled_widget.dart';
 
 const double _kPanelHeaderCollapsedHeight = 48.0;
 const double _kPanelHeaderExpandedHeight = 64.0;
@@ -10,12 +9,10 @@ class RoundedExpansionPanelList extends StatelessWidget {
 
   const RoundedExpansionPanelList(
       {Key? key,
-        this.children: const <ExpansionPanel>[],
+        this.children = const <ExpansionPanel>[],
         this.expansionCallback,
-        this.animationDuration: kThemeAnimationDuration})
-      : assert(children != null),
-        assert(animationDuration != null),
-        super(key: key);
+        this.animationDuration = kThemeAnimationDuration})
+      : super(key: key);
 
   final List<ExpansionPanel> children;
 

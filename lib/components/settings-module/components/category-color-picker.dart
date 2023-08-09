@@ -69,7 +69,7 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
                               });
                             },
                             child: Container(),
-                            style: ElevatedButton.styleFrom(foregroundColor: color))
+                            style: ElevatedButton.styleFrom(backgroundColor: color))
                         .width(50)
                         .height(50)
                         .padding(all: 10))

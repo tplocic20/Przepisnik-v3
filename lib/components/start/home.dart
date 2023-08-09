@@ -1,8 +1,6 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipes.dart';
-import 'package:przepisnik_v3/components/shared/Loader.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';

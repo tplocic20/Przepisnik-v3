@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
 import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/components/start/home.dart';
@@ -90,7 +90,7 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                   backgroundColor: Theme.of(context).colorScheme.secondary),
               onPressed: () {
                 _toggleBackdropLayerVisibility();
-                showCupertinoModalBottomSheet(
+                showModalBottomSheet(
                     context: context, builder: (context) => nextPage);
               },
               child: Container(child: icon))
@@ -106,9 +106,9 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
               children: [
             Row(mainAxisSize: MainAxisSize.min, children: [
               getBackDropButton(
-                  PrzepisnikIcon(icon: 'settings', size: 35), SettingsPage()),
+                  PrzepisnikIcon(icon: PrzepisnikIcons.settings, size: 35), SettingsPage()),
               getBackDropButton(
-                  PrzepisnikIcon(icon: 'customer', size: 35), SettingsPage()),
+                  PrzepisnikIcon(icon: PrzepisnikIcons.customer, size: 35), SettingsPage()),
             ]),
             OutlinedButton.icon(
               onPressed: () {
@@ -125,13 +125,14 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(15)))),
               icon: PrzepisnikIcon(
-                  icon: 'logout',
+                  icon: PrzepisnikIcons.logout,
                   size: 35,
                   color: Theme.of(context).colorScheme.secondary),
               label: Text('Wyloguj'),
             ).height(50).padding(horizontal: 10),
           ])
           .backgroundColor(Theme.of(context).primaryColor)
+          .width(MediaQuery.of(context).size.width)
           .width(MediaQuery.of(context).size.width)
           .alignment(Alignment.topCenter)
           .height(100)
@@ -154,9 +155,9 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
                 ),
               ).height((((widget.backLayer!.length > 0
                       ? widget.backLayer!.length
-                      : 1) *
+                      : 0) *
                   _layerItemHeight))),
-              commonBackdropOptions()
+              Container()
             ],
           ).backgroundColor(Theme.of(context).primaryColor),
           excluding: _frontLayerVisible,

@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
 import 'package:przepisnik_v3/components/app.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
-
 
 class PrzepisnikColors {
   static final PRIMARY = const Color(0xFF6c864f);
@@ -35,20 +34,16 @@ class PrzepisnikApp extends StatelessWidget {
     fetchModes();
     return MaterialApp(
       title: 'Przepisnik',
+      home: EntrySwitchApp(),
       theme: theme.copyWith(
-          colorScheme: theme.colorScheme.copyWith(
-            primary: PrzepisnikColors.PRIMARY,
-              secondary: PrzepisnikColors.ACCENT,
-            background: PrzepisnikColors.BACKGROUND,
-          ),
           brightness: Brightness.light,
           primaryColor: PrzepisnikColors.PRIMARY,
           primaryColorLight: PrzepisnikColors.PRIMARY_LIGHT,
           primaryColorDark: PrzepisnikColors.PRIMARY_DARK,
           scaffoldBackgroundColor: PrzepisnikColors.SCAFFOLD,
-          backgroundColor: PrzepisnikColors.BACKGROUND,
-          errorColor: PrzepisnikColors.ERROR,
-          textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme.apply(bodyColor: Colors.black87, displayColor: Colors.black87)),
+          textTheme: GoogleFonts.montserratTextTheme(Theme.of(context)
+              .textTheme
+              .apply(bodyColor: Colors.black87, displayColor: Colors.black87)),
           snackBarTheme: SnackBarThemeData(
             behavior: SnackBarBehavior.floating,
             shape: RoundedRectangleBorder(
@@ -62,14 +57,13 @@ class PrzepisnikApp extends StatelessWidget {
           inputDecorationTheme: InputDecorationTheme(
               filled: true,
               isDense: true,
-              labelStyle: TextStyle(fontSize: 15, letterSpacing: 1, color: PrzepisnikColors.PRIMARY),
+              labelStyle: TextStyle(
+                  fontSize: 15,
+                  letterSpacing: 1,
+                  color: PrzepisnikColors.PRIMARY),
               focusColor: PrzepisnikColors.PRIMARY,
-              prefixStyle: TextStyle(
-                  color: PrzepisnikColors.PRIMARY
-              ),
-              suffixStyle: TextStyle(
-                  color: PrzepisnikColors.PRIMARY
-              ),
+              prefixStyle: TextStyle(color: PrzepisnikColors.PRIMARY),
+              suffixStyle: TextStyle(color: PrzepisnikColors.PRIMARY),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25),
                 borderSide: BorderSide(color: PrzepisnikColors.PRIMARY),
@@ -89,15 +83,16 @@ class PrzepisnikApp extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(25),
                 borderSide: BorderSide.none,
-              ))
-      ),
-      onGenerateRoute: (RouteSettings settings) {
-        return MaterialWithModalsPageRoute<void>(
-            builder: (BuildContext context) {
-              return EntrySwitchApp();
-            },
-          );
-      },
+              )),
+          colorScheme: theme.colorScheme
+              .copyWith(
+                primary: PrzepisnikColors.PRIMARY,
+                secondary: PrzepisnikColors.ACCENT,
+                secondaryContainer: PrzepisnikColors.ACCENT,
+                background: PrzepisnikColors.BACKGROUND,
+              )
+              .copyWith(background: PrzepisnikColors.BACKGROUND)
+              .copyWith(error: PrzepisnikColors.ERROR)),
     );
   }
 }
@@ -114,24 +109,22 @@ Future<void> fetchModes() async {
             m.refreshRate > 60,
         orElse: () => current);
     FlutterDisplayMode.setPreferredMode(selected);
-  } on PlatformException catch (e) {}
+  } on PlatformException {}
 }
 
 ThemeData _appTheme() {
   return ThemeData(
       // Define the default brightness and colors.
       brightness: Brightness.light,
-      primarySwatch: Colors.green,
       primaryColor: PrzepisnikColors.PRIMARY,
       primaryColorLight: PrzepisnikColors.PRIMARY_LIGHT,
       primaryColorDark: PrzepisnikColors.PRIMARY_DARK,
-      accentColor: PrzepisnikColors.ACCENT,
       scaffoldBackgroundColor: PrzepisnikColors.SCAFFOLD,
-      backgroundColor: PrzepisnikColors.BACKGROUND,
-      errorColor: PrzepisnikColors.ERROR,
       textTheme: GoogleFonts.montserratTextTheme(TextTheme(
-        headline1: const TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
-        bodyText2: const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
+        displayLarge:
+            const TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+        bodyMedium:
+            const TextStyle(fontSize: 15.0, fontWeight: FontWeight.w300),
       )),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
@@ -146,14 +139,11 @@ ThemeData _appTheme() {
       inputDecorationTheme: InputDecorationTheme(
           filled: true,
           isDense: true,
-          labelStyle: TextStyle(fontSize: 15, letterSpacing: 1, color: PrzepisnikColors.PRIMARY),
+          labelStyle: TextStyle(
+              fontSize: 15, letterSpacing: 1, color: PrzepisnikColors.PRIMARY),
           focusColor: PrzepisnikColors.PRIMARY,
-          prefixStyle: TextStyle(
-            color: PrzepisnikColors.PRIMARY
-          ),
-          suffixStyle: TextStyle(
-            color: PrzepisnikColors.PRIMARY
-          ),
+          prefixStyle: TextStyle(color: PrzepisnikColors.PRIMARY),
+          suffixStyle: TextStyle(color: PrzepisnikColors.PRIMARY),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
             borderSide: BorderSide(color: PrzepisnikColors.PRIMARY),
@@ -173,6 +163,8 @@ ThemeData _appTheme() {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
             borderSide: BorderSide.none,
-          ))
-  );
+          )),
+      colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.green)
+          .copyWith(background: PrzepisnikColors.BACKGROUND)
+          .copyWith(error: PrzepisnikColors.ERROR));
 }

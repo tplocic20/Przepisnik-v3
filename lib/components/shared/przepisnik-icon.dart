@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+enum PrzepisnikIcons {
+  cook,
+  customer,
+  edit,
+  favorite,
+  logout,
+  plus,
+  scale,
+  settings,
+  share,
+  temperature,
+  time,
+  trash
+}
+
 class PrzepisnikIcon extends StatelessWidget {
-  final String icon;
+  final PrzepisnikIcons icon;
   final double size;
   final Color color;
 
@@ -10,7 +25,7 @@ class PrzepisnikIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SvgPicture.asset('assets/$icon.svg', width: this.size, height: this.size, color: this.color,);
+    return SvgPicture.asset('assets/${icon.name}.svg', width: this.size, height: this.size, color: this.color,);
   }
 
 }

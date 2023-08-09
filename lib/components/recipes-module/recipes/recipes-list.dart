@@ -5,29 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipe-item.dart';
 import 'package:przepisnik_v3/components/shared/Loader.dart';
-import 'package:przepisnik_v3/components/shared/backdrop.dart';
+import 'package:przepisnik_v3/components/shared/backdrop-simple.dart';
 import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
-import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';
-
+import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
 import '../../shared/bottom-modal-wrapper.dart';
-import '../../shared/confirm-bottom-modal.dart';
 
 class RecipesList extends StatefulWidget {
   @override
   _RecipesListSate createState() => _RecipesListSate();
 }
 
-class _RecipesListSate extends State<RecipesList> {
+class _RecipesListSate extends State<RecipesList> with AutomaticKeepAliveClientMixin<RecipesList> {
   bool showOnlyFavourites = false;
   bool searchInteracted = false;
   String? selectedCategoryName;
@@ -163,7 +159,7 @@ class _RecipesListSate extends State<RecipesList> {
             child: TextInput(
           controller: searchController,
           hint: 'Szukaj',
-          icon: 'time',
+          icon: PrzepisnikIcons.time,
           focusNode: focusNode,
           isDense: true,
           onChanged: (txt) {
@@ -272,27 +268,11 @@ class _RecipesListSate extends State<RecipesList> {
     ));
   }
 
-  Widget _buildBottomActionButton() {
-    return FloatingActionButton.extended(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        foregroundColor: Colors.black87,
-        onPressed: () {
-          showCupertinoModalBottomSheet(
-              context: context,
-              builder: (context) => WillPopScope(
-                    child: EditRecipe(),
-                    onWillPop: () => Future.value(true),
-                  ));
-        },
-        label: Text('Dodaj'),
-        icon: PrzepisnikIcon(icon: 'plus'));
-  }
-
   Widget _buildBottomActionButton2() {
     const double _fabDimension = 50;
     return OpenContainer(
       transitionType: ContainerTransitionType.fade,
-      openBuilder: (BuildContext context, VoidCallback _) {
+      openBuilder: (BuildContext context, VoidCallback openContainer) {
         return WillPopScope(
           child: EditRecipe(),
           onWillPop: () {
@@ -326,7 +306,7 @@ class _RecipesListSate extends State<RecipesList> {
       closedColor: Theme.of(context).colorScheme.secondary,
       openColor: Theme.of(context).colorScheme.secondary,
       middleColor: Theme.of(context).colorScheme.secondary,
-      closedBuilder: (BuildContext context, VoidCallback openContainer) {
+      closedBuilder: (BuildContext context, VoidCallback callback) {
         return SizedBox(
           height: _fabDimension,
           width: _fabDimension * 2.5,
@@ -334,7 +314,7 @@ class _RecipesListSate extends State<RecipesList> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                PrzepisnikIcon(icon: 'plus'),
+                PrzepisnikIcon(icon: PrzepisnikIcons.plus),
                 Text(
                   'Dodaj',
                   style: TextStyle(
@@ -352,13 +332,14 @@ class _RecipesListSate extends State<RecipesList> {
   Widget build(BuildContext context) {
     final _recipesEvent = Provider.of<DatabaseEvent?>(context);
 
-    return Backdrop(
-        bottomMainBtn: _buildBottomActionButton2(),
-        actionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        title: Text(this.title),
-        backLayer: [],
-        frontLayer: _recipesEvent != null
+    return Scaffold(
+        floatingActionButton: _buildBottomActionButton2(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniCenterFloat,
+        body: _recipesEvent != null
             ? getRecipesList(RecipesService().parseRecipes(_recipesEvent))
             : getLoadingState());
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }

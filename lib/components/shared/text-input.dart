@@ -9,7 +9,7 @@ class TextInput extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final GestureTapCallback? onTap;
   final ValueChanged<String>? onFieldSubmitted;
-  final String? icon;
+  final PrzepisnikIcons? icon;
   final bool? autofocus;
   final bool? isDense;
   final bool? isNumeric;
@@ -73,7 +73,7 @@ class TextInput extends StatelessWidget {
           hintText: this.hint,
           contentPadding:
               this.isDense != null && this.isDense! ? EdgeInsets.all(2) : null,
-          fillColor: Color(0xFFDBDBDB),
+          fillColor: Color(0xFFDBDBDB).withAlpha(160),
           focusedBorder: OutlineInputBorder(
             borderRadius: this.radius ?? BorderRadius.circular(25),
             borderSide: BorderSide(color: PrzepisnikColors.PRIMARY),

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
@@ -13,7 +12,7 @@ class BottomModalWrapper extends StatelessWidget {
       smoothness: 0.6,
       borderRadius: BorderRadius.circular(45),
       color: Theme.of(context).canvasColor,
-      margin: EdgeInsets.only(left: 10, right: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 10),
+      margin: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: MediaQuery.of(context).viewInsets.bottom + 10),
       child: Container(
         margin: EdgeInsets.only(top: 20),
         child: child,
