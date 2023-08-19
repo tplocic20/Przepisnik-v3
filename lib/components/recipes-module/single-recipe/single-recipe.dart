@@ -54,7 +54,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
     }
 
     Widget _cookModeButton = ElevatedButton.icon(
-      icon: PrzepisnikIcon(icon: PrzepisnikIcons.cook),
+      icon: PrzepisnikIcon(icon: PrzepisnikIcons.cook, color: Colors.white),
       label: Text('Tryb szefa kuchni'),
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -99,7 +99,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
 
 
     Widget _calculatorButton = ElevatedButton.icon(
-      icon: PrzepisnikIcon(icon: PrzepisnikIcons.scale),
+      icon: PrzepisnikIcon(icon: PrzepisnikIcons.calculator),
       label: Text('Kalkulator składników'),
       style: ElevatedButton.styleFrom(
         elevation: this._cookMode ? 0 : 1.0,

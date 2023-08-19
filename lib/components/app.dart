@@ -3,6 +3,7 @@ import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipes.dart';
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
 import 'package:przepisnik_v3/components/shared/backdrop-simple.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/services/auth-service.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -63,9 +64,9 @@ class _EntrySwitchAppState extends State<EntrySwitchApp>
                 currentIndex: this._selectedPage,
                 onTap: this.changePage,
                 items: [
-                  BottomNavigationBarItem(icon: Icon(Icons.notifications), label: 'Discover'),
-                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'My kitchen'),
-                  BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Settings'),
+                  BottomNavigationBarItem(icon: PrzepisnikIcon(icon: PrzepisnikIcons.mana, color: Colors.white), label: 'Discover'),
+                  BottomNavigationBarItem(icon: PrzepisnikIcon(icon: PrzepisnikIcons.pot, color: Colors.white), label: 'My kitchen'),
+                  BottomNavigationBarItem(icon: PrzepisnikIcon(icon: PrzepisnikIcons.settings, color: Colors.white), label: 'Settings'),
                 ],
               ),
             ),

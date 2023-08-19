@@ -70,7 +70,6 @@ class _CategoryFormState extends State<CategoryForm> {
                     Expanded(
                         child: TextInput(
                             controller: nameController,
-                            icon: PrzepisnikIcons.time,
                             hint: 'Nazwa',
                             isDense: false,
                             onChanged: (txt) {
