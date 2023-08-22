@@ -7,7 +7,6 @@ import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
 import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
-import 'package:sheet/route.dart';
 import 'package:styled_widget/styled_widget.dart';
 import '../../../models/category.dart';
 import 'category-form.dart';
@@ -56,8 +55,7 @@ class _CategoriesSettingsState extends State<CategoriesSettings> {
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(
-                        SheetRoute(builder: (context) => CategoryForm(category: category), draggable: false,
-                            duration: Duration(milliseconds: 250), animationCurve: Curves.fastEaseInToSlowEaseOut),
+                        MaterialPageRoute(builder: (context) => CategoryForm(category: category)),
                       );
                     },
                     child: Container(child: PrzepisnikIcon(icon: PrzepisnikIcons.edit).padding(all: 15))

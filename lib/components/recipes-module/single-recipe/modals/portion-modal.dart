@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
+import 'package:styled_widget/styled_widget.dart';
 
 class PortionModal extends StatefulWidget {
   final callback;
@@ -63,7 +64,7 @@ class _PortionModalState extends State<PortionModal> {
         child: Wrap(children: <Widget>[
         ...(this._showButtons == true ? radios : []),
         Padding(
-          padding: EdgeInsets.only(top: 10),
+          padding: EdgeInsets.only(top: 10, bottom: 45),
           child: SliderTheme(
               data: SliderThemeData(
                   thumbColor: Theme.of(context).primaryColor,
@@ -91,18 +92,6 @@ class _PortionModalState extends State<PortionModal> {
                   });
                 },
               )),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            TextButton(
-              child: Text('Ok'),
-              style: TextButton.styleFrom(foregroundColor: Theme.of(context).primaryColor),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
         )
       ],
     ));

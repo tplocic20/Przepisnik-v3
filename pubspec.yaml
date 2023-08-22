@@ -43,7 +43,6 @@ dependencies:
   smooth_corner: ^1.1.0
   scaled_list: ^2.0.0
   flutter_quill: ^7.2.18
-  sheet: ^1.0.0-pre
   animations: ^2.0.7
   flutter_snake_navigationbar: ^0.6.1
   get: ^4.6.5

@@ -94,9 +94,8 @@ class _CategoryFormState extends State<CategoryForm> {
                           context: context,
                           isScrollControlled: true,
                           useSafeArea: true,
-                          showDragHandle: true,
                           backgroundColor: Colors.transparent,
-                          builder: (context) => BottomModalWrapper(
+                          builder: (context) => BottomModalWrapper.withDragHandle(
                               child: CategoryIconPicker(
                             current: this.selectedIcon,
                             name: this.nameString,
@@ -131,9 +130,8 @@ class _CategoryFormState extends State<CategoryForm> {
                             context: context,
                             backgroundColor: Colors.transparent,
                             isScrollControlled: true,
-                            showDragHandle: true,
                             useSafeArea: true,
-                            builder: (context) => BottomModalWrapper(
+                            builder: (context) => BottomModalWrapper.withDragHandle(
                               child: CategoryColorPicker(
                                 name: this.nameString,
                                 color: this.selectedColor,
