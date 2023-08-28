@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik_icons.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -25,7 +26,7 @@ class IngredientGroupForm extends StatelessWidget {
           TextInput(
             controller: inputController,
             autofocus: true,
-            icon: PrzepisnikIcons.time,
+            icon: CarbonIcons.time,
             onFieldSubmitted: (text) {
               this.onSubmit!(text);
             },

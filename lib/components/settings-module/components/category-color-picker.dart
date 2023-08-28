@@ -45,11 +45,14 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CategoryTilePreview(
-            selectedColor: this.selected,
-            selectedIcon: widget.currentIcon,
-            name: widget.name!,
-            mode: CategoryTilePreviewMode.full),
+        Hero(
+          tag: 'category-tile',
+          child: CategoryTilePreview(
+              selectedColor: this.selected,
+              selectedIcon: widget.currentIcon,
+              name: widget.name!,
+              mode: CategoryTilePreviewMode.full),
+        ),
         HueRingPicker(
           pickerColor: this.selected,
           onColorChanged: (Color color) {
@@ -69,7 +72,8 @@ class _CategoryColorPickerState extends State<CategoryColorPicker> {
                               });
                             },
                             child: Container(),
-                            style: ElevatedButton.styleFrom(backgroundColor: color))
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: color))
                         .width(50)
                         .height(50)
                         .padding(all: 10))

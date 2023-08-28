@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:przepisnik_v3/components/settings-module/components/category-color-picker.dart';
 import 'package:przepisnik_v3/components/settings-module/components/category-icon-picker.dart';
 import 'package:przepisnik_v3/components/settings-module/components/category-tile-preview.dart';
 import 'package:przepisnik_v3/components/shared/backdrop-simple.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik_icons.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/main.dart';
 import 'package:przepisnik_v3/models/category.dart';
@@ -52,10 +51,13 @@ class _CategoryFormState extends State<CategoryForm> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CategoryTilePreview(
-                selectedIcon: this.selectedIcon,
-                name: this.nameString,
-                selectedColor: this.selectedColor),
+            Hero(
+              tag: 'category-tile',
+              child: CategoryTilePreview(
+                  selectedIcon: this.selectedIcon,
+                  name: this.nameString,
+                  selectedColor: this.selectedColor),
+            ),
             Column(
               children: [
                 Row(
@@ -92,20 +94,25 @@ class _CategoryFormState extends State<CategoryForm> {
                       onTap: () {
                         showModalBottomSheet(
                           context: context,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(15),
+                                topRight: Radius.circular(15)),
+                          ),
                           isScrollControlled: true,
+                          isDismissible: true,
+                          showDragHandle: true,
                           useSafeArea: true,
-                          backgroundColor: Colors.transparent,
-                          builder: (context) => BottomModalWrapper.withDragHandle(
-                              child: CategoryIconPicker(
-                            current: this.selectedIcon,
+                          builder: (context) => CategoryIconPicker(
                             name: this.nameString,
                             color: this.selectedColor,
-                            onChanged: (icon) {
+                            current: this.selectedIcon,
+                            onChanged: (String icon) {
                               setState(() {
                                 this.selectedIcon = icon;
                               });
                             },
-                          )),
+                          ),
                         );
                       },
                       child: SvgPicture.asset(
@@ -128,20 +135,24 @@ class _CategoryFormState extends State<CategoryForm> {
                         onTap: () {
                           showModalBottomSheet(
                             context: context,
-                            backgroundColor: Colors.transparent,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15),
+                                  topRight: Radius.circular(15)),
+                            ),
                             isScrollControlled: true,
+                            isDismissible: true,
+                            showDragHandle: true,
                             useSafeArea: true,
-                            builder: (context) => BottomModalWrapper.withDragHandle(
-                              child: CategoryColorPicker(
-                                name: this.nameString,
-                                color: this.selectedColor,
-                                currentIcon: this.selectedIcon,
-                                onChanged: (Color color) {
-                                  setState(() {
-                                    this.selectedColor = color;
-                                  });
-                                },
-                              ),
+                            builder: (context) => CategoryColorPicker(
+                              name: this.nameString,
+                              color: this.selectedColor,
+                              currentIcon: this.selectedIcon,
+                              onChanged: (Color color) {
+                                setState(() {
+                                  this.selectedColor = color;
+                                });
+                              },
                             ),
                           );
                         },
@@ -157,7 +168,14 @@ class _CategoryFormState extends State<CategoryForm> {
           ],
         ),
       ),
-      title: Text(this.nameString!),
+      title: Hero(
+          tag: '${widget.category!.key}',
+          child: Text(this.nameString!,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 20,
+                  decoration: TextDecoration.none))),
       action: () {
         if (widget.category != null) {
           widget.category!.name = this.nameString!;

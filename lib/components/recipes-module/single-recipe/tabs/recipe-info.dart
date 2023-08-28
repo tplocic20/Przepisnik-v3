@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
+import 'package:carbon_icons/carbon_icons.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik_icons.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -53,7 +54,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         return ListTile(
           title: const Text('Temperatura'),
           trailing: Text('${widget.recipe!.temperature} \u2103'),
-          leading: PrzepisnikIcon(icon: PrzepisnikIcons.temperature),
+          leading: Icon(CarbonIcons.temperature),
         ).padding(horizontal: 25);
       }
     }
@@ -65,7 +66,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         return ListTile(
           title: const Text('Czas'),
           trailing: Text('${widget.recipe!.time}'),
-          leading: PrzepisnikIcon(icon: PrzepisnikIcons.time),
+          leading: Icon(CarbonIcons.time),
         ).padding(horizontal: 25);
       }
     }
@@ -175,7 +176,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         .clipRRect(
             bottomLeft: isNotLast ? 0 : 10, bottomRight: isNotLast ? 0 : 10)
         .constrained(height: isChecked ? 55 : 70, animate: true)
-        .animate(Duration(milliseconds: 150), Curves.easeOut);
+        .animate(const Duration(milliseconds: 150), Curves.easeOut);
   }
 
   void verifyAllChecked(groupIdx, cookingId) {

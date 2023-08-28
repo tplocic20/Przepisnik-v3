@@ -76,7 +76,7 @@ class _CategoriesFormState extends State<CategoriesForm> {
               .padding(all: 5)
               .clipRRect(all: 25)
               .borderRadius(all: 25)
-              .animate(Duration(milliseconds: 150), Curves.easeOut))
+              .animate(const Duration(milliseconds: 150), Curves.easeOut))
           .toList(),
       addCategory()
     ]);

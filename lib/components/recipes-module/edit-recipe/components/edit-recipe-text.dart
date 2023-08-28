@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/components/partials/edit-recipe-text-step.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik_icons.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/models/recipe.dart';

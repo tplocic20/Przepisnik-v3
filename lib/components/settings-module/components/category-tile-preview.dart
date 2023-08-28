@@ -26,13 +26,12 @@ class CategoryTilePreview extends StatelessWidget {
         children: [
           SvgPicture.asset(
             'assets/category_icons/${this.selectedIcon!}.svg',
-            width: this.mode == CategoryTilePreviewMode.full ? 40 : 80,
-            height: this.mode == CategoryTilePreviewMode.full ? 40 : 80,
+            width: this.mode == CategoryTilePreviewMode.full ? 40 : 60,
+            height: this.mode == CategoryTilePreviewMode.full ? 40 : 60,
           ).padding(all: 0),
-          this.mode == CategoryTilePreviewMode.full ?
           Text(this.name!,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white)) : Container(),
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.w400, fontSize: 16, decoration: TextDecoration.none)),
         ],
       )
           .backgroundColor(this.selectedColor!)

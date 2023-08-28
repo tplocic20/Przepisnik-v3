@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:carbon_icons/carbon_icons.dart';
 
 import 'package:przepisnik_v3/components/settings-module/settings/settings.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik_icons.dart';
 import 'package:przepisnik_v3/components/start/home.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/services/auth-service.dart';
@@ -99,42 +100,10 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
           .padding(horizontal: 10);
     }
 
-    Widget commonBackdropOptions() {
-      return Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-            Row(mainAxisSize: MainAxisSize.min, children: [
-              getBackDropButton(
-                  PrzepisnikIcon(icon: PrzepisnikIcons.settings, size: 35), SettingsPage()),
-              getBackDropButton(
-                  PrzepisnikIcon(icon: PrzepisnikIcons.customer, size: 35), SettingsPage()),
-            ]),
-            OutlinedButton.icon(
-              onPressed: () {
-                AuthService().signOut();
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
-                    (Route<dynamic> route) => false);
-              },
-              style: OutlinedButton.styleFrom(
-                  foregroundColor: Theme.of(context).colorScheme.secondary,
-                  side: BorderSide(
-                      color: Theme.of(context).colorScheme.secondary),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)))),
-              icon: PrzepisnikIcon(
-                  icon: PrzepisnikIcons.logout,
-                  size: 35,
-                  color: Theme.of(context).colorScheme.secondary),
-              label: Text('Wyloguj'),
-            ).height(50).padding(horizontal: 10),
-          ])
-          .backgroundColor(Theme.of(context).primaryColor)
+    Widget openBackdropGrabber() {
+      return Container()
+      .backgroundColor(Theme.of(context).primaryColor)
           .width(MediaQuery.of(context).size.width)
-          .width(MediaQuery.of(context).size.width)
-          .alignment(Alignment.topCenter)
           .height(100)
           .gestures(
               onVerticalDragUpdate: (DragUpdateDetails details) =>
@@ -151,12 +120,12 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
               SizedBox(height: 5),
               Styled.widget(
                 child: Column(
-                  children: widget.backLayer ?? [],
+                  children: [...(widget.backLayer ?? []), openBackdropGrabber()],
                 ),
               ).height((((widget.backLayer!.length > 0
                       ? widget.backLayer!.length
                       : 0) *
-                  _layerItemHeight))),
+                  _layerItemHeight + 100))),
               Container()
             ],
           ).backgroundColor(Theme.of(context).primaryColor),
@@ -185,14 +154,14 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
 
   void _goBackNavigation() {
     _backdropAnimationController!.fling(velocity: _backdropVelocity);
-    Navigator.pop(context);
+    Navigator.of(context).maybePop(context);
   }
 
   @override
   void initState() {
     super.initState();
     _backdropAnimationController = AnimationController(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       value: 1.0,
       vsync: this,
     );
@@ -283,11 +252,11 @@ class _BackdropState extends State<Backdrop> with TickerProviderStateMixin {
         body: LayoutBuilder(builder: _buildStack),
         floatingActionButtonLocation: widget.actionButtonLocation,
         floatingActionButton: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           child: widget.bottomMainBtn ?? _defaultBottomBtn(),
         ),
         bottomNavigationBar: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           child: widget.bottomNavigation ?? _defaultBottomNavBar(),
         ));
   }

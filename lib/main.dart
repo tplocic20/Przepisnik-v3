@@ -2,8 +2,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor_ns/flutter_statusbarcolor_ns.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:przepisnik_v3/components/app.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 
@@ -17,6 +17,7 @@ class PrzepisnikColors {
   static final ERROR = const Color(0xFFF46060);
   static final INFO = const Color(0xFFB5DEFF);
   static final WARNING = const Color(0xFFF3D179);
+  static final INPUTFILL = const Color(0xFFDBDBDB).withAlpha(160);
 }
 
 void main() async {
@@ -32,7 +33,7 @@ class PrzepisnikApp extends StatelessWidget {
   Widget build(BuildContext context) {
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     fetchModes();
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Przepisnik',
       home: EntrySwitchApp(),
       theme: theme.copyWith(
@@ -99,16 +100,7 @@ class PrzepisnikApp extends StatelessWidget {
 
 Future<void> fetchModes() async {
   try {
-    List<DisplayMode> modes = await FlutterDisplayMode.supported;
-
-    DisplayMode current = await FlutterDisplayMode.active;
-    DisplayMode selected = modes.firstWhere(
-        (DisplayMode m) =>
-            m.width == current.width &&
-            m.height == current.height &&
-            m.refreshRate > 60,
-        orElse: () => current);
-    FlutterDisplayMode.setPreferredMode(selected);
+    await FlutterDisplayMode.setHighRefreshRate();
   } on PlatformException {}
 }
 

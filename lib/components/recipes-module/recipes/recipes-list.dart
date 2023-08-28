@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/recipes/recipe-item.dart';
 import 'package:przepisnik_v3/components/shared/Loader.dart';
 import 'package:przepisnik_v3/components/shared/backdrop-simple.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik_icons.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:przepisnik_v3/services/recipes-service.dart';
@@ -159,7 +160,7 @@ class _RecipesListSate extends State<RecipesList> with AutomaticKeepAliveClientM
             child: TextInput(
           controller: searchController,
           hint: 'Szukaj',
-          icon: PrzepisnikIcons.time,
+          icon: CarbonIcons.time,
           focusNode: focusNode,
           isDense: true,
           onChanged: (txt) {
@@ -183,13 +184,13 @@ class _RecipesListSate extends State<RecipesList> with AutomaticKeepAliveClientM
             });
           },
         )
-                .animate(const Duration(milliseconds: 300), Curves.ease)
+                .animate(const Duration(milliseconds: 300), Curves.easeOut)
                 .padding(all: 10)),
         Container(
             child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 300),
-          switchInCurve: Curves.easeInCubic,
-          switchOutCurve: Curves.easeOutCubic,
+          switchInCurve: Curves.easeOutCubic,
+          switchOutCurve: Curves.easeInCubic,
           transitionBuilder: (child, animation) {
             return SizeTransition(
               axis: Axis.horizontal,
@@ -306,6 +307,7 @@ class _RecipesListSate extends State<RecipesList> with AutomaticKeepAliveClientM
       closedColor: Theme.of(context).colorScheme.secondary,
       openColor: Theme.of(context).colorScheme.secondary,
       middleColor: Theme.of(context).colorScheme.secondary,
+      transitionDuration: const Duration(milliseconds: 500),
       closedBuilder: (BuildContext context, VoidCallback callback) {
         return SizedBox(
           height: _fabDimension,
@@ -314,7 +316,7 @@ class _RecipesListSate extends State<RecipesList> with AutomaticKeepAliveClientM
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                PrzepisnikIcon(icon: PrzepisnikIcons.plus),
+                Icon(CarbonIcons.add),
                 Text(
                   'Dodaj',
                   style: TextStyle(

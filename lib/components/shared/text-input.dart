@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/main.dart';
 import 'package:styled_widget/styled_widget.dart';
 
@@ -9,7 +8,7 @@ class TextInput extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final GestureTapCallback? onTap;
   final ValueChanged<String>? onFieldSubmitted;
-  final PrzepisnikIcons? icon;
+  final IconData? icon;
   final bool? autofocus;
   final bool? isDense;
   final bool? isNumeric;
@@ -43,8 +42,7 @@ class TextInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget? prefixIcon = this.icon != null
-        ? PrzepisnikIcon(
-                icon: this.icon!, color: Theme.of(context).primaryColor)
+        ? Icon(this.icon!, color: Theme.of(context).primaryColor)
             .padding(horizontal: 5, vertical: 10)
         : null;
     return TextFormField(
@@ -73,7 +71,7 @@ class TextInput extends StatelessWidget {
           hintText: this.hint,
           contentPadding:
               this.isDense != null && this.isDense! ? EdgeInsets.all(2) : null,
-          fillColor: Color(0xFFDBDBDB).withAlpha(160),
+          fillColor: PrzepisnikColors.INPUTFILL,
           focusedBorder: OutlineInputBorder(
             borderRadius: this.radius ?? BorderRadius.circular(25),
             borderSide: BorderSide(color: PrzepisnikColors.PRIMARY),
@@ -95,10 +93,9 @@ class TextInput extends StatelessWidget {
             borderSide: BorderSide.none,
           )),
       style: new TextStyle(
-          fontFamily: "Montserrat",
           fontSize: this.isDense != null && this.isDense! ? 16 : null,
           height: 1,
           letterSpacing: 1),
-    ).animate(Duration(milliseconds: 150), Curves.easeOut).height(this.isDense != null && this.isDense! ? 35 : 55);
+    ).animate(const Duration(milliseconds: 150), Curves.easeOut).height(this.isDense != null && this.isDense! ? 35 : 55);
   }
 }

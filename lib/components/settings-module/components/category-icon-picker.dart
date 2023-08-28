@@ -153,12 +153,13 @@ class _CategoryIconPickerState extends State<CategoryIconPicker> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CategoryTilePreview(
+        Hero(tag: 'category-tile', child: CategoryTilePreview(
             selectedIcon: this.selected,
             name: widget.name!,
             selectedColor: widget.color!,
-            mode: CategoryTilePreviewMode.iconColor),
+            mode: CategoryTilePreviewMode.iconColor)),
         Expanded(
             child: SingleChildScrollView(
           child: Wrap(

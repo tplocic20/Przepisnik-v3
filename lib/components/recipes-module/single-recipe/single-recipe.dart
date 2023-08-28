@@ -1,8 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe-container.dart';
 import 'package:przepisnik_v3/components/shared/backdrop.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik_icons.dart';
 import 'package:przepisnik_v3/globals/globals.dart' as globals;
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:rxdart/rxdart.dart';
@@ -54,7 +55,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
     }
 
     Widget _cookModeButton = ElevatedButton.icon(
-      icon: PrzepisnikIcon(icon: PrzepisnikIcons.cook, color: Colors.white),
+      icon: Icon(CarbonIcons.cafe, color: Colors.white),
       label: Text('Tryb szefa kuchni'),
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -83,7 +84,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
                 controller.add(true);
               });
             },
-            icon: PrzepisnikIcon(icon: PrzepisnikIcons.cook),
+            icon: Icon(CarbonIcons.cafe),
             style: OutlinedButton.styleFrom(
               elevation: 1,
               foregroundColor: Colors.white,
@@ -99,7 +100,7 @@ class _SingleRecipeState extends State<SingleRecipe> {
 
 
     Widget _calculatorButton = ElevatedButton.icon(
-      icon: PrzepisnikIcon(icon: PrzepisnikIcons.calculator),
+      icon: Icon(CarbonIcons.calculator),
       label: Text('Kalkulator składników'),
       style: ElevatedButton.styleFrom(
         elevation: this._cookMode ? 0 : 1.0,
@@ -158,7 +159,6 @@ class _SingleRecipeState extends State<SingleRecipe> {
                 )),
       ),
       actionButtonLocation: FloatingActionButtonLocation.endFloat,
-      backButtonOverride: true,
       frontLayer: SingleRecipeContainer(
         recipe: widget.recipe,
         portion: this._portion,

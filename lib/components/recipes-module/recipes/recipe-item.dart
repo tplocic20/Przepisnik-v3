@@ -2,12 +2,12 @@ import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:przepisnik_v3/components/recipes-module/edit-recipe/edit-recipe.dart';
 import 'package:przepisnik_v3/components/recipes-module/single-recipe/single-recipe.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
 import 'package:przepisnik_v3/components/shared/confirm-bottom-modal.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik_icons.dart';
 import 'package:przepisnik_v3/main.dart';
 import 'package:przepisnik_v3/models/category.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
@@ -52,36 +52,42 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(25),
             shadowColor: Color(0x30000000)) // shadow borderRadius
         .padding(bottom: 12, horizontal: 10, top: 0) // margin
-        .animate(Duration(milliseconds: 150), Curves.easeOut);
+        .animate(const Duration(milliseconds: 150), Curves.easeOut);
   }
 
   Widget _buildTile(BuildContext context) {
     return OpenContainer(
-      transitionType: ContainerTransitionType.fade,
-      closedBuilder: (BuildContext _, VoidCallback openContainer) {
-        return Container(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(widget.recipe!.name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium
-                      ?.copyWith(fontSize: 20)),
-              ListView(
-                scrollDirection: Axis.horizontal,
-                children: this._buildTags(context),
-              ).height(30),
-              _buildExtras(context)
-            ],
-          ).padding(vertical: 0, horizontal: 15),
-        ).ripple().backgroundColor(Colors.white).clipRRect(all: 25);
-      },
-      openBuilder: (BuildContext context, VoidCallback _) {
-        return SingleRecipe(widget.recipe!);
-      },
-    ).borderRadius(all: 25, animate: true).clipRRect(all: 25);
+        transitionType: ContainerTransitionType.fadeThrough,
+        transitionDuration: const Duration(milliseconds: 500),
+        closedBuilder: (BuildContext _, VoidCallback openContainer) {
+          return Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(widget.recipe!.name,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(fontSize: 20)),
+                ListView(
+                  scrollDirection: Axis.horizontal,
+                  children: this._buildTags(context),
+                ).height(30),
+                _buildExtras(context)
+              ],
+            ).padding(vertical: 0, horizontal: 15),
+          ).ripple().backgroundColor(Colors.white).clipRRect(all: 25);
+        },
+        openBuilder: (BuildContext context, VoidCallback _) {
+          return SingleRecipe(widget.recipe!);
+        },
+        closedElevation: 0,
+        openElevation: 0,
+        closedShape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+          Radius.circular(15),
+        ))).borderRadius(all: 25, animate: true).clipRRect(all: 25);
   }
 
   Widget _buildExtras(BuildContext context) {
@@ -90,7 +96,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     if (widget.recipe!.time.isNotEmpty) {
       extras.add(Row(
         children: [
-          PrzepisnikIcon(icon: PrzepisnikIcons.time).padding(right: 5),
+          Icon(CarbonIcons.time).padding(right: 5),
           Text(widget.recipe!.time)
         ],
       ));
@@ -102,7 +108,7 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
       }
       extras.add(Row(
         children: [
-          PrzepisnikIcon(icon: PrzepisnikIcons.temperature).padding(right: 5),
+          Icon(CarbonIcons.temperature).padding(right: 5),
           Text('${widget.recipe!.temperature} ')
         ],
       ));
@@ -152,7 +158,8 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
           Text(category.name).textColor(Colors.black)
         ],
       ).padding(left: 5, vertical: 5, right: 10),
-    ).backgroundColor(current
+    )
+        .backgroundColor(current
             ? Color(int.parse("0xFF${category.color!}")).withAlpha(35)
             : Colors.transparent)
         .clipRRect(all: 20)
@@ -163,20 +170,20 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
     List<Widget> buttons = [
       this._getButton(
           action: () {},
-          icon: PrzepisnikIcon(icon: PrzepisnikIcons.trash, color: Colors.white,),
+          icon: Icon(CarbonIcons.delete),
           color: PrzepisnikColors.ERROR),
       this._getEditButton(),
       this._getButton(
           action: () {
             this._share(context);
           },
-          icon: PrzepisnikIcon(icon: PrzepisnikIcons.share),
+          icon: Icon(CarbonIcons.share),
           color: Color(0xFFCBE2B0)),
       this._getButton(
           action: () {
             this._toggleFavourites(context);
           },
-          icon: PrzepisnikIcon(icon: PrzepisnikIcons.favorite),
+          icon: Icon(CarbonIcons.favorite),
           color: PrzepisnikColors.WARNING),
     ];
     return buttons;
@@ -185,9 +192,8 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
   Widget _getButton({color = Color, icon = Widget, action = Function}) {
     return ElevatedButton(
         onPressed: action,
-        child: Container(child: icon),
+        child: icon,
         style: ElevatedButton.styleFrom(
-          foregroundColor: color,
           backgroundColor: color,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -196,7 +202,8 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
 
   Widget _getEditButton() {
     return OpenContainer(
-      transitionType: ContainerTransitionType.fade,
+      transitionType: ContainerTransitionType.fadeThrough,
+      transitionDuration: const Duration(milliseconds: 500),
       openBuilder: (BuildContext context, VoidCallback _) {
         return WillPopScope(
           child: EditRecipe(recipe: widget.recipe!),
@@ -226,8 +233,8 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
       closedElevation: 2.0,
       closedShape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
-            Radius.circular(15),
-          )),
+        Radius.circular(15),
+      )),
       closedColor: PrzepisnikColors.INFO,
       openColor: PrzepisnikColors.INFO,
       middleColor: PrzepisnikColors.INFO,
@@ -239,7 +246,10 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                PrzepisnikIcon(icon: PrzepisnikIcons.edit),
+                Icon(
+                  CarbonIcons.edit,
+                  color: Colors.white,
+                ),
               ],
             ),
           ),
@@ -255,7 +265,6 @@ class _RecipeItemState extends State<RecipeItem> with TickerProviderStateMixin {
 
   void _toggleFavourites(BuildContext context) {
     bool currentFavouriteState = widget.recipe!.favourite;
-    RecipesService()
-        .setFavourites(widget.recipe!.key, !currentFavouriteState);
+    RecipesService().setFavourites(widget.recipe!.key, !currentFavouriteState);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:przepisnik_v3/components/shared/bottom-modal-wrapper.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
+import 'package:przepisnik_v3/components/shared/przepisnik_icons.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
 import 'package:styled_widget/styled_widget.dart';
@@ -62,7 +63,7 @@ class _EditRecipeTextStepState extends State<EditRecipeTextStep> with AutomaticK
                     child: Container()),
               );
             },
-            icon: PrzepisnikIcon(icon: PrzepisnikIcons.cook),
+            icon: Icon(CarbonIcons.cafe),
             label: Text('Wybierz składniki'),
             style: TextButton.styleFrom(
               foregroundColor: Theme.of(context).primaryColor,

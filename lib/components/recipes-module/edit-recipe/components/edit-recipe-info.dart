@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:carbon_icons/carbon_icons.dart';
 import 'package:przepisnik_v3/components/shared/categories-form.dart';
-import 'package:przepisnik_v3/components/shared/przepisnik-icon.dart';
 import 'package:przepisnik_v3/components/shared/roundedExpansionPanelList.dart';
 import 'package:przepisnik_v3/components/shared/text-input.dart';
 import 'package:przepisnik_v3/models/recipe.dart';
@@ -81,7 +81,7 @@ class _EditRecipeInfoState extends State<EditRecipeInfo>
                           .padding(right: 10),
                       Expanded(
                           child: TextInput(
-                              icon: PrzepisnikIcons.temperature,
+                              icon: CarbonIcons.time,
                               controller: temperatureInputController,
                               onChanged: (String temperature) {
                                 widget.recipe.temperature = temperature;
@@ -99,7 +99,7 @@ class _EditRecipeInfoState extends State<EditRecipeInfo>
                           .padding(right: 10),
                       Expanded(
                           child: TextInput(
-                              icon: PrzepisnikIcons.time,
+                              icon: CarbonIcons.time,
                               controller: timeInputController,
                               onChanged: (String time) {
                                 widget.recipe.time = time;

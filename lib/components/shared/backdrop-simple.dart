@@ -100,11 +100,11 @@ class _BackdropSimpleState extends State<BackdropSimple> {
         body: LayoutBuilder(builder: _buildStack),
         floatingActionButtonLocation: widget.actionButtonLocation,
         floatingActionButton: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           child: widget.bottomMainBtn ?? _defaultBottomBtn(),
         ),
         bottomNavigationBar: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
+          duration: const Duration(milliseconds: 300),
           child: _defaultBottomNavBar(),
         ));
   }
